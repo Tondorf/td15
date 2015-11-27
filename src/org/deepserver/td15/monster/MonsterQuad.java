@@ -29,9 +29,8 @@ public class MonsterQuad extends Monster {
 	public MonsterQuad(World world, Vec2 v) {
 		super(world);
 		position.x = v.x;
-		position.y = 0f;
-		position.z = v.y;
-		
+		position.y = v.y;
+		position.z = 0.0f;
 	}
 
 	public MonsterQuad(World world, Vec3 v) {
@@ -59,36 +58,36 @@ public class MonsterQuad extends Monster {
 		glMultMatrixf(fb);
 		
 		glBegin(GL_QUADS);
-		glColor3f(1.0f, 1.0f, 0.0f);
-		glVertex3f(size, -size, -size);
-		glVertex3f(size, size, -size);
-		glVertex3f(-size, size, -size);
-		glVertex3f(-size, -size, -size);
+//		glColor3f(1.0f, 1.0f, 0.0f);
+//		glVertex3f(size, -size, -size);
+//		glVertex3f(size, size, -size);
+//		glVertex3f(-size, size, -size);
+//		glVertex3f(-size, -size, -size);
 		glColor3f(0.0f, 1.0f, 1.0f);
 		glVertex3f(size, -size, size);
 		glVertex3f(size, size, size);
 		glVertex3f(-size, size, size);
 		glVertex3f(-size, -size, size);
-		glColor3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(size, -size, -size);
-		glVertex3f(size, size, -size);
-		glVertex3f(size, size, size);
-		glVertex3f(size, -size, size);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-size, -size, size);
-		glVertex3f(-size, size, size);
-		glVertex3f(-size, size, -size);
-		glVertex3f(-size, -size, -size);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(size, size, size);
-		glVertex3f(size, size, -size);
-		glVertex3f(-size, size, -size);
-		glVertex3f(-size, size, size);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(size, -size, -size);
-		glVertex3f(size, -size, size);
-		glVertex3f(-size, -size, size);
-		glVertex3f(-size, -size, -size);
+//		glColor3f(1.0f, 0.0f, 1.0f);
+//		glVertex3f(size, -size, -size);
+//		glVertex3f(size, size, -size);
+//		glVertex3f(size, size, size);
+//		glVertex3f(size, -size, size);
+//		glColor3f(0.0f, 1.0f, 0.0f);
+//		glVertex3f(-size, -size, size);
+//		glVertex3f(-size, size, size);
+//		glVertex3f(-size, size, -size);
+//		glVertex3f(-size, -size, -size);
+//		glColor3f(0.0f, 0.0f, 1.0f);
+//		glVertex3f(size, size, size);
+//		glVertex3f(size, size, -size);
+//		glVertex3f(-size, size, -size);
+//		glVertex3f(-size, size, size);
+//		glColor3f(1.0f, 0.0f, 0.0f);
+//		glVertex3f(size, -size, -size);
+//		glVertex3f(size, -size, size);
+//		glVertex3f(-size, -size, size);
+//		glVertex3f(-size, -size, -size);
 		glEnd();
 
 		glPopMatrix();
