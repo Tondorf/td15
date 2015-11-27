@@ -7,11 +7,12 @@ public class ScreenStartup extends ScreenMenu {
 	
 	public ScreenStartup(Client client) {
 		super(client);
-//		add("Start Game",() -> client.changeScreen2d(new ScreeenPlayerSelect(client)));
-		
-//		add("Resolution",() -> client.pushScreen2d(new ScreenResolution(client)));
+		add("Start Game",() -> {
+			client.changeScreen2d(new ScreenEmpty(client));
+			client.changeScreen3d(new ScreenStartGame(client));
+			client.focus3d();
+			});		
 		add("Quit",      () -> client.closeGame());
-		add("Really Quit",      () -> client.closeGame());
 		init(0);
 	}	
 }
