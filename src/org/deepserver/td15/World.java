@@ -37,7 +37,14 @@ public class World {
 	public World(Screen screen) {
 		this.screen=screen;
 	}
-	
+	public Vec2 getPosInsideCircle() {
+		Vec2 pos=new Vec2();
+		do {
+			pos=new Vec2(((float) Math.random() - 0.5f) * 2 * rockRadius,
+					((float) Math.random() - 0.5f) * 2 * rockRadius);
+		} while (pos.length()>=rockRadius);
+		return pos;
+	}
 	public void action(double delta,InputStatus is) {
 		for (Monster m:list) {
 			m.action(delta,is);
@@ -45,7 +52,7 @@ public class World {
 		
 		for (Monster m:list)
 			for (Monster n:list) {
-				if (m.id!=n.id) {
+				if (m.id!=n.id && !(m.sourceId==n.id || n.sourceId==m.id) && n.sourceId!=m.sourceId) {
 					Vec2 a=m.position;
 					Vec2 b=n.position;
 					

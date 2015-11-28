@@ -29,8 +29,6 @@ import java.nio.FloatBuffer;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.deepserver.td15.texture.Texture;
-import org.joml.Matrix2;
-import org.joml.Matrix3;
 import org.joml.Matrix4;
 import org.joml.Vec2;
 import org.lwjgl.BufferUtils;

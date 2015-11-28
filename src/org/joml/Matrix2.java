@@ -59,8 +59,7 @@ public class Matrix2 implements Serializable, Externalizable {
         this.m11 = mat.m11;
     }
     
-    public Matrix2(float m00, float m01, float m02, float m10, float m11,
-                    float m12, float m20, float m21, float m22) {
+    public Matrix2(float m00, float m01, float m10, float m11) {
         this.m00 = m00;
         this.m01 = m01;
         this.m10 = m10;
