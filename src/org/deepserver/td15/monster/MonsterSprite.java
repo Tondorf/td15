@@ -1,7 +1,13 @@
 package org.deepserver.td15.monster;
 
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.GL_CLAMP;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -14,6 +20,8 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -37,11 +45,10 @@ public class MonsterSprite extends Monster {
 		position.y = v.y;
 		position.z = 0.0f;
 	}
-
-	// private Texture loadTexture(String ref) throws IOException {
-	// Texture t = Texture.load(ref);
-	// return t;
-	// }
+	
+	public String getTextureName() {
+		return "buntmann.png";
+	}
 
 	@Override
 	public void draw() {
@@ -64,30 +71,26 @@ public class MonsterSprite extends Monster {
 
 		// Maybe load prior to draw() in order to avoid latencies:
 		Texture t = null;
+		String fn="res/"+getTextureName();
 		try {
-			t = Texture.load("res/buntmann.png");
+			t = Texture.load(fn);
 		} catch (IOException ex) {
+			System.err.println("Could not load "+fn);
 			System.err.println(ex.getMessage());
 		}
 		if (t != null) {
 			glEnable(GL_TEXTURE_2D);
-
+			
 			glPushMatrix();
 			glBindTexture(GL_TEXTURE_2D, t.getTextureID());
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 		}
 
-		// glTexCoord2f(0, 0);
-		// glVertex2f(0, 0);
-		//
-		// glTexCoord2f(0, texture.getHeight());
-		// glVertex2f(0, height);
-		//
-		// glTexCoord2f(texture.getWidth(), texture.getHeight());
-		// glVertex2f(width, height);
-		//
-		// glTexCoord2f(texture.getWidth(), 0);
-		// glVertex2f(width, 0);
-
+	
 		glBegin(GL_QUADS);
 		{
 			//if (t == null)
@@ -102,11 +105,11 @@ public class MonsterSprite extends Monster {
 			glVertex3f(size, -size, size);
 			
 			if (t != null)
-				glTexCoord2f(0, -t.getHeight());
+				glTexCoord2f(0, t.getHeight());
 			glVertex3f(size, size, size);
 			
 			if (t != null)
-				glTexCoord2f(t.getWidth(), -t.getHeight());
+				glTexCoord2f(t.getWidth(), t.getHeight());
 			glVertex3f(-size, size, size);
 		}
 		glEnd();

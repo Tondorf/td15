@@ -14,8 +14,10 @@ import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -23,6 +25,8 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -57,7 +61,7 @@ public class Texture {
 	private Texture() {
 	}
 
-	private Texture(String ref) throws IOException {
+	private Texture(String ref) throws IOException, FileNotFoundException {
 		URL url = MonsterSprite.class.getClassLoader().getResource(ref);
 
 		// if (url == null)
@@ -68,8 +72,12 @@ public class Texture {
 		Image img = null;
 		if (url != null)
 			img = new ImageIcon(url).getImage();
-		if (img == null)
+		if (img == null) {
+			File f = new File(ref);
+			if (!f.exists())
+				throw new FileNotFoundException("Texture image not Found: " + ref);
 			img = new ImageIcon(ref).getImage();
+		}
 
 		BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),
 				img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -149,11 +157,16 @@ public class Texture {
 		}
 
 		// copy the source image into the produced image
-		Graphics g = texImage.getGraphics();
+		Graphics2D g = (Graphics2D)texImage.getGraphics();
 		g.setColor(new Color(0f, 0f, 0f, 0f));
 		g.fillRect(0, 0, texWidth, texHeight);
+		AffineTransform at = new AffineTransform();
+        at.concatenate(AffineTransform.getScaleInstance(1, -1));
+        at.concatenate(AffineTransform.getTranslateInstance(0, -bufferedImage.getHeight()));
+        g.transform(at);
 		g.drawImage(bufferedImage, 0, 0, null);
-
+	
+		
 		// build a byte buffer from the temporary image
 		// that be used by OpenGL to produce a texture.
 		byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer())
