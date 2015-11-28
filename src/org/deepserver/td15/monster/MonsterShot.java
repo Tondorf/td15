@@ -6,7 +6,7 @@ import org.deepserver.td15.sound.SoundEffect;
 import org.joml.Vec2;
 
 public class MonsterShot extends MonsterSprite {
-	protected final float ownSpeed = 0.02f;
+	protected final float ownSpeed = 10f;
 	public float speed;
 
 	public MonsterShot(World world, Vec2 position, float speed) {
@@ -24,7 +24,7 @@ public class MonsterShot extends MonsterSprite {
 		super.action(delta, is);
 
 		Vec2 temp = new Vec2(orientation.getAhead());
-		temp.mul(speed);
+		temp.mul(speed*(float)delta);
 
 		position.add(temp);
 	}
