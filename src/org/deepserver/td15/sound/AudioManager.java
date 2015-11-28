@@ -64,7 +64,7 @@ public class AudioManager {
 		am.printDebugStuff();
 
 		try {
-			am.play(SoundEffect.MUSIC);
+			am.play(SoundEffect.ENGINE);
 
 			Thread.sleep(200000);
 		} finally {
@@ -88,22 +88,35 @@ public class AudioManager {
 		case SHOT:
 			new Thread() {
 				public void run() {
-					playOGG("shot.ogg");
+					playOGG("shot", false);
 				}
-			}.run();
+			}.start();
 			break;
 		case KILL:
 			new Thread() {
 				public void run() {
-					playOGG("kill.ogg");
+					playOGG("explosion", false);
 				}
-			}.run();
-
+			}.start();
+			break;
+		case FLY:
+			new Thread() {
+				public void run() {
+					playOGG("flying", false);
+				}
+			}.start();
+			break;
+		case ENGINE:
+			new Thread() {
+				public void run() {
+					playOGG("woauwoauwoau", false);
+				}
+			}.start();
 			break;
 		case MUSIC:
 			new Thread() {
 				public void run() {
-					playOGG("09_Life_on_Mars.ogg");
+					playOGG("09_Life_on_Mars", true);
 				}
 			}.start();
 
@@ -113,9 +126,9 @@ public class AudioManager {
 		}
 	}
 
-	private void playOGG(String filename) {
+	private void playOGG(String soundname, boolean stereo) {
 		STBVorbisInfo info = STBVorbisInfo.malloc();
-		ByteBuffer pcm = readVorbis(filename, 32 * 1024, info);
+		ByteBuffer pcm = readVorbis("res/"+soundname+".ogg", 32 * 1024, info);
 
 		// generate buffers and sources
 		int buffer = alGenBuffers();
@@ -124,7 +137,7 @@ public class AudioManager {
 		checkALError();
 
 		// copy to buffer
-		alBufferData(buffer, AL_FORMAT_STEREO16, pcm, info.sample_rate());
+		alBufferData(buffer, stereo ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm, info.sample_rate());
 		checkALError();
 
 		// free vorbis info
@@ -142,7 +155,7 @@ public class AudioManager {
 		int frequency = alGetBufferi(buffer, AL_FREQUENCY);
 		int channels = alGetBufferi(buffer, AL_CHANNELS);
 		int bitsPerSample = alGetBufferi(buffer, AL_BITS);
-		double length = (1d * bufferSize) / (frequency * channels * (bitsPerSample / 16));
+		double length = (1d * bufferSize) / (frequency * channels * (bitsPerSample / (stereo?16:8)));
 		int millis = (int) (length * 1000);
 		log.debug("AL_BUFFER: " + buffer);
 		log.debug("AL_SOURCE: " + source);
@@ -158,7 +171,7 @@ public class AudioManager {
 			Thread.sleep(millis);
 		} catch (InterruptedException inte) {
 			//
-			log.warn("Playing sound " + filename + " was aborted!");
+			log.warn("Playing sound " + soundname + " was aborted!");
 		} finally {
 			// stop source
 			alSourceStop(source);
