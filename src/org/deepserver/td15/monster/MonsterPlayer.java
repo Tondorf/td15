@@ -25,7 +25,7 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	@Override
 	public String getTextureName() {
-		return "ship1";
+		return "ship1.png";
 	}
 
 	protected void setCamera() {
