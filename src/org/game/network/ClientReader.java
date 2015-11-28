@@ -27,6 +27,7 @@ public class ClientReader extends Thread {
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage());
+				protocolWorker.notifyDeadClient(clientID);
 			}
 		}
 	}

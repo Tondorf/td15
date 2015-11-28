@@ -105,7 +105,7 @@ public class Server {
 		return clientID;
 	}
 	
-	public synchronized void killClientHandler(int clientID) {
+	public synchronized void killClient(int clientID) {
 		logger.info("Killing client #" + clientID);
 		
 		Client client = clients.get(clientID);
