@@ -3,7 +3,6 @@ package org.deepserver.td15.network.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,31 +11,21 @@ import org.apache.log4j.Logger;
 public class Server {
 	private static Logger logger = Logger.getLogger(Server.class);
 	
-	private static final String CHARSET_NAME = "UTF-8";
 	private static final int MAX_CLIENTS = 1000;
 	
-	private Charset charset;
 	private ServerSocket serverSocket;
 	private Doorman doorman;
-	private Map<Integer, ClientConnection> clients;
+	private Map<Integer, ClientConnection> clientConnections;
 	private ServerProtocolWorker protocolWorker;
 	private int clientID;
 	
 	public Server() {
-		if (!Charset.isSupported(CHARSET_NAME)) {
-			logger.error("Charset is not supported - fall back to default");
-			this.charset = Charset.defaultCharset();
-		} else {
-			this.charset = Charset.forName(CHARSET_NAME);
-		}
-		
-		this.clients = new HashMap<Integer, ClientConnection>();
+		this.clientConnections = new HashMap<Integer, ClientConnection>();
 		this.protocolWorker = new ServerProtocolWorker(this);
 	}
 
 	public void bindAndStart(int port) {
 		logger.info("Bind server to port " + port);
-		this.charset = getCharset();
 		
 		try {
 			serverSocket = new ServerSocket(port);
@@ -59,7 +48,7 @@ public class Server {
 			}
 			
 			// kill all Clients
-			for (ClientConnection client : clients.values()) {
+			for (ClientConnection client : clientConnections.values()) {
 				client.kill();
 			}
 			
@@ -88,14 +77,14 @@ public class Server {
 	public synchronized void registerNewClient(Socket clientSocket) throws AboveCapacityException, IllegalStateException, IOException {
 		if (!serverSocket.isBound()) {
 			throw new IllegalAccessError("Server socket is currently not bound");
-		} else if (clients.size() > MAX_CLIENTS) {
+		} else if (clientConnections.size() > MAX_CLIENTS) {
 			throw new AboveCapacityException("Moren than " + MAX_CLIENTS + " clients registered");
 		}
 		
 		int clientID = generateClientID();
-		ClientConnection client = new ClientConnection(clientID, clientSocket, protocolWorker, charset);
-		client.getReader().start();
-		clients.put(clientID, client);
+		ClientConnection clientConnection = new ClientConnection(clientID, clientSocket, protocolWorker);
+		clientConnection.getReader().start();
+		clientConnections.put(clientID, clientConnection);
 		
 		logger.info("Succesfully added new client #" + clientID);
 	}
@@ -108,32 +97,28 @@ public class Server {
 	public synchronized void killClient(int clientID) {
 		logger.info("Killing client #" + clientID);
 		
-		ClientConnection client = clients.get(clientID);
+		ClientConnection client = clientConnections.get(clientID);
 		client.kill();
 		
-		clients.remove(clientID);
+		clientConnections.remove(clientID);
 	}
 	
-	public Charset getCharset() {
-		return charset;
+	public void sendClient(int clientID, byte[] msg) {
+		ClientConnection clientConnection = clientConnections.get(clientID);
+		sendClient(clientConnection, msg);
 	}
 	
-	public void sendClient(int clientID, String msg) {
-		ClientConnection client = clients.get(clientID);
-		try {
-			client.send(msg);
-		} catch (IOException e) {
-			logger.error("Could not send message to client #" + clientID + " (error: " + e.getMessage() + ")");
+	public void sendClients(byte[] msg) {
+		for (ClientConnection clientConnection : clientConnections.values()) {
+			sendClient(clientConnection, msg);
 		}
 	}
 	
-	public void sendClients(String msg) {
-		for (ClientConnection client : clients.values()) {
-			try {
-				client.send(msg);
-			} catch (IOException e) {
-				logger.error("Could not send message to client #" + client.getId() + " (error: " + e.getMessage() + ")");
-			}
+	private void sendClient(ClientConnection clientConnection, byte[] msg) {
+		try {
+			clientConnection.send(msg);
+		} catch (IOException e) {
+			logger.error("Could not send message to client #" + clientConnection.getId() + " (error: " + e.getMessage() + ")");
 		}
 	}
 }
