@@ -1,6 +1,7 @@
 package org.deepserver.td15.screen;
 
 import org.deepserver.td15.Client;
+import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterEnemy;
 import org.deepserver.td15.monster.MonsterPlayer;
@@ -31,7 +32,7 @@ public class ScreenStartGame extends Screen {
 			}
 
 	}
-
+	
 	@Override
 	public void escape() {
 		client.changeScreen2d(new ScreenStartup(client));
