@@ -6,10 +6,10 @@ import org.deepserver.td15.monster.MonsterEnemy;
 import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.monster.MonsterSprite;
 import org.joml.Vec2;
-import org.joml.Vec3;
 
 public class ScreenStartGame extends Screen {
-
+	public final int monsterCount=200;
+	
 	public ScreenStartGame(Client client) {
 		super(client);
 
@@ -23,11 +23,11 @@ public class ScreenStartGame extends Screen {
 		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f,1f));
 		world.add(enemy);
 		
-		for (int x = -cnt; x < cnt; x++)
-			for (int y = -cnt; y < cnt; y++) {
+		
+		for (int i=0;i<monsterCount;i++) {
 				Monster q = new MonsterSprite(world, new Vec2(
-						((float) Math.random() - 0.5f) * 300f,
-						((float) Math.random() - 0.5f) * 300f));
+						((float) Math.random() - 0.5f) * 2 * world.rockRadius,
+						((float) Math.random() - 0.5f) * 2 * world.rockRadius));
 						
 				world.add(q);
 			}
