@@ -10,19 +10,19 @@ public class MonsterEnemy extends MonsterSprite {
 	protected final float rotationSpeed = 0.5f;
 	protected final int refreshTargetDelay = 1000;
 	protected final float accel = 0.01f;
-	
+
 	protected boolean turnLeft = false;
 	protected boolean turnRight = false;
-	
+
 	protected long lastTargetRefresh;
 	protected float speed;
 	protected Vec2 position;
 	protected Vec2 target;
 	protected boolean reachedMaxSpeed = false;
-	protected float v=0;
+	protected float v = 1;
 
 	public MonsterEnemy(World world, Vec2 position) {
-		super(world,position);
+		super(world, position);
 		this.speed = 10f;
 		this.position = position;
 	}
@@ -31,7 +31,7 @@ public class MonsterEnemy extends MonsterSprite {
 	public String getTextureName() {
 		return "ship1.png";
 	}
-	
+
 	protected void targetPlayer(Vec2 target) {
 		this.target = target;
 
@@ -44,27 +44,28 @@ public class MonsterEnemy extends MonsterSprite {
 		super.action(delta, is);
 
 		long now = System.currentTimeMillis();
-		if((lastTargetRefresh+refreshTargetDelay) < now){
+		if ((lastTargetRefresh + refreshTargetDelay) < now) {
 			lastTargetRefresh = now;
-			//targetPlayer();
+			targetPlayer(new Vec2(10f,10f));
 		}
-		
-		Vec2 temp = new Vec2(orientation.getAhead());
-		temp.mul(speed);
 
 		if (turnLeft) {
 			orientation.mul(new Matrix2().rotation(rotationSpeed * (float) delta));
-		}else if(turnRight){
+		} else if (turnRight) {
 			orientation.mul(new Matrix2().rotation(-rotationSpeed * (float) delta));
 		}
 
 		if (!reachedMaxSpeed) {
-			v+=accel*(float)delta;
-			if(v > maxSpeed){
+			v += accel * (float) delta;
+			if (v > maxSpeed) {
 				v = maxSpeed;
+				reachedMaxSpeed = true;
 			}
-		} 
-		
+		}
+
+		Vec2 temp = new Vec2(orientation.getAhead());
+		temp.mul(v);
+
 		position.add(temp);
 	}
 }
