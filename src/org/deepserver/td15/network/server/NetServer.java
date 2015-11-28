@@ -6,7 +6,10 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.security.auth.callback.Callback;
+
 import org.apache.log4j.Logger;
+import org.deepserver.td15.screen.ScreenHostGame;
 
 public class NetServer {
 	private static Logger logger = Logger.getLogger(NetServer.class);
@@ -18,8 +21,10 @@ public class NetServer {
 	private Map<Integer, ClientConnection> clientConnections;
 	private ServerProtocolWorker protocolWorker;
 	private int clientID;
+	protected ScreenHostGame hostScreen = null;
 	
-	public NetServer() {
+	public NetServer(ScreenHostGame hostScreen) {
+		this.hostScreen = hostScreen;
 		this.clientConnections = new HashMap<Integer, ClientConnection>();
 		this.protocolWorker = new ServerProtocolWorker(this);
 	}

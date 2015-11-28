@@ -15,11 +15,8 @@ public class ScreenStartGame extends Screen {
 	public ScreenStartGame(Client client) {
 		super(client);
 
-		MonsterPlayer player=new MonsterPlayer(world);
-		player.world = world;
-		player.position = new Vec2(0f, 0f);
-		world.add(player);
-
+		init();
+		
 		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f,1f));
 		world.add(enemy);
 
@@ -30,6 +27,13 @@ public class ScreenStartGame extends Screen {
 			world.add(q);
 		}
 		addRockCircle(world, world.rockRadius);
+	}
+	
+	protected void init() {
+		MonsterPlayer player=new MonsterPlayer(world);
+		player.world = world;
+		player.position = new Vec2(0f, 0f);
+		world.add(player);
 	}
 
 	private void addRockCircle(World world, float rockRadius) {

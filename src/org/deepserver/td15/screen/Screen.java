@@ -37,9 +37,8 @@ public abstract class Screen {
 				if (netServer != null) {
 					// TODO do the magic here
 				}
-			}
-			
-			world.action(delta,is);
+			} else
+				world.action(delta,is);
 		}
 	}
 	

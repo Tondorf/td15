@@ -9,4 +9,9 @@ public class ScreenJoinGame extends ScreenStartGame {
 		networked=true;
 		
 	}
+	
+	@Override
+	protected void init() {
+
+	}
 }
