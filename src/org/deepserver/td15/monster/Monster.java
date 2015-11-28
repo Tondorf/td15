@@ -25,17 +25,28 @@ public class Monster {
 	public float zLayer=0;
 	
 	public Monster(World world) {
-		this.world=world;
 		position=new Vec2();
 		orientation=new Matrix2();
-		id=nextId++;
-		sourceId=id;
+		if (world != null) {
+			// world is only given when created in local mode or on the server:
+			this.world=world;
+			id=nextId++;
+			sourceId=id;
+		}
 	}
 
 	public void action(double delta,InputStatus is) {
 	}
 	
 	public void draw() {
+	}
+	
+	public void copyFrom(Monster m) {
+		this.id = m.id;
+		this.sourceId = m.sourceId;
+		this.position = m.position;
+		this.orientation = m.orientation;
+		this.zLayer = m.zLayer;
 	}
 	
 	public float getRadius() {

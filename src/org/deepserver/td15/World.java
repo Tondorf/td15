@@ -9,8 +9,10 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 
 import org.deepserver.td15.monster.Monster;
+import org.deepserver.td15.monster.MonsterRock;
 import org.deepserver.td15.screen.Screen;
 import org.joml.Matrix2;
 import org.joml.Matrix4;
@@ -21,7 +23,8 @@ import org.lwjgl.BufferUtils;
 public class World {
 	public Screen screen;
 	
-	public ArrayList<Monster> list=new ArrayList<Monster>();
+	//public ArrayList<Monster> list=new ArrayList<Monster>();
+	public HashMap<Long, Monster> monsters = new HashMap<Long, Monster>();
 	public ArrayList<Monster> listOfnewMonsters=new ArrayList<Monster>();
 	public ArrayList<Monster> listOfdeadMonsters=new ArrayList<Monster>();
 	
@@ -46,12 +49,13 @@ public class World {
 		return pos;
 	}
 	public void action(double delta,InputStatus is) {
-		for (Monster m:list) {
+		for (Monster m:monsters.values()) {
 			m.action(delta,is);
 		}
 		
-		for (Monster m:list)
-			for (Monster n:list) {
+		// TODO: Optimize it:
+		for (Monster m:monsters.values())
+			for (Monster n:monsters.values()) {
 				if (m.id!=n.id && !(m.sourceId==n.id || n.sourceId==m.id) && n.sourceId!=m.sourceId) {
 					Vec2 a=m.position;
 					Vec2 b=n.position;
@@ -65,23 +69,24 @@ public class World {
 			}
 		
 		for (Monster m:listOfdeadMonsters)
-			list.remove(m);
+			monsters.remove(m.id);
 		
 		listOfdeadMonsters.clear();
 	}
 	
 	public void draw() {
-		ArrayList<Monster> next=new ArrayList<Monster>();
+		//ArrayList<Monster> next=new ArrayList<Monster>();
 		
-		for (Monster m:list) {
-			if (!m.killMe) next.add(m);
-		}
-		list=next;
+		//for (Monster m:list) {
+		//	if (!m.killMe) next.add(m);
+		//}
+		//list=next;
 
-		list.addAll(listOfnewMonsters);
+		for (Monster m : listOfnewMonsters)
+			monsters.put(m.id, m);
 		listOfnewMonsters.clear();
 		
-		for (Monster m:list) {
+		for (Monster m:monsters.values()) {
 			m.draw();
 		}		
 	}
@@ -107,15 +112,18 @@ public class World {
 	
 	public byte[] toBytes() throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		bout.write(ByteBuffer.allocate(4).putInt(list.size()).array());
+		//bout.write(ByteBuffer.allocate(4).putInt(monsters.size()).array());
 		// todo: dont do rocks!!
-		for (Monster m : list) {
+		for (Monster m : monsters.values()) {
+			if (m instanceof MonsterRock)
+				continue;
 			bout.write(ByteBuffer.allocate(4).putLong(m.id).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.x).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.y).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().x).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().y).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.zLayer).array());
+			bout.write(ByteBuffer.allocate(4).putLong(m.sourceId).array());
 		}
 		return bout.toByteArray();
 	}
@@ -123,24 +131,34 @@ public class World {
 	public void fromBytes(byte[] binbuf) {
 		//ByteArrayInputStream bin = new ByteArrayInputStream(binbuf);
 		ArrayList<Monster> ret= new ArrayList<Monster>();
-		int len  = ByteBuffer.wrap(binbuf, 0, 4).getInt();
-		int off = 4;
-		for (int i=0;i<len; i++) {
+		
+		int off = 0;
+		while (off+28 <= binbuf.length) {
 			long mid = ByteBuffer.wrap(binbuf, off, 4).getLong();
 			float x = ByteBuffer.wrap(binbuf, off+4, 4).getFloat();
 			float y = ByteBuffer.wrap(binbuf, off+8, 4).getFloat();
 			float ox = ByteBuffer.wrap(binbuf, off+12, 4).getFloat();
 			float oy = ByteBuffer.wrap(binbuf, off+16, 4).getFloat();
 			float z = ByteBuffer.wrap(binbuf, off+20, 4).getFloat();
-			off += 24;
-			Monster m = new Monster(this);
+			long src = ByteBuffer.wrap(binbuf, off+24, 4).getLong();
+			off += 28;
+			Monster m = new Monster(null);
 			m.id = mid;
+			m.sourceId = src;
 			m.position = new Vec2(x,y);
 			m.orientation.m00 = 1 - ox;
 			m.orientation.m01 = ox;
 			m.orientation.m10 = 1 - oy;
 			m.orientation.m11 = oy;
+			m.zLayer = z;
 			ret.add(m);
+		}
+		
+		for (Monster m : ret) {
+			Monster localMonster = monsters.get(m.id);
+			if (localMonster == null)
+				monsters.put(m.id, m);
+			localMonster.copyFrom(m);
 		}
 		// nein:!!! parsen und mit lokalem pool abgleichen!
 		//list = ret;
