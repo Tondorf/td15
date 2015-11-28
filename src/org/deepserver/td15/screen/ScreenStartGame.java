@@ -3,7 +3,8 @@ package org.deepserver.td15.screen;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterPlayer;
-import org.deepserver.td15.monster.MonsterQuad;
+import org.deepserver.td15.monster.MonsterSprite;
+import org.joml.Vec2;
 import org.joml.Vec3;
 
 public class ScreenStartGame extends Screen {
@@ -21,10 +22,10 @@ public class ScreenStartGame extends Screen {
 
 		for (int x = -cnt; x < cnt; x++)
 			for (int y = -cnt; y < cnt; y++) {
-				Monster q = new MonsterQuad(world, new Vec3(
+				Monster q = new MonsterSprite(world, new Vec2(
 						((float) Math.random() - 0.5f) * 300f,
-						((float) Math.random() - 0.5f) * 300f,
-						0.0f));
+						((float) Math.random() - 0.5f) * 300f));
+						
 				world.add(q);
 			}
 

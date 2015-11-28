@@ -31,13 +31,16 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -76,7 +79,7 @@ public class Client {
 	
 	protected int windowWidth;
 	protected int windowHeight;
-
+	
 	protected GLFWErrorCallback errorCallback;
 	protected GLFWKeyCallback keyCallback;
 	protected GLFWCursorPosCallback mouseCallback;
@@ -110,11 +113,16 @@ public class Client {
 
 	protected boolean keyFocus2d = true;
 
-	protected float shadingFactor = 0.0f;
+	//protected float shadingFactor = 0.0f;
 	protected final float maxShadingFactor = 0.7f;
-	protected final float shadingSpeed = 2f;
+	//protected final float shadingSpeed = 2f;
+	protected Floathing shadething = new Floathing(2.0f);
 	
+	// slap lennart: checkin Helper class :p
+	//protected boolean windoof = Helper.isWindoof();
+	boolean windoof=false;
 
+	
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
 
 	public Client() {
@@ -177,29 +185,31 @@ public class Client {
 		glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
 			@Override
 			public void invoke(long window, int key, int scancode, int action,int mods) {
-								
-				if (scancode == 39 ||  scancode == 116) // down
+
+				//System.err.println(scancode);
+				
+				if ( (windoof && scancode == 336) || scancode == 39 ||  scancode == 116) // down
 					is.backward = (action != 0);
-				if ( scancode == 38 || scancode == 113) // left
+				if ( (windoof && scancode == 331) || scancode == 38 || scancode == 113) // left
 					is.left = (action != 0);
-				if (scancode == 25 || scancode == 111) // up
+				if ( (windoof && scancode == 328) || scancode == 25 || scancode == 111) // up
 					is.forward = (action != 0);
-				if (scancode == 40 || scancode == 114) // right
+				if ( (windoof && scancode == 333) || scancode == 40 || scancode == 114) // right
 					is.right = (action != 0);
-				if (scancode == 65 || scancode == 36) // select=space or enter
-					is.firing= (action!=0);	
+				if ( (windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) // select=space or enter
+					is.firing = (action != 0);
 				
 				// key events:
-				if (scancode==9 && action==1) 
+				if ( (windoof && scancode == 1 || scancode==9) && action==1 )
 					is.escapeEvent=true;
 				
-				if ((scancode == 39 ||  scancode == 116) && action==1) // down
+				if ( (windoof && scancode == 336 || scancode == 39 ||  scancode == 116) && action==1) // down
 					is.downEvent=true;
 				
-				if ((scancode == 25 || scancode == 111) && action==1) // up
+				if ( (windoof && scancode == 328 || scancode == 25 || scancode == 111) && action==1) // up
 					is.upEvent=true;
 				
-				if ((scancode == 65 || scancode == 36) && action==1) // select=space or enter
+				if ( ((windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) && action==1) // select=space or enter
 					is.selectEvent=true;
 			}
 		});
@@ -210,6 +220,10 @@ public class Client {
 
 		GL.createCapabilities();
 		glEnable(GL_DEPTH_TEST);
+		
+		// nope: becomes *really* ugly when entering menu screen again ...
+		//glEnable(GL_TEXTURE_2D);
+		
 		glViewport(0, 0, windowWidth, windowHeight);
 
 		glMatrixMode(GL_PROJECTION);
@@ -218,7 +232,8 @@ public class Client {
 		glLoadMatrixf(fb);
 
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	}
 	
@@ -271,7 +286,7 @@ public class Client {
 			}
 
 			// ---------------------------- draw 3d world ---------------------
-			glClearColor(0, 0, 0, 1);
+			glClearColor(0, 0.0f, 0.2f, 1);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glMatrixMode(GL_MODELVIEW);
@@ -282,16 +297,11 @@ public class Client {
 			// ---------------------------- draw shading rectangle when fading ---
 			glClear(GL_DEPTH_BUFFER_BIT);
 
-			if (screen2d.shade3d)
-				shadingFactor += deltaTime * shadingSpeed;
-			else
-				shadingFactor -= deltaTime * shadingSpeed;
-
-			if (shadingFactor < 0)
-				shadingFactor = 0;
-			if (shadingFactor > maxShadingFactor)
-				shadingFactor = maxShadingFactor;
-
+			
+			shadething.update(deltaTime, screen2d.shade3d?maxShadingFactor:0.0f);
+			
+			// draw translucent plane between 2d and 3d screen
+			float shadingFactor = shadething.get();
 			if (shadingFactor != 0.0f) {
 				Matrix4 viewMatrix = new Matrix4();
 				viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
@@ -300,6 +310,7 @@ public class Client {
 																				// up
 				glLoadMatrixf(fb);
 
+				
 				float size = 3;
 
 				glBegin(GL_QUADS);
