@@ -34,19 +34,30 @@ public class MonsterEnemy extends MonsterSprite {
 	}
 
 	protected void lockTarget() {
-		if (targetObj != null) {
-		Vec2 targetCoordinates = targetObj.position;
+		if (targetObj != null) { // <- o'rly?
+			Vec2 targetCoordinates = targetObj.position;
 
-		Vec2 toTargetVector = new Vec2(targetCoordinates.x, targetCoordinates.y);
-		toTargetVector.sub(position);
-		Vec2 playerAhead = orientation.getAhead();
-		
-		//Thats my idea. Not proofed yet
-		double angle = Math.acos((toTargetVector.x*playerAhead.x)+(toTargetVector.y*playerAhead.y));
+			Vec2 toTargetVector = new Vec2(targetCoordinates.x, targetCoordinates.y);
+			toTargetVector.sub(position);
+			Vec2 playerAhead = orientation.getAhead();
+
+			// Thats my idea. Not proofed yet
+			double angle = Math.acos((toTargetVector.x * playerAhead.x) + (toTargetVector.y * playerAhead.y));
+			
+			if(angle > 0){
+				turnRight = false;
+				turnLeft = true;
+			}else{
+				turnRight = true;
+				turnLeft = false;
+			}
+			
+			if(Math.abs(angle)<1){ //Tolerance for very low angles
+				turnRight = true;
+				turnLeft = true;
+			}
 		}
 
-		turnRight = true;
-		turnLeft = false;
 	}
 
 	@Override
