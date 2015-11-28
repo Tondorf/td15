@@ -38,6 +38,10 @@ public class MonsterEnemy extends MonsterSprite {
 
 		Vec2 toTargetVector = new Vec2(targetCoordinates.x, targetCoordinates.y);
 		toTargetVector.sub(position);
+		Vec2 playerAhead = orientation.getAhead();
+		
+		//Thats my idea. Not proofed yet
+		double angle = Math.acos((toTargetVector.x*playerAhead.x)+(toTargetVector.y*playerAhead.y));
 
 		turnRight = true;
 		turnLeft = false;
