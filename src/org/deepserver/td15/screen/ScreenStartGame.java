@@ -13,8 +13,6 @@ public class ScreenStartGame extends Screen {
 	public ScreenStartGame(Client client) {
 		super(client);
 
-		int cnt = 5;
-		
 		MonsterPlayer player=new MonsterPlayer(world);
 		player.world = world;
 		player.position = new Vec2(0f, 0f);
