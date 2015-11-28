@@ -25,6 +25,11 @@ public class NetClient {
 		}
 	}
 	
+	public long handshake(String username) {
+		// todo: send irgendwas, server generiert player und gibt id zurück
+		return -1;
+	}
+	
 	public void sendServer(byte[] msg) {
 		try {
 			serverConnection.send(msg);
