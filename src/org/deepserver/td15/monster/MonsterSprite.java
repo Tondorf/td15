@@ -37,11 +37,10 @@ public class MonsterSprite extends Monster {
 		position.y = v.y;
 		position.z = 0.0f;
 	}
-
-	// private Texture loadTexture(String ref) throws IOException {
-	// Texture t = Texture.load(ref);
-	// return t;
-	// }
+	
+	public String getTextureName() {
+		return "buntmann.png";
+	}
 
 	@Override
 	public void draw() {
@@ -64,9 +63,11 @@ public class MonsterSprite extends Monster {
 
 		// Maybe load prior to draw() in order to avoid latencies:
 		Texture t = null;
+		String fn="res/"+getTextureName();
 		try {
-			t = Texture.load("res/buntmann.png");
+			t = Texture.load(fn);
 		} catch (IOException ex) {
+			System.err.println("Could not load "+fn);
 			System.err.println(ex.getMessage());
 		}
 		if (t != null) {
