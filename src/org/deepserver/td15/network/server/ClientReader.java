@@ -9,9 +9,9 @@ public class ClientReader extends Thread {
 	private static Logger logger = Logger.getLogger(ClientReader.class);
 	private int clientID;
 	private BufferedReader in;
-	private ProtocolWorker protocolWorker;
+	private ServerProtocolWorker protocolWorker;
 
-	public ClientReader(int clientID, BufferedReader in, ProtocolWorker protocolWorker) {
+	public ClientReader(int clientID, BufferedReader in, ServerProtocolWorker protocolWorker) {
 		this.clientID = clientID;
 		this.in = in;
 		this.protocolWorker = protocolWorker;

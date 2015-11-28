@@ -18,8 +18,8 @@ public class Server {
 	private Charset charset;
 	private ServerSocket serverSocket;
 	private Doorman doorman;
-	private Map<Integer, DemServerSeinClientWerEinenBesserenNamenHatBitteAendern> clients;
-	private ProtocolWorker protocolWorker;
+	private Map<Integer, ClientConnection> clients;
+	private ServerProtocolWorker protocolWorker;
 	private int clientID;
 	
 	public Server() {
@@ -30,8 +30,8 @@ public class Server {
 			this.charset = Charset.forName(CHARSET_NAME);
 		}
 		
-		this.clients = new HashMap<Integer, DemServerSeinClientWerEinenBesserenNamenHatBitteAendern>();
-		this.protocolWorker = new ProtocolWorker(this);
+		this.clients = new HashMap<Integer, ClientConnection>();
+		this.protocolWorker = new ServerProtocolWorker(this);
 	}
 
 	public void bindAndStart(int port) {
@@ -59,7 +59,7 @@ public class Server {
 			}
 			
 			// kill all Clients
-			for (DemServerSeinClientWerEinenBesserenNamenHatBitteAendern client : clients.values()) {
+			for (ClientConnection client : clients.values()) {
 				client.kill();
 			}
 			
@@ -93,7 +93,7 @@ public class Server {
 		}
 		
 		int clientID = generateClientID();
-		DemServerSeinClientWerEinenBesserenNamenHatBitteAendern client = new DemServerSeinClientWerEinenBesserenNamenHatBitteAendern(clientID, clientSocket, protocolWorker, charset);
+		ClientConnection client = new ClientConnection(clientID, clientSocket, protocolWorker, charset);
 		client.getReader().start();
 		clients.put(clientID, client);
 		
@@ -108,7 +108,7 @@ public class Server {
 	public synchronized void killClient(int clientID) {
 		logger.info("Killing client #" + clientID);
 		
-		DemServerSeinClientWerEinenBesserenNamenHatBitteAendern client = clients.get(clientID);
+		ClientConnection client = clients.get(clientID);
 		client.kill();
 		
 		clients.remove(clientID);
@@ -119,7 +119,7 @@ public class Server {
 	}
 	
 	public void sendClient(int clientID, String msg) {
-		DemServerSeinClientWerEinenBesserenNamenHatBitteAendern client = clients.get(clientID);
+		ClientConnection client = clients.get(clientID);
 		try {
 			client.send(msg);
 		} catch (IOException e) {
@@ -128,7 +128,7 @@ public class Server {
 	}
 	
 	public void sendClients(String msg) {
-		for (DemServerSeinClientWerEinenBesserenNamenHatBitteAendern client : clients.values()) {
+		for (ClientConnection client : clients.values()) {
 			try {
 				client.send(msg);
 			} catch (IOException e) {
