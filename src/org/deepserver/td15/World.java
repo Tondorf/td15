@@ -19,7 +19,7 @@ public class World {
 	public ArrayList<Monster> listOfnewMonsters=new ArrayList<Monster>();
 	public ArrayList<Monster> listOfdeadMonsters=new ArrayList<Monster>();
 	
-	protected final float rockRadius=50f;
+	public final float rockRadius=50f;
 	
 	protected Vec3 cameraEye    = new Vec3(0.0f,0.0f,1.0f);
 	protected Vec3 cameraLookAt = new Vec3(0.0f,0.0f,0.0f);
