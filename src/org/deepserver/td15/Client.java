@@ -280,6 +280,11 @@ public class Client {
 		lastMouseX=mx;
 		lastMouseY=my;
 	}
+	
+	public void clearEvents() {
+		is.escapeEvent=false;
+		is.selectEvent=false;
+	}
 
 	protected void clientLoop() {
 		lastTime = glfwGetTime();
@@ -301,6 +306,8 @@ public class Client {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glMatrixMode(GL_MODELVIEW);
+			
+			
 
 			screen3d.drawCamera();
 			
@@ -354,10 +361,12 @@ public class Client {
 
 	public void changeScreen2d(Screen next) {
 		screen2d = next;
+		clearEvents();
 	}
 
 	public void changeScreen3d(Screen next) {
 		screen3d = next;
+		clearEvents();
 	}
 
 	public void focus2d() {

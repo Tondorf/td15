@@ -54,9 +54,6 @@ public class PixelFont {
 			cacheHeight=fm.getMaxAscent()+fm.getMaxDescent();
 			cache=new BufferedImage(cacheWidth,cacheHeight,BufferedImage.TYPE_BYTE_GRAY);
 			cache.getGraphics().setFont(font);
-			
-			System.err.println(font.getFontName()+" getPoints:"+font.getSize());
-			System.err.println(cacheWidth+"  "+cacheHeight);
 		}
 		
 		protected void init(char c) {
