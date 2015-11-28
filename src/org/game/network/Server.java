@@ -28,38 +28,6 @@ public class Server {
 		
 		this.clients = new HashMap<Integer, Client>();
 		this.protocolWorker = new ProtocolWorker(this);
-		
-		final Thread mainThread = Thread.currentThread();
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-
-			@Override
-			public void run() {
-
-				try {
-					// do not except new requests, thus killing the doorman
-					if (doorman != null && !doorman.isInterrupted()) {
-						doorman.interrupt();
-					}
-					
-					// kill all Client Handlers
-					for (Client client : clients.values()) {
-						client.kill();
-					}
-					
-					// close server socket
-					if (serverSocket != null && !serverSocket.isClosed()) {
-						serverSocket.close();
-					}
-
-					// wait for other threads to terminate
-					mainThread.join();
-				} catch (InterruptedException e) {
-					System.err.println(e.getMessage());
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-				}
-			}
-		});
 	}
 
 	public void bindAndStart(int port) {
@@ -70,6 +38,34 @@ public class Server {
 
 			doorman = new Doorman(this);
 			doorman.start();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public void stop() {
+		final Thread mainThread = Thread.currentThread();
+		
+		try {
+			// do not except new requests, thus killing the doorman
+			if (doorman != null && !doorman.isInterrupted()) {
+				doorman.interrupt();
+			}
+			
+			// kill all Client Handlers
+			for (Client client : clients.values()) {
+				client.kill();
+			}
+			
+			// close server socket
+			if (serverSocket != null && !serverSocket.isClosed()) {
+				serverSocket.close();
+			}
+
+			// wait for other threads to terminate
+			mainThread.join();
+		} catch (InterruptedException e) {
+			System.err.println(e.getMessage());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
