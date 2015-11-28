@@ -11,7 +11,7 @@ public class ScreenJoinGame extends ScreenStartGame {
 		networked=true;
 		
 		netClient = new NetClient();
-		netClient.bindAndStart(Main.serverIP, 9090);
+		//long clientPlayerID = netClient.bindAndStart(Main.serverIP, 9090);
 	}
 	
 	@Override
