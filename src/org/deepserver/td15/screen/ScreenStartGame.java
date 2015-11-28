@@ -17,9 +17,6 @@ public class ScreenStartGame extends Screen {
 
 		init();
 
-		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), null);
-		world.add(enemy);
-
 		for (int i = 0; i < monsterCount; i++) {
 			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
 			world.add(q);
@@ -32,6 +29,9 @@ public class ScreenStartGame extends Screen {
 		player.world = world;
 		player.position = new Vec2(0f, 0f);
 		world.add(player);
+		
+		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), player);
+		world.add(enemy);
 	}
 
 	private void addRockCircle(World world, float rockRadius) {
