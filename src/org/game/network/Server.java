@@ -44,7 +44,7 @@ public class Server {
 			doorman = new Doorman(this);
 			doorman.start();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			logger.error(e);
 		}
 	}
 	
@@ -71,9 +71,9 @@ public class Server {
 			// wait for other threads to terminate
 			mainThread.join();
 		} catch (InterruptedException e) {
-			System.err.println(e.getMessage());
+			logger.error(e);
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			logger.error(e);
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class Server {
 		try {
 			client.send(msg);
 		} catch (IOException e) {
-			System.err.println("Could not send message to client #" + clientID + " (error: " + e.getMessage() + ")");
+			logger.error("Could not send message to client #" + clientID + " (error: " + e.getMessage() + ")");
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class Server {
 			try {
 				client.send(msg);
 			} catch (IOException e) {
-				System.err.println("Could not send message to client #" + client.getId() + " (error: " + e.getMessage() + ")");
+				logger.error("Could not send message to client #" + client.getId() + " (error: " + e.getMessage() + ")");
 			}
 		}
 	}

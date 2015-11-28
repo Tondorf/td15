@@ -7,7 +7,11 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
+
 public class Client {
+	private static Logger logger = Logger.getLogger(Client.class);
+	
 	private int id;
 	private Socket socket;
 	private ClientReader reader;
@@ -34,7 +38,7 @@ public class Client {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			System.err.println("Could not close client socket #" + id + " (error: " + e.getMessage() + ")");
+			logger.error("Could not close client socket #" + id + " (error: " + e.getMessage() + ")");
 		}
 	}
 	
