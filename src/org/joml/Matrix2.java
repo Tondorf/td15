@@ -350,7 +350,7 @@ public class Matrix2 implements Serializable, Externalizable {
     }
     
     public Vec2 getAhead() {
-    	return new Vec2(m01,m11);
+    	return new Vec2(m10,m11);
     }
 
 

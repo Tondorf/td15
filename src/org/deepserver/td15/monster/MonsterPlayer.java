@@ -4,17 +4,15 @@ import org.deepserver.td15.Floathing;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix2;
-import org.joml.Matrix3;
 import org.joml.Vec2;
 import org.joml.Vec3;
 
 public class MonsterPlayer extends MonsterSprite {
 
-	protected final float maxSpeed = 50.0f;
-	protected final float speed = 20.0f;
-	protected final float rotationSpeed = 90.0f;
-	protected final float cameraHeight = 30.0f;
 
+	protected final float accel = 0.01f;
+	protected final float rotationSpeed = 1.0f;
+	protected final float cameraHeight = 10.0f;
 	protected final long shotDelay = 1000;
 
 	private final float maxPitch = 5.0f;
@@ -23,7 +21,7 @@ public class MonsterPlayer extends MonsterSprite {
 
 	protected InputStatus is = new InputStatus();
 
-	protected Vec2 v=new Vec2();
+	protected float v=0;
 	
 	protected long lastShotTimestamp;
 	
@@ -42,27 +40,7 @@ public class MonsterPlayer extends MonsterSprite {
 
 		camPos.z = cameraHeight;
 
-// tk testing:
-		Vec3 tgt = new Vec3(position);
-		float p = pitchthing.get();
-		p *= v.length()/maxSpeed;
-		
-		Vec2 dir = orientation.getAhead();
-		float d = dir.length();
-		Vec2 rot = new Vec2();
-		rot.x = dir.x / d;
-		rot.y = dir.y / d; // norm
-		double a = Math.atan2(rot.y,  rot.x) / Math.PI * 180.0;
-		a += 90.0;
-		while (a < -180.0) a += 360.0;
-		while (a > 180.0) a -= 360.0;
-		a = a / 180.0 * Math.PI;
-		rot.x = (float)Math.cos(a) * d;
-		rot.y = (float)Math.sin(a) * d;
-		tgt.add(new Vec3(rot).mul(p));
-		camPos.add(new Vec3(rot).mul(-p/2));
-		world.setCamera(camPos, tgt, new Vec3(orientation.getAhead()));
-//oj:		world.setCamera(camPos, new Vec3(position), new Vec3(orientation.getAhead()));
+		world.setCamera(camPos, new Vec3(position), new Vec3(orientation.getAhead()));
 	}
 
 	@Override 
@@ -99,31 +77,31 @@ public class MonsterPlayer extends MonsterSprite {
 		} 
 
 		if (is.forward) {
-			v.add(new Vec2(orientation.getAhead()).mul(speed
-					* (float) delta));
+			v+=accel*(float)delta;
 		}
 
 		if (is.backward) {
-			v.add(new Vec2(orientation.getAhead()).mul(-speed
-					* (float) delta));
+			v-=accel*(float)delta;
 		}
-		
+
 		if (is.fullBreak) {
-			v.mul(0.7f);
-			if (v.length() < 0.5f)
-				v.mul(0f);
+			v *= 0.7f;
+			if (v < 0.05f)
+				v = 0f;
 		}		
-		if (v.length() > maxSpeed) {
-			// 8 / 10
-			float f =  maxSpeed / v.length();
-			v.mul(f);
-		}
+		//if (v > maxSpeed) {
+		//	// 8 / 10
+		//	float f =  maxSpeed / v.length();
+		//	v.mul(f);
+		//}
 			
 		
-		Vec2 temp=new Vec2(v);
-		temp.mul((float)delta);
+//		Vec2 temp=new Vec2(v);
+//		temp.mul((float)delta);
+		Vec2 temp=new Vec2(orientation.getAhead());
+		temp.mul(v);
 		
-		position.add(new Vec2(temp));
+		position.add(temp);
 
 		setCamera();
 	}

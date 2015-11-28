@@ -75,7 +75,7 @@ public class MonsterSprite extends Monster {
 		}
 		if (t != null) {
 //			glEnable(GL_TEXTURE_2D);
-//			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_DEPTH_TEST);
 //			
 			glBindTexture(GL_TEXTURE_2D, t.getTextureID());
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
@@ -109,7 +109,7 @@ public class MonsterSprite extends Monster {
 
 		if (t!=null) {
 //			glDisable(GL_TEXTURE_2D);
-//			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_DEPTH_TEST);
 			
 		}
 		glPopMatrix();
