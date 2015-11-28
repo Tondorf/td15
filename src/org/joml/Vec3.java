@@ -57,6 +57,12 @@ public class Vec3 implements Serializable, Externalizable {
         this.z = clone.z;
     }
 
+    public Vec3(Vec2 clone) {
+        this.x = clone.x;
+        this.y = clone.y;
+        this.z = 0.0f;
+    }
+
     /**
      * Set the x, y and z attributes to match the supplied vector.
      * 
