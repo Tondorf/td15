@@ -13,7 +13,7 @@ public class ScreenJoinGame extends ScreenStartGame {
 		
 		netClient = new NetClient();
 		netClient.bindAndStart(Main.serverIP, 9090);
-		clientID = netClient.handshake("Pimmelbirne91");
+		clientID = netClient.handshake("Pimmelbirne_" + System.currentTimeMillis());
 		logger.info("Server thinks my name is stupid and will call me " + clientID + " instead:/");
 	}
 	
