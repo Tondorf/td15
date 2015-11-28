@@ -108,6 +108,7 @@ public class World {
 	public byte[] toBytes() throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		bout.write(ByteBuffer.allocate(4).putInt(list.size()).array());
+		// todo: dont do rocks!!
 		for (Monster m : list) {
 			bout.write(ByteBuffer.allocate(4).putLong(m.id).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.x).array());
@@ -141,8 +142,9 @@ public class World {
 			m.orientation.m11 = oy;
 			ret.add(m);
 		}
-		list = ret;
-		//return ret;
+		// nein:!!! parsen und mit lokalem pool abgleichen!
+		//list = ret;
+		
 	}
 	
 }

@@ -34,6 +34,7 @@ public class MonsterEnemy extends MonsterSprite {
 	}
 
 	protected void lockTarget() {
+		if (targetObj != null) {
 		Vec2 targetCoordinates = targetObj.position;
 
 		Vec2 toTargetVector = new Vec2(targetCoordinates.x, targetCoordinates.y);
@@ -42,6 +43,7 @@ public class MonsterEnemy extends MonsterSprite {
 		
 		//Thats my idea. Not proofed yet
 		double angle = Math.acos((toTargetVector.x*playerAhead.x)+(toTargetVector.y*playerAhead.y));
+		}
 
 		turnRight = true;
 		turnLeft = false;

@@ -45,7 +45,7 @@ public abstract class Screen {
 	public void action(double delta, InputStatus is) {
 		if (is.escapeEvent) { 
 			is.escapeEvent=false;
-			escape();
+			escape();		
 		}
 		
 		if (networked && netClient != null) {

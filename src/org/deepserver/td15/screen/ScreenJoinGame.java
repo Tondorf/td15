@@ -12,4 +12,9 @@ public class ScreenJoinGame extends ScreenStartGame {
 		netClient = new NetClient();
 		netClient.bindAndStart("127.0.0.1", 9090);
 	}
+	
+	@Override
+	protected void init() {
+
+	}
 }
