@@ -16,7 +16,7 @@ public class Monster {
 	
 	public boolean killMe=false;
 
-	public float groundDistance=0;
+	public float zLayer=0;
 	
 	public Monster(World world) {
 		this.world=world;

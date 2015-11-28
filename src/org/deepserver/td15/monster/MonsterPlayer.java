@@ -4,9 +4,10 @@ import org.deepserver.td15.Floathing;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix3;
+import org.joml.Vec2;
 import org.joml.Vec3;
 
-public class MonsterPlayer extends Monster {
+public class MonsterPlayer extends MonsterSprite {
 
 	protected final float speed = 50.0f;
 	protected final float rotationSpeed = 50.0f;
@@ -18,8 +19,13 @@ public class MonsterPlayer extends Monster {
 	protected InputStatus is = new InputStatus();
 
 	public MonsterPlayer(World world) {
-		super(world);
-		groundDistance = 1f;
+		super(world,new Vec2(0f,0f));
+		zLayer = 1f;
+	}
+	
+	@Override
+	public String getTextureName() {
+		return "ship1";
 	}
 
 	protected void setCamera() {
@@ -54,8 +60,6 @@ public class MonsterPlayer extends Monster {
 			// shot.groundDistance=groundDistance;
 			// world.add(shot);
 		}
-
-		Vec3 up = orientation.getUp();
 
 		if (is.left) {
 			orientation.mul(new Matrix3().rotate(rotationSpeed * (float) delta,
