@@ -1,5 +1,6 @@
 package org.deepserver.td15.monster;
 
+import org.deepserver.td15.Floathing;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix2;
@@ -7,6 +8,7 @@ import org.joml.Vec2;
 import org.joml.Vec3;
 
 public class MonsterPlayer extends MonsterSprite {
+
 
 	protected final float accel = 0.01f;
 	protected final float rotationSpeed = 1.0f;
@@ -30,7 +32,6 @@ public class MonsterPlayer extends MonsterSprite {
 	}
 
 	protected void setCamera() {
-
 		Vec3 camPos = new Vec3(position);
 
 		camPos.z = cameraHeight;
@@ -38,6 +39,16 @@ public class MonsterPlayer extends MonsterSprite {
 		world.setCamera(camPos, new Vec3(position), new Vec3(orientation.getAhead()));
 	}
 
+	@Override 
+	public void draw() {
+		org.lwjgl.opengl.GL11.glPushMatrix();
+		super.draw();
+		org.lwjgl.opengl.GL11.glRotatef(13.0f, 0, 0, 1);
+		org.lwjgl.opengl.GL11.glPopMatrix();
+	}
+	
+	
+	
 	@Override
 	public void action(double delta, InputStatus is) {
 		super.action(delta, is);
@@ -68,7 +79,21 @@ public class MonsterPlayer extends MonsterSprite {
 		if (is.backward) {
 			v-=accel*(float)delta;
 		}
+
+		if (is.fullBreak) {
+			v *= 0.7f;
+			if (v < 0.05f)
+				v = 0f;
+		}		
+		//if (v > maxSpeed) {
+		//	// 8 / 10
+		//	float f =  maxSpeed / v.length();
+		//	v.mul(f);
+		//}
+			
 		
+//		Vec2 temp=new Vec2(v);
+//		temp.mul((float)delta);
 		Vec2 temp=new Vec2(orientation.getAhead());
 		temp.mul(v);
 		
