@@ -23,6 +23,8 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -57,7 +59,7 @@ public class Texture {
 	private Texture() {
 	}
 
-	private Texture(String ref) throws IOException {
+	private Texture(String ref) throws IOException, FileNotFoundException {
 		URL url = MonsterSprite.class.getClassLoader().getResource(ref);
 
 		// if (url == null)
@@ -68,8 +70,12 @@ public class Texture {
 		Image img = null;
 		if (url != null)
 			img = new ImageIcon(url).getImage();
-		if (img == null)
+		if (img == null) {
+			File f = new File(ref);
+			if (!f.exists())
+				throw new FileNotFoundException("Texture image not Found: " + ref);
 			img = new ImageIcon(ref).getImage();
+		}
 
 		BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),
 				img.getHeight(null), BufferedImage.TYPE_INT_ARGB);

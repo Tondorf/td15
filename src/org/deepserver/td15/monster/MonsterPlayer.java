@@ -78,6 +78,7 @@ public class MonsterPlayer extends MonsterSprite {
 			pitchthing.update(delta, 0.0f);
 		}
 		//orientation.mul(new Matrix3().rotate)
+		
 
 		if (is.forward) {
 			position.add(new Vec3(orientation.getUp()).mul(speed
