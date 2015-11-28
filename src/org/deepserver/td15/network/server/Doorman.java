@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
 public class Doorman extends Thread {
 	private static Logger logger = Logger.getLogger(Doorman.class);
 	
-	private Server server;
+	private NetServer server;
 	
-	public Doorman(Server server) {
+	public Doorman(NetServer server) {
 		this.server = server;
 	}
 

@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-public class Server {
-	private static Logger logger = Logger.getLogger(Server.class);
+public class NetServer {
+	private static Logger logger = Logger.getLogger(NetServer.class);
 	
 	private static final int MAX_CLIENTS = 1000;
 	
@@ -19,7 +19,7 @@ public class Server {
 	private ServerProtocolWorker protocolWorker;
 	private int clientID;
 	
-	public Server() {
+	public NetServer() {
 		this.clientConnections = new HashMap<Integer, ClientConnection>();
 		this.protocolWorker = new ServerProtocolWorker(this);
 	}

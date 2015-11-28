@@ -1,7 +1,7 @@
 package org.deepserver.td15.screen;
 
 import org.deepserver.td15.Client;
-import org.deepserver.td15.network.server.Server;
+import org.deepserver.td15.network.server.NetServer;
 
 public class ScreenHostGame extends ScreenStartGame {
 
@@ -9,7 +9,7 @@ public class ScreenHostGame extends ScreenStartGame {
 		super(client);
 		networked=true;
 	
-		Server gameServer = new Server();
+		NetServer gameServer = new NetServer();
 		gameServer.bindAndStart(9090);
 	}
 }
