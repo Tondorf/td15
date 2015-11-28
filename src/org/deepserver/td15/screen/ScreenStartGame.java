@@ -57,7 +57,6 @@ public class ScreenStartGame extends Screen {
 	@Override
 	public void escape() {
 		
-		System.err.println("ESC ScreenStartGame");
 		client.changeScreen2d(new ScreenStartup(client));
 		client.changeScreen3d(new ScreenStartupBackground(client));
 
