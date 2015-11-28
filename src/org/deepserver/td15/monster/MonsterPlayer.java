@@ -54,18 +54,17 @@ public class MonsterPlayer extends MonsterSprite {
 	@Override
 	public void action(double delta, InputStatus is) {
 		
-		System.err.println(v);
 		super.action(delta, is);
 
-		if (is.firing) {
-			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
-			shot.orientation = new Matrix2(orientation);
-			long now = System.currentTimeMillis();
-			if((lastShotTimestamp+shotDelay) < now){
-				world.add(shot);
-				lastShotTimestamp = now;
-			}
-		}
+//		if (is.firing) {
+//			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
+//			shot.orientation = new Matrix2(orientation);
+//			long now = System.currentTimeMillis();
+//			if((lastShotTimestamp+shotDelay) < now){
+//				world.add(shot);
+//				lastShotTimestamp = now;
+//			}
+//		}
 
 		if (is.left) {
 			orientation.mul(new Matrix2().rotation(rotationSpeed * (float) delta)); // in a flat, flat world ... always rotate around

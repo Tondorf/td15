@@ -64,4 +64,8 @@ public class MonsterTextLine extends Monster {
 	public void lowlight() {
 		for (MonsterPixel m:myMonsters) m.lowLight();
 	}
+	
+	@Override
+	public void destroy() {
+	}
 }

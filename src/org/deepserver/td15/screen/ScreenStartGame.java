@@ -12,7 +12,7 @@ public class ScreenStartGame extends Screen {
 	public ScreenStartGame(Client client) {
 		super(client);
 
-		int cnt = 30;
+		int cnt = 5;
 		
 		MonsterPlayer player=new MonsterPlayer(world);
 		player.world = world;
