@@ -1,4 +1,4 @@
-package org.game.network;
+package org.game.network.server;
 
 public class AboveCapacityException extends Exception {
 	private static final long serialVersionUID = -3419467299295148501L;
