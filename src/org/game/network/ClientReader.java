@@ -3,7 +3,10 @@ package org.game.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 public class ClientReader extends Thread {
+	private static Logger logger = Logger.getLogger(ClientReader.class);
 	private int clientID;
 	private BufferedReader in;
 	private ProtocolWorker protocolWorker;
@@ -16,13 +19,15 @@ public class ClientReader extends Thread {
 
 	@Override
 	public void run() {
-		try {
-			String msg = in.readLine();
-			if (msg != null) {
-				protocolWorker.process(clientID, msg);
+		while (!isInterrupted()) {
+			try {
+				String msg = in.readLine();
+				if (msg != null) {
+					protocolWorker.process(clientID, msg);
+				}
+			} catch (IOException e) {
+				logger.error(e.getMessage());
 			}
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
 		}
 	}
 }
