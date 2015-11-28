@@ -27,7 +27,7 @@ public class ClientConnection {
 	}
 	
 	public void send(String msg) throws IOException {
-		out.write(msg);
+		out.write(msg + "\r\n");
 		out.flush();
 	}
 
