@@ -15,9 +15,8 @@ public class ScreenStartGame extends Screen {
 		int cnt = 30;
 		
 		MonsterPlayer player=new MonsterPlayer(world);
-
 		player.world = world;
-		player.position = new Vec3(0f, 10f, 0f);
+		player.position = new Vec2(0f, 0f);
 		world.add(player);
 
 		for (int x = -cnt; x < cnt; x++)

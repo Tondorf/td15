@@ -63,6 +63,8 @@ public class World {
 	}
 	
 	public void drawCamera() {
+//		System.err.println("drawCamera: "+cameraEye+" "+cameraLookAt+" "+cameraUp+"   "+screen.getClass());
+		
         viewMatrix.setLookAt(cameraEye,cameraLookAt,cameraUp).get(fb);  // y is up
         glLoadMatrixf(fb);
 	}

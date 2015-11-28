@@ -114,6 +114,25 @@ public class Matrix4 implements Serializable, Externalizable {
         this.m33 = mat.m33;
     }
 
+    public Matrix4(Matrix2 mat) {
+        this.m00 = mat.m00;
+        this.m01 = mat.m01;
+        this.m02 = 0.0f;
+        this.m03 = 0.0f;
+        this.m10 = mat.m10;
+        this.m11 = mat.m11;
+        this.m12 = 0.0f;
+        this.m13 = 0.0f;
+        this.m20 = 0.0f;
+        this.m21 = 0.0f;
+        this.m22 = 1.0f;
+        this.m23 = 0.0f;
+        this.m30 = 0.0f;
+        this.m31 = 0.0f;
+        this.m32 = 0.0f;
+        this.m33 = 1.0f;
+    }
+
     /**
      * Create a new 4x4 matrix using the supplied float values.
      */

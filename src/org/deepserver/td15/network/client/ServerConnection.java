@@ -1,11 +1,9 @@
 package org.deepserver.td15.network.client;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 
@@ -14,19 +12,19 @@ public class ServerConnection {
 	
 	private Socket socket;
 	private ServerReader reader;
-	private BufferedReader in;
-	private OutputStreamWriter out;
+	private DataInputStream in;
+	private DataOutputStream out;
 	
-	public ServerConnection(Socket socket, ClientProtocolWorker protocolWorker, Charset charset) throws IOException {
+	public ServerConnection(Socket socket, ClientProtocolWorker protocolWorker) throws IOException {
 		this.socket = socket;
-		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		this.in = new DataInputStream(socket.getInputStream());
 		this.reader = new ServerReader(in, protocolWorker);
-		this.out = new OutputStreamWriter(socket.getOutputStream(), charset);
+		this.out = new DataOutputStream(socket.getOutputStream());
 	}
 	
-	public void send(String msg) throws IOException {
-		out.write(msg + "\r\n");
-		out.flush();
+	public void send(byte[] msg) throws IOException {
+		out.writeInt(msg.length);
+		out.write(msg);
 	}
 	
 	public void kill() {

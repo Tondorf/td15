@@ -11,7 +11,7 @@ public class ClientProtocolWorker {
 		this.client = client;
 	}
 	
-	public void process(String msg) {
-		logger.info("received message from server: " + msg);
+	public void process(byte[] msg) {
+		logger.info("received message from server: " + new String(msg));
 	}
 }

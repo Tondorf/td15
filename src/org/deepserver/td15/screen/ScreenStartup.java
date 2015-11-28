@@ -24,6 +24,11 @@ public class ScreenStartup extends ScreenMenu {
 			});		
 		add("Quit",      () -> client.closeGame());
 		init(0);
-	}	
+	}
+	
+	@Override
+	public void escape() {
+		client.closeGame();
+	}
 }
 

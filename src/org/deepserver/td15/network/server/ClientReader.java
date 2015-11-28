@@ -1,6 +1,6 @@
 package org.deepserver.td15.network.server;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
@@ -8,10 +8,10 @@ import org.apache.log4j.Logger;
 public class ClientReader extends Thread {
 	private static Logger logger = Logger.getLogger(ClientReader.class);
 	private int clientID;
-	private BufferedReader in;
+	private DataInputStream in;
 	private ServerProtocolWorker protocolWorker;
 
-	public ClientReader(int clientID, BufferedReader in, ServerProtocolWorker protocolWorker) {
+	public ClientReader(int clientID, DataInputStream in, ServerProtocolWorker protocolWorker) {
 		this.clientID = clientID;
 		this.in = in;
 		this.protocolWorker = protocolWorker;
@@ -21,12 +21,14 @@ public class ClientReader extends Thread {
 	public void run() {
 		while (!isInterrupted()) {
 			try {
-				String msg = in.readLine();
-				if (msg != null) {
+				int length = in.readInt();
+				byte[] msg = new byte[length];
+				in.readFully(msg);
+				if (length > 0) {
 					protocolWorker.process(clientID, msg);
 				}
 			} catch (IOException e) {
-				logger.error(e.getMessage());
+				logger.error(e);
 				protocolWorker.notifyDeadClient(clientID);
 			}
 		}

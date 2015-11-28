@@ -28,9 +28,9 @@ public class Doorman extends Thread {
 				
 				logger.info("Accepted new client");
 			} catch (IOException e) {
-				logger.error(e.getMessage());
+				logger.error(e);
 			} catch (AboveCapacityException e) {
-				logger.error(e.getMessage());
+				logger.error(e);
 			}
 		}
 	}

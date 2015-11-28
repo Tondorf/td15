@@ -3,6 +3,7 @@ package org.deepserver.td15.monster;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix4;
+import org.joml.Vec2;
 import org.joml.Vec3;
 
 public class MonsterDefaultCam extends Monster {
@@ -17,7 +18,7 @@ public class MonsterDefaultCam extends Monster {
 	protected final float speed=5.0f;
 	protected final float angle=10;
 	
-	public MonsterDefaultCam(World world, Vec3 v) {
+	public MonsterDefaultCam(World world, Vec2 v) {
 		super(world);
 		position=v;
 		
