@@ -56,6 +56,8 @@ import java.awt.Toolkit;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.deepserver.td15.screen.Screen;
 import org.deepserver.td15.screen.ScreenStartup;
@@ -71,7 +73,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 public class Client {
-	
+
 	public final int mouseZerosToSkip=10;
 	
 	public float mouseSensitivity=8;
@@ -116,12 +118,7 @@ public class Client {
 	protected final float maxShadingFactor = 0.7f;
 	//protected final float shadingSpeed = 2f;
 	protected Floathing shadething = new Floathing(2.0f);
-	
-	// slap lennart: checkin Helper class :p
-	//protected boolean windoof = Helper.isWindoof();
-	boolean windoof=false;
 
-	
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
 
 	public Client() {
@@ -186,31 +183,32 @@ public class Client {
 		glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
 			@Override
 			public void invoke(long window, int key, int scancode, int action,int mods) {
+				List<Integer> ups = Arrays.asList(328,25,111);
+				List<Integer> downs = Arrays.asList(336,39,116);
+				List<Integer> lefts = Arrays.asList(331,38,113);
+				List<Integer> rights = Arrays.asList(333,40,114);
+				List<Integer> esc = Arrays.asList(1,9);
+				List<Integer> enter = Arrays.asList(57,28,65,36);
 
-				//System.err.println(scancode);
-				
-				if ( (windoof && scancode == 336) || scancode == 39 ||  scancode == 116) // down
-					is.backward = (action != 0);
-				if ( (windoof && scancode == 331) || scancode == 38 || scancode == 113) // left
-					is.left = (action != 0);
-				if ( (windoof && scancode == 328) || scancode == 25 || scancode == 111) // up
+				if (ups.contains(scancode)) // up
 					is.forward = (action != 0);
-				if ( (windoof && scancode == 333) || scancode == 40 || scancode == 114) // right
+				if (downs.contains(scancode)) // down
+					is.backward = (action != 0);
+				if (lefts.contains(scancode)) // left
+					is.left = (action != 0);
+				if (rights.contains(scancode)) // right
 					is.right = (action != 0);
-				if ( (windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) // select=space or enter
+				if (enter.contains(scancode)) // select=space or enter
 					is.firing = (action != 0);
-				
+
 				// key events:
-				if ( (windoof && scancode == 1 || scancode==9) && action==1 )
+				if (esc.contains(scancode) && action==1 ) // esc
 					is.escapeEvent=true;
-				
-				if ( (windoof && scancode == 336 || scancode == 39 ||  scancode == 116) && action==1) // down
-					is.downEvent=true;
-				
-				if ( (windoof && scancode == 328 || scancode == 25 || scancode == 111) && action==1) // up
+				if (ups.contains(scancode) && action==1) // up
 					is.upEvent=true;
-				
-				if ( ((windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) && action==1) // select=space or enter
+				if (downs.contains(scancode) && action==1) // down
+					is.downEvent=true;
+				if (enter.contains(scancode) && action==1) // select=space or enter
 					is.selectEvent=true;
 			}
 		});
@@ -365,4 +363,5 @@ public class Client {
 	public void closeGame() {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
+
 }
