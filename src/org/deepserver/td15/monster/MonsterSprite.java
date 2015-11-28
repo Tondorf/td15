@@ -108,7 +108,7 @@ public class MonsterSprite extends Monster {
 		if (t!=null) {
 //			glDisable(GL_TEXTURE_2D);
 			glEnable(GL_DEPTH_TEST);
-			
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		glPopMatrix();
 	}

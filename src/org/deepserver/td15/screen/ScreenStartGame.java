@@ -19,13 +19,9 @@ public class ScreenStartGame extends Screen {
 		super(client);
 
 		init();
-
-		MonsterSpace space = new MonsterSpace(world);
-		world.add(space);
 		
-		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), null);
-		world.add(enemy);
-
+		
+		
 		addRockCircle(world, world.rockRadius);
 	}
 
@@ -34,6 +30,8 @@ public class ScreenStartGame extends Screen {
 			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
 			world.add(q);
 		}
+		MonsterSpace space = new MonsterSpace(world);
+		world.add(space);
 		
 		MonsterPlayer player = new MonsterPlayer(world);
 		player.world = world;

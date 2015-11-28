@@ -61,8 +61,12 @@ public class World {
 		}
 
 		// TODO: Optimize it:
-		for (Monster m : monsters.values())
+		for (Monster m : monsters.values()) {
+			if (!m.canCrash())
+				continue;
 			for (Monster n : monsters.values()) {
+				if (!n.canCrash())
+					continue;
 				if (m.id != n.id && !(m.sourceId == n.id || n.sourceId == m.id)
 						&& n.sourceId != m.sourceId) {
 					Vec2 a = m.position;
@@ -74,6 +78,7 @@ public class World {
 					}
 				}
 			}
+		}
 
 		for (Monster m : listOfdeadMonsters)
 			monsters.remove(m.id);
