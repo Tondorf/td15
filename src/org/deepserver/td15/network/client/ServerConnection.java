@@ -1,4 +1,4 @@
-package org.deepserver.td15.network.server;
+package org.deepserver.td15.network.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,20 +9,18 @@ import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 
-public class ClientConnection {
-	private static Logger logger = Logger.getLogger(ClientConnection.class);
+public class ServerConnection {
+	private static Logger logger = Logger.getLogger(ServerConnection.class);
 	
-	private int id;
 	private Socket socket;
-	private ClientReader reader;
+	private ServerReader reader;
 	private BufferedReader in;
 	private OutputStreamWriter out;
 	
-	public ClientConnection(int id, Socket socket, ServerProtocolWorker protocolWorker, Charset charset) throws IOException {
-		this.id = id;
+	public ServerConnection(Socket socket, ClientProtocolWorker protocolWorker, Charset charset) throws IOException {
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		this.reader = new ClientReader(id, in, protocolWorker);
+		this.reader = new ServerReader(in, protocolWorker);
 		this.out = new OutputStreamWriter(socket.getOutputStream(), charset);
 	}
 	
@@ -30,7 +28,7 @@ public class ClientConnection {
 		out.write(msg + "\r\n");
 		out.flush();
 	}
-
+	
 	public void kill() {
 		if (!reader.isInterrupted()) {
 			reader.interrupt();
@@ -38,19 +36,15 @@ public class ClientConnection {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			logger.error("Could not close client socket #" + id + " (error: " + e.getMessage() + ")");
+			logger.error("Could not close server socket (error: " + e.getMessage() + ")");
 		}
-	}
-	
-	public int getId() {
-		return id;
 	}
 
 	public Socket getSocket() {
 		return socket;
 	}
 	
-	public ClientReader getReader() {
+	public ServerReader getReader() {
 		return reader;
 	}
 }
