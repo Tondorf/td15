@@ -12,6 +12,7 @@ public class MonsterPlayer extends MonsterSprite {
 	protected final float speed = 50.0f;
 	protected final float rotationSpeed = 180.0f;
 	protected final float cameraHeight = 10.0f;
+	protected final long shotDelay = 1000;
 
 	private final float maxPitch = 10.0f;
 	private Floathing pitchthing = new Floathing(1.0f);
@@ -19,6 +20,8 @@ public class MonsterPlayer extends MonsterSprite {
 	protected InputStatus is = new InputStatus();
 
 	protected Vec2 v=new Vec2();
+	
+	protected long lastShotTimestamp;
 	
 	public MonsterPlayer(World world) {
 		super(world,new Vec2(0f,0f));
@@ -47,7 +50,12 @@ public class MonsterPlayer extends MonsterSprite {
 		if (is.firing) {
 			MonsterShot shot = new MonsterShot(world, new Vec2(position));
 			shot.orientation = new Matrix3(orientation);
-			world.add(shot);
+			long now = System.currentTimeMillis();
+			if((lastShotTimestamp+shotDelay) < now){
+				world.add(shot);
+				lastShotTimestamp = now;
+			}
+			System.out.println(now+"\n"+lastShotTimestamp+"\n"+(lastShotTimestamp+shotDelay)+"\n\n");
 		}
 
 		if (is.left) {

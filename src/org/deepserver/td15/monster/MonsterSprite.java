@@ -1,5 +1,6 @@
 package org.deepserver.td15.monster;
 
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -21,6 +22,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -80,6 +82,7 @@ public class MonsterSprite extends Monster {
 		}
 		if (t != null) {
 			glEnable(GL_TEXTURE_2D);
+			glDisable(GL_DEPTH_TEST);
 			
 			glPushMatrix();
 			glBindTexture(GL_TEXTURE_2D, t.getTextureID());
@@ -117,7 +120,8 @@ public class MonsterSprite extends Monster {
 		if (t!=null) {
 			glPopMatrix();
 			glDisable(GL_TEXTURE_2D);
-
+			glEnable(GL_DEPTH_TEST);
+			
 		}
 		glPopMatrix();
 	}
