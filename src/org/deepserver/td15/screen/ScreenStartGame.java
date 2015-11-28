@@ -3,6 +3,7 @@ package org.deepserver.td15.screen;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.World;
 import org.deepserver.td15.monster.Monster;
+import org.deepserver.td15.monster.MonsterEnemy;
 import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.monster.MonsterRock;
 import org.deepserver.td15.monster.MonsterSprite;
