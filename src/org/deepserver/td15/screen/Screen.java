@@ -10,6 +10,8 @@ import org.lwjgl.BufferUtils;
 public abstract class Screen {
 	
 	public boolean shade3d=true;
+	
+	public boolean networked=false;
 
 	public Client client;
 	protected World world;
