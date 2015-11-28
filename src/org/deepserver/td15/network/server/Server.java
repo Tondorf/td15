@@ -3,7 +3,6 @@ package org.deepserver.td15.network.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +11,8 @@ import org.apache.log4j.Logger;
 public class Server {
 	private static Logger logger = Logger.getLogger(Server.class);
 	
-	public static final String CHARSET_NAME = "UTF-8";
-	public static final int MAX_CLIENTS = 1000;
+	private static final int MAX_CLIENTS = 1000;
 	
-	private Charset charset;
 	private ServerSocket serverSocket;
 	private Doorman doorman;
 	private Map<Integer, ClientConnection> clientConnections;
@@ -23,20 +20,12 @@ public class Server {
 	private int clientID;
 	
 	public Server() {
-		if (!Charset.isSupported(CHARSET_NAME)) {
-			logger.error("Charset is not supported - fall back to default");
-			this.charset = Charset.defaultCharset();
-		} else {
-			this.charset = Charset.forName(CHARSET_NAME);
-		}
-		
 		this.clientConnections = new HashMap<Integer, ClientConnection>();
 		this.protocolWorker = new ServerProtocolWorker(this);
 	}
 
 	public void bindAndStart(int port) {
 		logger.info("Bind server to port " + port);
-		this.charset = getCharset();
 		
 		try {
 			serverSocket = new ServerSocket(port);
@@ -93,7 +82,7 @@ public class Server {
 		}
 		
 		int clientID = generateClientID();
-		ClientConnection clientConnection = new ClientConnection(clientID, clientSocket, protocolWorker, charset);
+		ClientConnection clientConnection = new ClientConnection(clientID, clientSocket, protocolWorker);
 		clientConnection.getReader().start();
 		clientConnections.put(clientID, clientConnection);
 		
@@ -114,24 +103,19 @@ public class Server {
 		clientConnections.remove(clientID);
 	}
 	
-	public Charset getCharset() {
-		return charset;
-	}
-	
-	public void sendClient(int clientID, String msg) {
+	public void sendClient(int clientID, byte[] msg) {
 		ClientConnection clientConnection = clientConnections.get(clientID);
 		sendClient(clientConnection, msg);
 	}
 	
-	public void sendClients(String msg) {
+	public void sendClients(byte[] msg) {
 		for (ClientConnection clientConnection : clientConnections.values()) {
 			sendClient(clientConnection, msg);
 		}
 	}
 	
-	private void sendClient(ClientConnection clientConnection, String msg) {
+	private void sendClient(ClientConnection clientConnection, byte[] msg) {
 		try {
-			logger.info("send msg to client #" + clientConnection.getId() + ": " + msg);
 			clientConnection.send(msg);
 		} catch (IOException e) {
 			logger.error("Could not send message to client #" + clientConnection.getId() + " (error: " + e.getMessage() + ")");
