@@ -34,7 +34,7 @@ public class MonsterEnemy extends MonsterSprite {
 
 	protected void lockTarget(Vec2 target) {
 		this.target = target;
-
+		
 		turnRight = true;
 		turnLeft = false;
 	}
@@ -46,7 +46,7 @@ public class MonsterEnemy extends MonsterSprite {
 		long now = System.currentTimeMillis();
 		if ((lastTargetRefresh + refreshTargetDelay) < now) {
 			lastTargetRefresh = now;
-			lockTarget(new Vec2(10f,10f));
+			lockTarget(new Vec2(10f,10f));  // Target is player
 		}
 
 		if (turnLeft) {
