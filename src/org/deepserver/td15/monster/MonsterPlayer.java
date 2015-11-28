@@ -3,8 +3,6 @@ package org.deepserver.td15.monster;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Random;
 
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
@@ -16,13 +14,13 @@ import org.joml.Vec3;
 public class MonsterPlayer extends MonsterSprite {
 
 
-	protected final float accel = 0.01f;
+	protected final float accel = 6f;
 	protected final float rotationSpeed = 1.0f;
 	protected final long shotDelay = 200;
 
 	protected final float cameraHeight = 30.0f;
-	protected final float vToHeight = 10f;
-	protected final float maxSpeed = 0.05f;
+	protected final float vToHeight = 0.03f;
+	protected final float maxSpeed = 12f;
 
 	protected InputStatus is = new InputStatus();
 
@@ -45,7 +43,7 @@ public class MonsterPlayer extends MonsterSprite {
 		return "schif1.png";
 	}
 
-	protected void setCamera() {
+	protected void setCamera(float delta) {
 		Vec3 camPos = new Vec3(position);
 
 		camPos.z = cameraHeight*(1+v*vToHeight);
@@ -118,11 +116,11 @@ public class MonsterPlayer extends MonsterSprite {
 		}
 			
 		Vec2 temp=new Vec2(orientation.getAhead());
-		temp.mul(v);
+		temp.mul(v*(float)delta);
 		
 		position.add(temp);
 
-		setCamera();
+		setCamera((float)delta);
 	}
 	
 	@Override
