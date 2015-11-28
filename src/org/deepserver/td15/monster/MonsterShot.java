@@ -5,7 +5,7 @@ import org.deepserver.td15.World;
 import org.joml.Vec2;
 
 public class MonsterShot extends MonsterSprite {
-	protected final float ownSpeed=0.2f;
+	protected final float ownSpeed=0.02f;
 	public float speed;
 	
 

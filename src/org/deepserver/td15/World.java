@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.screen.Screen;
 import org.joml.Matrix4;
+import org.joml.Vec2;
 import org.joml.Vec3;
 import org.lwjgl.BufferUtils;
 
@@ -16,6 +17,7 @@ public class World {
 	
 	public ArrayList<Monster> list=new ArrayList<Monster>();
 	public ArrayList<Monster> listOfnewMonsters=new ArrayList<Monster>();
+	public ArrayList<Monster> listOfdeadMonsters=new ArrayList<Monster>();
 	
 	protected Vec3 cameraEye    = new Vec3(0.0f,0.0f,1.0f);
 	protected Vec3 cameraLookAt = new Vec3(0.0f,0.0f,0.0f);
@@ -33,6 +35,25 @@ public class World {
 		for (Monster m:list) {
 			m.action(delta,is);
 		}
+		
+		for (Monster m:list)
+			for (Monster n:list) {
+				if (m.id!=n.id) {
+					Vec2 a=m.position;
+					Vec2 b=n.position;
+					
+					
+					if (a.distance(b)<m.getRadius()+n.getRadius()) {
+						m.destroy();
+						n.destroy();
+					}
+				}
+			}
+		
+		for (Monster m:listOfdeadMonsters)
+			list.remove(m);
+		
+		listOfdeadMonsters.clear();
 	}
 	
 	public void draw() {
@@ -53,6 +74,10 @@ public class World {
 
 	public void add(Monster monster) {
 		listOfnewMonsters.add(monster);
+	}
+	
+	public void remove(Monster monster) {
+		listOfdeadMonsters.add(monster);
 	}
 	
 	public void setCamera(Vec3 eye,Vec3 lookat,Vec3 up) {

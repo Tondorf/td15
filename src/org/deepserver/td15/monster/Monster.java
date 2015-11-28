@@ -9,8 +9,12 @@ import org.joml.Vec3;
 
 
 public class Monster {
+	protected final float typicalRadius=0.5f;
+	
+	protected static long nextId=1;
 	
 	public World world;
+	public long id;
 	
 	public Vec2 position;
 	public Matrix2 orientation;
@@ -23,11 +27,20 @@ public class Monster {
 		this.world=world;
 		position=new Vec2();
 		orientation=new Matrix2();
+		id=nextId++;
 	}
 
 	public void action(double delta,InputStatus is) {
 	}
 	
 	public void draw() {
+	}
+	
+	public float getRadius() {
+		return typicalRadius;
+	}
+	
+	public void destroy() {
+		world.remove(this);
 	}
 }
