@@ -79,7 +79,7 @@ public class Client {
 	
 	protected int windowWidth;
 	protected int windowHeight;
-
+	
 	protected GLFWErrorCallback errorCallback;
 	protected GLFWKeyCallback keyCallback;
 	protected GLFWCursorPosCallback mouseCallback;
@@ -113,14 +113,16 @@ public class Client {
 
 	protected boolean keyFocus2d = true;
 
-	protected float shadingFactor = 0.0f;
+	//protected float shadingFactor = 0.0f;
 	protected final float maxShadingFactor = 0.7f;
-	protected final float shadingSpeed = 2f;
+	//protected final float shadingSpeed = 2f;
+	protected Floathing shadething = new Floathing(2.0f);
 	
 	// slap lennart: checkin Helper class :p
 	//protected boolean windoof = Helper.isWindoof();
 	boolean windoof=false;
 
+	
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
 
 	public Client() {
@@ -284,7 +286,7 @@ public class Client {
 			}
 
 			// ---------------------------- draw 3d world ---------------------
-			glClearColor(0, 0.3f, 0.5f, 1);
+			glClearColor(0, 0.0f, 0.2f, 1);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glMatrixMode(GL_MODELVIEW);
@@ -295,16 +297,11 @@ public class Client {
 			// ---------------------------- draw shading rectangle when fading ---
 			glClear(GL_DEPTH_BUFFER_BIT);
 
-			if (screen2d.shade3d)
-				shadingFactor += deltaTime * shadingSpeed;
-			else
-				shadingFactor -= deltaTime * shadingSpeed;
-
-			if (shadingFactor < 0)
-				shadingFactor = 0;
-			if (shadingFactor > maxShadingFactor)
-				shadingFactor = maxShadingFactor;
-
+			
+			shadething.update(deltaTime, screen2d.shade3d?maxShadingFactor:0.0f);
+			
+			// draw translucent plane between 2d and 3d screen
+			float shadingFactor = shadething.get();
 			if (shadingFactor != 0.0f) {
 				Matrix4 viewMatrix = new Matrix4();
 				viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
@@ -313,6 +310,7 @@ public class Client {
 																				// up
 				glLoadMatrixf(fb);
 
+				
 				float size = 3;
 
 				glBegin(GL_QUADS);
