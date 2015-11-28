@@ -28,7 +28,7 @@ public class ClientReader extends Thread {
 					protocolWorker.process(clientID, msg);
 				}
 			} catch (IOException e) {
-				logger.error(e.getMessage());
+				logger.error(e);
 				protocolWorker.notifyDeadClient(clientID);
 			}
 		}

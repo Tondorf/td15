@@ -27,7 +27,7 @@ public class ServerReader extends Thread {
 					protocolWorker.process(msg);
 				}
 			} catch (IOException e) {
-				logger.error(e.getMessage());
+				logger.error(e);
 			}
 		}
 	}
