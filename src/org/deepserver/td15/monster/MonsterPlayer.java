@@ -1,5 +1,9 @@
 package org.deepserver.td15.monster;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.deepserver.td15.InputStatus;
@@ -32,7 +36,7 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	public MonsterPlayer(World world) {
 		
-		super(world,world.getPosInsideCircle());
+		super(world, world.getPosInsideCircle());
 		zLayer = 1f;
 	}
 	
@@ -128,5 +132,34 @@ public class MonsterPlayer extends MonsterSprite {
 		world.screen.audio.play(SoundEffect.KILL);
 		v=0;
 		
+	}
+	
+	
+	public byte[] toBytes() throws IOException {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		//bout.write(ByteBuffer.allocate(4).putInt(monsters.size()).array());
+		// todo: dont do rocks!!
+		bout.write(ByteBuffer.allocate(4).putLong(this.id).array());
+		bout.write(ByteBuffer.allocate(4).putFloat(this.position.x).array());
+		bout.write(ByteBuffer.allocate(4).putFloat(this.position.y).array());
+		bout.write(ByteBuffer.allocate(4).putFloat(this.orientation.getAhead().x).array());
+		bout.write(ByteBuffer.allocate(4).putFloat(this.orientation.getAhead().y).array());
+		bout.write(ByteBuffer.allocate(4).putInt(is.firing?1:0).array());
+		
+		return bout.toByteArray();
+	}
+	
+	public static MonsterPlayer fromBytes(byte[] binbuf) {
+		// Monster will be initialized using id, position and orientation only
+		MonsterPlayer ret = new MonsterPlayer(null);
+		ret.id = ByteBuffer.wrap(binbuf, 0, 4).getLong();
+		ret.position.x = ByteBuffer.wrap(binbuf, 4, 4).getFloat();
+		ret.position.y = ByteBuffer.wrap(binbuf, 8, 4).getFloat();
+		ret.orientation.m10 = ByteBuffer.wrap(binbuf,12, 4).getFloat();
+		ret.orientation.m11 = ByteBuffer.wrap(binbuf,16, 4).getFloat();
+		ret.orientation.m00 = 1.0f - ret.orientation.m10;
+		ret.orientation.m01 = 1.0f - ret.orientation.m11;
+		ret.is.firing = ByteBuffer.wrap(binbuf, 20, 4).getInt()==1;
+		return ret;
 	}
 }
