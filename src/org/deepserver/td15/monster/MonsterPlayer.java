@@ -7,9 +7,9 @@ import org.joml.Vec3;
 
 public class MonsterPlayer extends Monster {
 	
-	protected final float speed = 20.0f;
-	protected final float rotationSpeed=3.0f;
-	protected final float cameraHeight=30.0f;
+	protected final float speed = 50.0f;
+	protected final float rotationSpeed=50.0f;
+	protected final float cameraHeight=10.0f;
 
 	protected InputStatus is=new InputStatus();
 
@@ -19,11 +19,13 @@ public class MonsterPlayer extends Monster {
 	}
 	
 	protected void setCamera() {
+		
 		Vec3 camPos=new Vec3(position);
 
-		camPos.z=cameraHeight;
+		camPos.z += cameraHeight;		
 		
-		world.setCamera(camPos, position, orientation.getAhead());
+		world.setCamera(camPos, position, new Vec3(-1.0f, -1.0f, 0.0f));
+		world.setCamera(camPos, position, orientation.getUp());
 	}
 
 	@Override
@@ -52,19 +54,19 @@ public class MonsterPlayer extends Monster {
 		Vec3 up=orientation.getUp();
 
 		if (is.left) {
-			orientation.mul(new Matrix3().rotate(-rotationSpeed*(float)delta,up.x,up.y,up.z));
+			orientation.mul(new Matrix3().rotate(-rotationSpeed*(float)delta, 0, 0, 1)); //up.x,up.y,up.z));
 		}
 
 		if (is.right) {
-			orientation.mul(new Matrix3().rotate( rotationSpeed*(float)delta,up.x,up.y,up.z));
+			orientation.mul(new Matrix3().rotate( rotationSpeed*(float)delta, 0, 0, 1)); //up.x,up.y,up.z));
 		}
 
 		if (is.forward) {
-			position.add(new Vec3(orientation.getAhead()).mul(speed*(float)delta));
+			position.add(new Vec3(orientation.getUp()).mul(speed*(float)delta));
 		}
 
 		if (is.backward) {
-			position.add(new Vec3(orientation.getAhead()).mul(-speed*(float)delta));
+			position.add(new Vec3(orientation.getUp()).mul(-speed*(float)delta));
 		}
 
 		setCamera();
