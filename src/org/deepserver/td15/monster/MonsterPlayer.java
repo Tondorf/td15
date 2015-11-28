@@ -21,7 +21,7 @@ public class MonsterPlayer extends MonsterSprite {
 	protected final long shotDelay = 200;
 
 	protected final float cameraHeight = 30.0f;
-	protected final float vToHeight = 10f;
+	protected final float vToHeight = 100f;
 	protected final float maxSpeed = 10f;
 
 	protected InputStatus is = new InputStatus();
@@ -45,10 +45,10 @@ public class MonsterPlayer extends MonsterSprite {
 		return "schif1.png";
 	}
 
-	protected void setCamera() {
+	protected void setCamera(float delta) {
 		Vec3 camPos = new Vec3(position);
 
-		camPos.z = cameraHeight*(1+v*vToHeight);
+		camPos.z = cameraHeight*(1+v*delta*vToHeight);
 
 		world.setCamera(camPos, new Vec3(position), new Vec3(orientation.getAhead()));
 	}
@@ -122,7 +122,7 @@ public class MonsterPlayer extends MonsterSprite {
 		
 		position.add(temp);
 
-		setCamera();
+		setCamera((float)delta);
 	}
 	
 	@Override
