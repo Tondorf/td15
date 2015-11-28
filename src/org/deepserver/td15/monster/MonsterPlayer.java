@@ -10,7 +10,7 @@ import org.joml.Vec3;
 public class MonsterPlayer extends MonsterSprite {
 
 	protected final float speed = 50.0f;
-	protected final float rotationSpeed = 50.0f;
+	protected final float rotationSpeed = 180.0f;
 	protected final float cameraHeight = 10.0f;
 
 	private final float maxPitch = 10.0f;
@@ -18,6 +18,8 @@ public class MonsterPlayer extends MonsterSprite {
 
 	protected InputStatus is = new InputStatus();
 
+	protected Vec2 v=new Vec2();
+	
 	public MonsterPlayer(World world) {
 		super(world,new Vec2(0f,0f));
 		zLayer = 1f;
@@ -43,22 +45,9 @@ public class MonsterPlayer extends MonsterSprite {
 		super.action(delta, is);
 
 		if (is.firing) {
-			// MonsterShot shot = new MonsterShot(world,true);
-			// shot.position = new Vec3(position);
-			//
-			// Vec3 o=new Vec3(orientation.getLeft());
-			// o.mul(gunOffsetX);
-			//
-			// if (fireLeft)
-			// shot.position.add(o);
-			// else
-			// shot.position.sub(o);
-			//
-			// fireLeft=!fireLeft;
-			//
-			// shot.orientation = new Matrix3(orientation);
-			// shot.groundDistance=groundDistance;
-			// world.add(shot);
+			MonsterShot shot = new MonsterShot(world, new Vec2(position));
+			shot.orientation = new Matrix3(orientation);
+			world.add(shot);
 		}
 
 		if (is.left) {
@@ -81,14 +70,19 @@ public class MonsterPlayer extends MonsterSprite {
 		
 
 		if (is.forward) {
-			position.add(new Vec3(orientation.getUp()).mul(speed
+			v.add(new Vec2(orientation.getUp()).mul(speed
 					* (float) delta));
 		}
 
 		if (is.backward) {
-			position.add(new Vec3(orientation.getUp()).mul(-speed
+			v.add(new Vec2(orientation.getUp()).mul(-speed
 					* (float) delta));
 		}
+		
+		Vec2 temp=new Vec2(v);
+		temp.mul((float)delta);
+		
+		position.add(new Vec3(temp));
 
 		setCamera();
 	}
