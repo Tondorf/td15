@@ -214,6 +214,10 @@ public class Client {
 
 		GL.createCapabilities();
 		glEnable(GL_DEPTH_TEST);
+		
+		// nope: becomes *really* ugly when entering menu screen again ...
+		//glEnable(GL_TEXTURE_2D);
+		
 		glViewport(0, 0, windowWidth, windowHeight);
 
 		glMatrixMode(GL_PROJECTION);
