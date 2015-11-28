@@ -184,4 +184,8 @@ public class Vec2 implements Serializable, Externalizable {
     	y*=f;
     	return this;
     }
+    
+    public String toString(){
+    	return "x: "+x+", y:"+y;
+    }
 }

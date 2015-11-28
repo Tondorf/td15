@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
+import org.deepserver.td15.network.server.NetServer;
 import org.deepserver.td15.sound.AudioManager;
 import org.lwjgl.BufferUtils;
 
@@ -13,6 +14,7 @@ public abstract class Screen {
 	public boolean shade3d=true;
 	
 	public boolean networked=false;
+	protected NetServer netServer = null;
 
 	public Client client;
 	protected World world;
@@ -32,8 +34,9 @@ public abstract class Screen {
 			escape();
 		}
 		if (networked) {
-			// push new player position to server
-			// modify world according to received messages
+			if (netServer != null) {
+				// TODO do the magic here
+			}
 		}
 		
 		world.action(delta,is);
