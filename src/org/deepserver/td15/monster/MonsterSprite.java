@@ -1,5 +1,6 @@
 package org.deepserver.td15.monster;
 
+import static org.lwjgl.opengl.GL11.GL_CLAMP;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
@@ -8,22 +9,19 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
-import static org.lwjgl.opengl.GL11.GL_CLAMP;
 import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glMultMatrixf;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
-
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -31,6 +29,7 @@ import java.nio.FloatBuffer;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.deepserver.td15.texture.Texture;
+import org.joml.Matrix2;
 import org.joml.Matrix3;
 import org.joml.Matrix4;
 import org.joml.Vec2;
@@ -45,7 +44,6 @@ public class MonsterSprite extends Monster {
 		super(world);
 		position.x = v.x;
 		position.y = v.y;
-		position.z = 0.0f;
 	}
 	
 	public String getTextureName() {
@@ -56,19 +54,14 @@ public class MonsterSprite extends Monster {
 	public void draw() {
 		super.draw();
 
-		// first modelOrientation, then orientation
-		Matrix3 m = new Matrix3(modelOrientation);
-		m.mul(orientation);
-		m.invert();
-
-		Matrix4 q = new Matrix4(m);
-
+		Matrix4 q = new Matrix4(orientation);
+		
 		q.get(fb);
 		fb.rewind();
-
+		
 		glPushMatrix();
 		// first rotate, then translate (reverse order on stack)
-		glTranslatef(position.x, position.y, position.z);
+		glTranslatef(position.x, position.y, zLayer);
 		glMultMatrixf(fb);
 
 		// Maybe load prior to draw() in order to avoid latencies:
@@ -81,46 +74,42 @@ public class MonsterSprite extends Monster {
 			System.err.println(ex.getMessage());
 		}
 		if (t != null) {
-			glEnable(GL_TEXTURE_2D);
-			glDisable(GL_DEPTH_TEST);
-			
-			glPushMatrix();
+//			glEnable(GL_TEXTURE_2D);
+//			glDisable(GL_DEPTH_TEST);
+//			
 			glBindTexture(GL_TEXTURE_2D, t.getTextureID());
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
 		}
-
 	
 		glBegin(GL_QUADS);
 		{
-			//if (t == null)
-				glColor3f(1.0f, 1.0f, 1.0f);
+
+			glColor3f(1.0f, 1.0f, 1.0f);
 
 			if (t != null)
 				glTexCoord2f(t.getWidth(), 0);
-			glVertex3f(-size, -size, size);
+			glVertex3f(-size, -size, 0);
 			
 			if (t != null)
 				glTexCoord2f(0, 0);
-			glVertex3f(size, -size, size);
+			glVertex3f(size, -size, 0);
 			
 			if (t != null)
 				glTexCoord2f(0, t.getHeight());
-			glVertex3f(size, size, size);
+			glVertex3f(size, size, 0);
 			
 			if (t != null)
 				glTexCoord2f(t.getWidth(), t.getHeight());
-			glVertex3f(-size, size, size);
+			glVertex3f(-size, size, 0);
 		}
 		glEnd();
 
 		if (t!=null) {
-			glPopMatrix();
-			glDisable(GL_TEXTURE_2D);
-			glEnable(GL_DEPTH_TEST);
+//			glDisable(GL_TEXTURE_2D);
+//			glEnable(GL_DEPTH_TEST);
 			
 		}
 		glPopMatrix();

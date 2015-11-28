@@ -28,6 +28,7 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CLAMP;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -38,15 +39,19 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadMatrixf;
@@ -295,36 +300,41 @@ public class Client {
 			glMatrixMode(GL_MODELVIEW);
 
 			screen3d.drawCamera();
+			
+			glEnable(GL_TEXTURE_2D);
+//			glDisable(GL_DEPTH_TEST);
+					
 			screen3d.draw();
 
-			// ---------------------------- draw shading rectangle when fading ---
-			glClear(GL_DEPTH_BUFFER_BIT);
-
+			glDisable(GL_TEXTURE_2D);
+//			glEnable(GL_DEPTH_TEST);
 			
-			shadething.update(deltaTime, screen2d.shade3d?maxShadingFactor:0.0f);
 			
-			// draw translucent plane between 2d and 3d screen
-			float shadingFactor = shadething.get();
-			if (shadingFactor != 0.0f) {
-				Matrix4 viewMatrix = new Matrix4();
-				viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
-						new Vec3(0f, 0f, 0f), new Vec3(0f, 1f, 0f)).get(fb); // y
-																				// is
-																				// up
-				glLoadMatrixf(fb);
-
-				
-				float size = 3;
-
-				glBegin(GL_QUADS);
-				glColor4f(0.0f, 0.0f, 0.0f, shadingFactor);
-				glVertex3f(size, -size, size);
-				glVertex3f(size, size, size);
-				glVertex3f(-size, size, size);
-				glVertex3f(-size, -size, size);
-				glEnd();
-
-			}
+			
+//			// ---------------------------- draw shading rectangle when fading ---
+//			glClear(GL_DEPTH_BUFFER_BIT);
+//
+//			shadething.update(deltaTime, screen2d.shade3d?maxShadingFactor:0.0f);
+//			
+//			// draw translucent plane between 2d and 3d screen
+//			float shadingFactor = shadething.get();
+//			if (shadingFactor != 0.0f) {
+//				Matrix4 viewMatrix = new Matrix4();
+//				viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
+//						new Vec3(0f, 0f, 0f), new Vec3(0f, 1f, 0f)).get(fb); 
+//				glLoadMatrixf(fb);
+//				
+//				float size = 3;
+//
+//				glBegin(GL_QUADS);
+//				glColor4f(0.0f, 0.0f, 0.0f, shadingFactor);
+//				glVertex3f(size, -size, size);
+//				glVertex3f(size, size, size);
+//				glVertex3f(-size, size, size);
+//				glVertex3f(-size, -size, size);
+//				glEnd();
+//
+//			}
 
 			// -------------------------- draw 2d menu ----------------------------
 			glClear(GL_DEPTH_BUFFER_BIT);
