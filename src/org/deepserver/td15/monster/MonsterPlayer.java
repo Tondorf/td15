@@ -32,8 +32,7 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	public MonsterPlayer(World world) {
 		
-		super(world,new Vec2(world.rockRadius*new Random().nextFloat(),
-				             world.rockRadius*new Random().nextFloat()));
+		super(world,world.getPosInsideCircle());
 		zLayer = 1f;
 	}
 	
@@ -72,6 +71,7 @@ public class MonsterPlayer extends MonsterSprite {
 
 		if (is.firing) {
 			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
+			shot.sourceId=id;
 			shot.orientation = new Matrix2(orientation);
 			shot.position.add(orientation.getAhead().mul(this.getRadius()+shot.getRadius()));
 			long now = System.currentTimeMillis();
@@ -123,8 +123,10 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	@Override
 	public void destroy() {
-		position=new Vec2(world.rockRadius*new Random().nextFloat(),
-	             world.rockRadius*new Random().nextFloat());
+		position=world.getPosInsideCircle();
+		
 		world.screen.audio.play(SoundEffect.KILL);
+		v=0;
+		
 	}
 }

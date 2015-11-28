@@ -17,14 +17,15 @@ public class MonsterEnemy extends MonsterSprite {
 	protected long lastTargetRefresh;
 	protected float speed;
 	protected Vec2 position;
-	protected Vec2 target;
+	protected Monster targetObj;
 	protected boolean reachedMaxSpeed = false;
 	protected float v = 0.0f;
 
-	public MonsterEnemy(World world, Vec2 position) {
+	public MonsterEnemy(World world, Vec2 position, Monster targetObj) {
 		super(world, position);
 		this.speed = 10f;
 		this.position = position;
+		this.targetObj = targetObj;
 	}
 
 	@Override
@@ -32,9 +33,14 @@ public class MonsterEnemy extends MonsterSprite {
 		return "ship1.png";
 	}
 
-	protected void lockTarget(Vec2 target) {
-		this.target = target;
-		
+	protected void lockTarget() {
+		if (targetObj != null) {
+		Vec2 targetCoordinates = targetObj.position;
+
+		Vec2 toTargetVector = new Vec2(targetCoordinates.x, targetCoordinates.y);
+		toTargetVector.sub(position);
+		}
+
 		turnRight = true;
 		turnLeft = false;
 	}
@@ -46,7 +52,7 @@ public class MonsterEnemy extends MonsterSprite {
 		long now = System.currentTimeMillis();
 		if ((lastTargetRefresh + refreshTargetDelay) < now) {
 			lastTargetRefresh = now;
-			lockTarget(new Vec2(10f,10f));  // Target is player
+			lockTarget(); // Target is player
 		}
 
 		if (turnLeft) {
@@ -65,8 +71,6 @@ public class MonsterEnemy extends MonsterSprite {
 
 		Vec2 temp = new Vec2(orientation.getAhead());
 		temp.mul(v);
-		
-		System.out.println(v);
 
 		position.add(temp);
 	}

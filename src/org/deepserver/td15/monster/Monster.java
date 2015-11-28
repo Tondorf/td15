@@ -15,6 +15,7 @@ public class Monster {
 	
 	public World world;
 	public long id;
+	public long sourceId;
 	
 	public Vec2 position;
 	public Matrix2 orientation;
@@ -28,6 +29,7 @@ public class Monster {
 		position=new Vec2();
 		orientation=new Matrix2();
 		id=nextId++;
+		sourceId=id;
 	}
 
 	public void action(double delta,InputStatus is) {

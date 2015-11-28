@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
+import org.deepserver.td15.network.client.NetClient;
 import org.deepserver.td15.network.server.NetServer;
 import org.deepserver.td15.sound.AudioManager;
 import org.lwjgl.BufferUtils;
@@ -15,6 +16,7 @@ public abstract class Screen {
 	
 	public boolean networked=false;
 	protected NetServer netServer = null;
+	protected NetClient netClient = null;
 
 	public Client client;
 	protected World world;
@@ -27,18 +29,35 @@ public abstract class Screen {
 		world = new World(this);
 		this.audio = AudioManager.getInstance();
 	}
-
+	
+	public void actionFromClient(int clientID, InputStatus is) {
+		if (netServer != null) {
+			// TODO: update world
+		}
+	}
+	
+	public void updateFromServer(/* unzipped world */) {
+		if (netClient != null) {
+			// TODO: update world
+		}
+	}
+	
 	public void action(double delta, InputStatus is) {
 		if (is.escapeEvent) { 
 			is.escapeEvent=false;
-			escape();
-		} else {
-			if (networked) {
-				if (netServer != null) {
-					// TODO do the magic here
-				}
-			} else
-				world.action(delta,is);
+			escape();		
+		}
+		
+		if (networked && netClient != null) {
+			// TODO: serialize InputStatus and send it
+			// netClient.sendServer(is.zip);
+		}
+				
+		world.action(delta,is);
+		
+		if (networked && netServer != null) {
+			// TODO: serialize me the world
+			// netServer.sendClients(world.zip);
 		}
 	}
 	

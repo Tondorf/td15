@@ -1,6 +1,7 @@
 package org.deepserver.td15.screen;
 
 import org.deepserver.td15.Client;
+import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterEnemy;
@@ -17,13 +18,12 @@ public class ScreenStartGame extends Screen {
 
 		init();
 		
-		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f,1f));
+		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f,1f), null);
 		world.add(enemy);
 
-		for (int i = 0; i < monsterCount; i++) {
-			Monster q = new MonsterSprite(world, new Vec2(((float) Math.random() - 0.5f) * 2 * world.rockRadius,
-					((float) Math.random() - 0.5f) * 2 * world.rockRadius));
 
+		for (int i = 0; i < monsterCount; i++) {
+			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
 			world.add(q);
 		}
 		addRockCircle(world, world.rockRadius);
@@ -55,7 +55,7 @@ public class ScreenStartGame extends Screen {
 	private double deg2rad(double n) {
 		return n * Math.PI / 180d;
 	}
-
+	
 	@Override
 	public void escape() {
 		client.changeScreen2d(new ScreenStartup(client));
