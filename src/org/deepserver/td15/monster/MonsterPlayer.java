@@ -1,23 +1,21 @@
 package org.deepserver.td15.monster;
 
-import org.deepserver.td15.Floathing;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix2;
-import org.joml.Matrix3;
 import org.joml.Vec2;
 import org.joml.Vec3;
 
 public class MonsterPlayer extends MonsterSprite {
 
-	protected final float speed = 50.0f;
-	protected final float rotationSpeed = 180.0f;
+	protected final float accel = 0.01f;
+	protected final float rotationSpeed = 1.0f;
 	protected final float cameraHeight = 10.0f;
 	protected final long shotDelay = 1000;
 
 	protected InputStatus is = new InputStatus();
 
-	protected Vec2 v=new Vec2();
+	protected float v=0;
 	
 	protected long lastShotTimestamp;
 	
@@ -64,19 +62,17 @@ public class MonsterPlayer extends MonsterSprite {
 		} 
 
 		if (is.forward) {
-			v.add(new Vec2(orientation.getAhead()).mul(speed
-					* (float) delta));
+			v+=accel*(float)delta;
 		}
 
 		if (is.backward) {
-			v.add(new Vec2(orientation.getAhead()).mul(-speed
-					* (float) delta));
+			v-=accel*(float)delta;
 		}
 		
-		Vec2 temp=new Vec2(v);
-		temp.mul((float)delta);
+		Vec2 temp=new Vec2(orientation.getAhead());
+		temp.mul(v);
 		
-		position.add(new Vec2(temp));
+		position.add(temp);
 
 		setCamera();
 	}
