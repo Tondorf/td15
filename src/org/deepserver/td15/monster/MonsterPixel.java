@@ -111,5 +111,9 @@ public class MonsterPixel extends Monster {
 		time = 0;
 		direction = -1;
 	}
+	
+	@Override
+	public void destroy() {
+	}
 
 }
