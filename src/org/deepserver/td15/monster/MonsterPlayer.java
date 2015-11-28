@@ -1,6 +1,5 @@
 package org.deepserver.td15.monster;
 
-import org.deepserver.td15.Floathing;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix2;
@@ -54,7 +53,7 @@ public class MonsterPlayer extends MonsterSprite {
 		super.action(delta, is);
 
 		if (is.firing) {
-			MonsterShot shot = new MonsterShot(world, new Vec2(position));
+			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
 			shot.orientation = new Matrix2(orientation);
 			long now = System.currentTimeMillis();
 			if((lastShotTimestamp+shotDelay) < now){
