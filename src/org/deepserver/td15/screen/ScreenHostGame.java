@@ -19,7 +19,10 @@ public class ScreenHostGame extends ScreenStartGame {
 	}
 	
 	public void clientActionReceived(int clientID, byte[] action) {
-		logger.info("Client #" + clientID + " sent his username: " + new String(action));
+	}
+	
+	public void clientAuthenticate(int clientID, String username) {
+		logger.info("Client #" + clientID + " sent his username: " + username);
 		
 		byte[] bytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(42L).array();
 		netServer.sendClient(clientID, bytes);
