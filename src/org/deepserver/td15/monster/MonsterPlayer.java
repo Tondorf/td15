@@ -1,5 +1,7 @@
 package org.deepserver.td15.monster;
 
+import java.util.Random;
+
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.deepserver.td15.sound.SoundEffect;
@@ -29,7 +31,9 @@ public class MonsterPlayer extends MonsterSprite {
 	protected final long engineNoiseDelay = 2703;
 	
 	public MonsterPlayer(World world) {
-		super(world,new Vec2(0f,0f));
+		
+		super(world,new Vec2(world.rockRadius*new Random().nextFloat(),
+				             world.rockRadius*new Random().nextFloat()));
 		zLayer = 1f;
 	}
 	
@@ -53,9 +57,7 @@ public class MonsterPlayer extends MonsterSprite {
 		org.lwjgl.opengl.GL11.glRotatef(13.0f, 0, 0, 1);
 		org.lwjgl.opengl.GL11.glPopMatrix();
 	}
-	
-	
-	
+		
 	@Override
 	public void action(double delta, InputStatus is) {
 		super.action(delta, is);
@@ -117,5 +119,12 @@ public class MonsterPlayer extends MonsterSprite {
 		position.add(temp);
 
 		setCamera();
+	}
+	
+	@Override
+	public void destroy() {
+		position=new Vec2(world.rockRadius*new Random().nextFloat(),
+	             world.rockRadius*new Random().nextFloat());
+		world.screen.audio.play(SoundEffect.KILL);
 	}
 }
