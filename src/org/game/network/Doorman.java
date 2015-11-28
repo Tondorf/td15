@@ -21,7 +21,7 @@ public class Doorman extends Thread {
 	@Override
 	public void run() {
 		logger.info("Waiting for new clients...");
-		while (true) {
+		while (!isInterrupted()) {
 			try {
 				Socket clientSocket = server.getServerSocket().accept();
 				server.registerNewClient(clientSocket);
