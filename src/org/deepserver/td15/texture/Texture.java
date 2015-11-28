@@ -41,6 +41,8 @@ public class Texture {
 	private int texId;
 	private int width;
 	private int height;
+	private float wRatio = 0;
+	private float hRatio = 0;
 
 	private static ColorModel glAlphaColorModel = new ComponentColorModel(
 			ColorSpace.getInstance(ColorSpace.CS_sRGB),
@@ -52,37 +54,39 @@ public class Texture {
 			new int[] { 8, 8, 8, 0 }, false, false, ComponentColorModel.OPAQUE,
 			DataBuffer.TYPE_BYTE);
 
-	private Texture() {}
+	private Texture() {
+	}
 
 	private Texture(String ref) throws IOException {
 		URL url = MonsterSprite.class.getClassLoader().getResource(ref);
-			
-		//if (url == null)
-		//	throw new IOException("Texture not found: " + ref);
+
+		// if (url == null)
+		// throw new IOException("Texture not found: " + ref);
 
 		// Load image:
-		
+
 		Image img = null;
 		if (url != null)
 			img = new ImageIcon(url).getImage();
 		if (img == null)
 			img = new ImageIcon(ref).getImage();
-		
+
 		BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),
-				img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+				img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bufferedImage.getGraphics();
 		g.drawImage(img, 0, 0, null);
 		g.dispose();
 
 		this.width = bufferedImage.getWidth();
 		this.height = bufferedImage.getHeight();
-		
+
 		// Query an id for this texture:
 		IntBuffer textureIDBuffer = BufferUtils.createIntBuffer(1);
 		glGenTextures(textureIDBuffer);
 		texId = textureIDBuffer.get(0);
 
-		int srcPixelFormat = (bufferedImage.getColorModel().hasAlpha()) ? GL_RGBA : GL_RGB;
+		int srcPixelFormat = (bufferedImage.getColorModel().hasAlpha()) ? GL_RGBA
+				: GL_RGB;
 
 		glBindTexture(GL_TEXTURE_2D, texId);
 		ByteBuffer textureBuffer = convertImageData(bufferedImage); // ,texture);
@@ -171,8 +175,35 @@ public class Texture {
 		return ret;
 	}
 
-	public int getTextureID() { return texId;}
-	public int getImageWidth() { return width; }
-	public int getImageHeight() { return height; }
-	//public int getWidth() { return 
+	public int getTextureID() {
+		return texId;
+	}
+
+	public int getImageWidth() {
+		return width;
+	}
+
+	public int getImageHeight() {
+		return height;
+	}
+
+	public float getWidth() {
+		if (wRatio == 0) {
+			int texWidth = 2;
+			while (texWidth < width)
+				texWidth *= 2;
+			wRatio = ((float) width) / texWidth;
+		}
+		return wRatio;
+	}
+	
+	public float getHeight() {
+		if (hRatio == 0) {
+			int texHeight = 2;
+			while (texHeight < width)
+				texHeight *= 2;
+			hRatio = ((float) width) / texHeight;
+		}
+		return hRatio;
+	}
 }

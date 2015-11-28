@@ -98,15 +98,15 @@ public class MonsterSprite extends Monster {
 			glVertex3f(-size, -size, size);
 			
 			if (t != null)
-				glTexCoord2f(t.getImageWidth(), 0);
+				glTexCoord2f(t.getWidth(), 0);
 			glVertex3f(size, -size, size);
 			
 			if (t != null)
-				glTexCoord2f(t.getImageWidth(), t.getImageHeight());
+				glTexCoord2f(t.getWidth(), t.getHeight());
 			glVertex3f(size, size, size);
 			
 			if (t != null)
-				glTexCoord2f(0, t.getImageHeight());
+				glTexCoord2f(0, t.getHeight());
 			glVertex3f(-size, size, size);
 		}
 		glEnd();

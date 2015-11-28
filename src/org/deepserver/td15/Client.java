@@ -115,7 +115,9 @@ public class Client {
 	protected final float maxShadingFactor = 0.7f;
 	protected final float shadingSpeed = 2f;
 	
-	protected boolean windoof = Helper.isWindoof();
+	// slap lennart: checkin Helper class :p
+	//protected boolean windoof = Helper.isWindoof();
+	boolean windoof=false;
 
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
 
@@ -273,7 +275,7 @@ public class Client {
 			}
 
 			// ---------------------------- draw 3d world ---------------------
-			glClearColor(0, 0, 0, 1);
+			glClearColor(0, 0.3f, 0.5f, 1);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glMatrixMode(GL_MODELVIEW);
