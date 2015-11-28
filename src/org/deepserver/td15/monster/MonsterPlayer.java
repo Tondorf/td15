@@ -11,9 +11,9 @@ public class MonsterPlayer extends MonsterSprite {
 
 	protected final float accel = 0.01f;
 	protected final float rotationSpeed = 1.0f;
-	protected final long shotDelay = 100;
+	protected final long shotDelay = 200;
 
-	protected final float cameraHeight = 20.0f;
+	protected final float cameraHeight = 30.0f;
 	protected final float vToHeight = 10f;
 	protected final float maxSpeed = 0.05f;
 
@@ -56,15 +56,17 @@ public class MonsterPlayer extends MonsterSprite {
 		
 		super.action(delta, is);
 
-//		if (is.firing) {
-//			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
-//			shot.orientation = new Matrix2(orientation);
-//			long now = System.currentTimeMillis();
-//			if((lastShotTimestamp+shotDelay) < now){
-//				world.add(shot);
-//				lastShotTimestamp = now;
-//			}
-//		}
+		if (is.firing) {
+			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
+			shot.orientation = new Matrix2(orientation);
+			shot.position.add(orientation.getAhead().mul(this.getRadius()+shot.getRadius()));
+			long now = System.currentTimeMillis();
+			if((lastShotTimestamp+shotDelay) < now){
+				world.add(shot);
+				
+				lastShotTimestamp = now;
+			}
+		}
 
 		if (is.left) {
 			orientation.mul(new Matrix2().rotation(rotationSpeed * (float) delta)); // in a flat, flat world ... always rotate around
@@ -91,6 +93,10 @@ public class MonsterPlayer extends MonsterSprite {
 		
 		if (v>maxSpeed) {
 			v=maxSpeed;
+		}
+		
+		if (v<0) {
+			v=0;
 		}
 			
 		Vec2 temp=new Vec2(orientation.getAhead());
