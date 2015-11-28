@@ -52,7 +52,7 @@ public class Server {
 				doorman.interrupt();
 			}
 			
-			// kill all Client Handlers
+			// kill all Clients
 			for (Client client : clients.values()) {
 				client.kill();
 			}
