@@ -11,8 +11,11 @@ public class MonsterPlayer extends MonsterSprite {
 
 	protected final float accel = 0.01f;
 	protected final float rotationSpeed = 1.0f;
-	protected final float cameraHeight = 10.0f;
-	protected final long shotDelay = 1000;
+	protected final long shotDelay = 100;
+
+	protected final float cameraHeight = 20.0f;
+	protected final float vToHeight = 10f;
+	protected final float maxSpeed = 0.05f;
 
 	protected InputStatus is = new InputStatus();
 
@@ -33,7 +36,7 @@ public class MonsterPlayer extends MonsterSprite {
 	protected void setCamera() {
 		Vec3 camPos = new Vec3(position);
 
-		camPos.z = cameraHeight;
+		camPos.z = cameraHeight*(1+v*vToHeight);
 
 		world.setCamera(camPos, new Vec3(position), new Vec3(orientation.getAhead()));
 	}
@@ -50,6 +53,8 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	@Override
 	public void action(double delta, InputStatus is) {
+		
+		System.err.println(v);
 		super.action(delta, is);
 
 		if (is.firing) {
@@ -84,15 +89,11 @@ public class MonsterPlayer extends MonsterSprite {
 			if (v < 0.05f)
 				v = 0f;
 		}		
-		//if (v > maxSpeed) {
-		//	// 8 / 10
-		//	float f =  maxSpeed / v.length();
-		//	v.mul(f);
-		//}
-			
 		
-//		Vec2 temp=new Vec2(v);
-//		temp.mul((float)delta);
+		if (v>maxSpeed) {
+			v=maxSpeed;
+		}
+			
 		Vec2 temp=new Vec2(orientation.getAhead());
 		temp.mul(v);
 		
