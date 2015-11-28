@@ -19,7 +19,7 @@ public class MonsterEnemy extends MonsterSprite {
 	protected Vec2 position;
 	protected Vec2 target;
 	protected boolean reachedMaxSpeed = false;
-	protected float v = 0;
+	protected float v = 1;
 
 	public MonsterEnemy(World world, Vec2 position) {
 		super(world, position);
@@ -46,7 +46,7 @@ public class MonsterEnemy extends MonsterSprite {
 		long now = System.currentTimeMillis();
 		if ((lastTargetRefresh + refreshTargetDelay) < now) {
 			lastTargetRefresh = now;
-			// targetPlayer();
+			targetPlayer(new Vec2(10f,10f));
 		}
 
 		if (turnLeft) {
@@ -67,6 +67,5 @@ public class MonsterEnemy extends MonsterSprite {
 		temp.mul(v);
 
 		position.add(temp);
-
 	}
 }
