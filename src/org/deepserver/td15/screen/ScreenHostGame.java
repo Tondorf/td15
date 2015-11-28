@@ -14,6 +14,7 @@ public class ScreenHostGame extends ScreenStartGame {
 	}
 	
 	public void clientActionReceived(byte[] action) {
+		System.err.println("got client callback!");
 	}
 }
 
