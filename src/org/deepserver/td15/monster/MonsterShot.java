@@ -16,7 +16,7 @@ public class MonsterShot extends MonsterSprite {
 
 	@Override
 	public String getTextureName() {
-		return "ship1.png";
+		return "grosserschus.png";
 	}
 
 	@Override
