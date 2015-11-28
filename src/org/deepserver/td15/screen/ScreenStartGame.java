@@ -11,6 +11,8 @@ import org.joml.Vec2;
 
 public class ScreenStartGame extends Screen {
 	public final int monsterCount = 200;
+	
+	protected long clientID = -1L;
 
 	public ScreenStartGame(Client client) {
 		super(client);

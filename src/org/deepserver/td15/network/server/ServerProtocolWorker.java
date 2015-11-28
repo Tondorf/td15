@@ -11,7 +11,7 @@ public class ServerProtocolWorker {
 
 		// TODO: currently this is an echo-server
 		if (server.hostScreen != null)
-			server.hostScreen.clientActionReceived(msg);
+			server.hostScreen.clientActionReceived(clientID, msg);
 
 		// server.sendClient(clientID, msg);
 	}
