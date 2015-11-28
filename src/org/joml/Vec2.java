@@ -51,6 +51,11 @@ public class Vec2 implements Serializable, Externalizable {
         y = clone.y;
     }
 
+    public Vec2(Vec3 clone){
+    	x = clone.x;
+    	y = clone.y;
+    }
+    
     /** Sets the X and Y attributes using the supplied float values */
     public void set(float newX, float newY) {
         x = newX;

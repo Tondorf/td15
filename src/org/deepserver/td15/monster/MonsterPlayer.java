@@ -43,21 +43,9 @@ public class MonsterPlayer extends MonsterSprite {
 		super.action(delta, is);
 
 		if (is.firing) {
-			MonsterShot shot = new MonsterShot(world, position);
-			//
-			// Vec3 o=new Vec3(orientation.getLeft());
-			// o.mul(gunOffsetX);
-			//
-			// if (fireLeft)
-			// shot.position.add(o);
-			// else
-			// shot.position.sub(o);
-			//
-			// fireLeft=!fireLeft;
-			//
-			// shot.orientation = new Matrix3(orientation);
-			// shot.groundDistance=groundDistance;
-			// world.add(shot);
+			MonsterShot shot = new MonsterShot(world, new Vec2(position));
+			shot.orientation = new Matrix3(orientation);
+			world.add(shot);
 		}
 
 		if (is.left) {
