@@ -6,8 +6,8 @@ import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 
-public class Client {
-	private static Logger logger = Logger.getLogger(Client.class);
+public class NetClient {
+	private static Logger logger = Logger.getLogger(NetClient.class);
 	
 	private Socket serverSocket;
 	private ServerConnection serverConnection;
