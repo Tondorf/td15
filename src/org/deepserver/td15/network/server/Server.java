@@ -11,8 +11,7 @@ import org.apache.log4j.Logger;
 public class Server {
 	private static Logger logger = Logger.getLogger(Server.class);
 	
-	public static final String CHARSET_NAME = "UTF-8";
-	public static final int MAX_CLIENTS = 1000;
+	private static final int MAX_CLIENTS = 1000;
 	
 	private ServerSocket serverSocket;
 	private Doorman doorman;
