@@ -514,5 +514,4 @@ public class Vec3 implements Serializable, Externalizable {
         z = -z;
         return this;
     } 
-
 }
