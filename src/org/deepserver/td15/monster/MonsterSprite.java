@@ -47,7 +47,7 @@ public class MonsterSprite extends Monster {
 	}
 	
 	public String getTextureName() {
-		return "buntmann.png";
+		return "stein.png";
 	}
 
 	@Override
