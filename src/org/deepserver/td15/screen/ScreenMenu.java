@@ -8,6 +8,7 @@ import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.PixelFont;
 import org.deepserver.td15.monster.MonsterPixel;
 import org.deepserver.td15.monster.MonsterTextLine;
+import org.deepserver.td15.sound.SoundEffect;
 import org.joml.Vec3;
 
 public class ScreenMenu extends Screen {
@@ -69,6 +70,7 @@ public class ScreenMenu extends Screen {
 				lines.get((lines.size() - 1) - slot).lowlight();
 				slot++;
 				lines.get((lines.size() - 1) - slot).highlight();
+				world.screen.audio.play(SoundEffect.FRR);
 			}
 		}
 		if (is.upEvent) {// up
@@ -78,6 +80,7 @@ public class ScreenMenu extends Screen {
 
 				slot--;
 				lines.get((lines.size() - 1) - slot).highlight();
+				world.screen.audio.play(SoundEffect.FRR);
 			}
 		}
 		if (is.selectEvent) { // select=space or enter

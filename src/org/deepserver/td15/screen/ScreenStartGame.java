@@ -20,20 +20,22 @@ public class ScreenStartGame extends Screen {
 		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), null);
 		world.add(enemy);
 
-		for (int i = 0; i < monsterCount; i++) {
-			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
-			world.add(q);
-		}
+		
 		addRockCircle(world, world.rockRadius);
 	}
 
 	protected void init() {
+		for (int i = 0; i < monsterCount; i++) {
+			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
+			world.add(q);
+		}
+		
 		MonsterPlayer player = new MonsterPlayer(world);
 		player.world = world;
 		player.position = new Vec2(0f, 0f);
 		world.add(player);
 	}
-
+	
 	private void addRockCircle(World world, float rockRadius) {
 		double theta = 0; // angle that will be increased each loop
 		int X = 0; // x coordinate of circle center

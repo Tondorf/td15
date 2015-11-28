@@ -1,5 +1,9 @@
 package org.deepserver.td15;
 
+import static org.lwjgl.opengl.GL11.GL_POINTS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11.glLoadMatrixf;
 
 import java.io.ByteArrayInputStream;
@@ -10,6 +14,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
+import java.util.List;
 
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterRock;
@@ -22,94 +27,118 @@ import org.lwjgl.BufferUtils;
 
 public class World {
 	public Screen screen;
-	
-	//public ArrayList<Monster> list=new ArrayList<Monster>();
-	public HashMap<Long, Monster> monsters = new HashMap<Long, Monster>();
-	public ArrayList<Monster> listOfnewMonsters=new ArrayList<Monster>();
-	public ArrayList<Monster> listOfdeadMonsters=new ArrayList<Monster>();
-	
-	public final float rockRadius=50f;
-	
-	protected Vec3 cameraEye    = new Vec3(0.0f,0.0f,1.0f);
-	protected Vec3 cameraLookAt = new Vec3(0.0f,0.0f,0.0f);
-	protected Vec3 cameraUp     = new Vec3(0.0f,1.0f,0.0f);
 
-    protected Matrix4 viewMatrix = new Matrix4();
-    protected FloatBuffer fb = BufferUtils.createFloatBuffer(16); 
+	// public ArrayList<Monster> list=new ArrayList<Monster>();
+	public HashMap<Long, Monster> monsters = new HashMap<Long, Monster>();
+	public ArrayList<Monster> listOfnewMonsters = new ArrayList<Monster>();
+	public ArrayList<Monster> listOfdeadMonsters = new ArrayList<Monster>();
+
+	public final float rockRadius = 50f;
+
+	protected Vec3 cameraEye = new Vec3(0.0f, 0.0f, 1.0f);
+	protected Vec3 cameraLookAt = new Vec3(0.0f, 0.0f, 0.0f);
+	protected Vec3 cameraUp = new Vec3(0.0f, 1.0f, 0.0f);
+
+	protected Matrix4 viewMatrix = new Matrix4();
+	protected FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 
 	public World(Screen screen) {
-		this.screen=screen;
+		this.screen = screen;
 	}
+
 	public Vec2 getPosInsideCircle() {
-		Vec2 pos=new Vec2();
+		Vec2 pos = new Vec2();
 		do {
-			pos=new Vec2(((float) Math.random() - 0.5f) * 2 * rockRadius,
+			pos = new Vec2(((float) Math.random() - 0.5f) * 2 * rockRadius,
 					((float) Math.random() - 0.5f) * 2 * rockRadius);
-		} while (pos.length()>=rockRadius);
+		} while (pos.length() >= rockRadius);
 		return pos;
 	}
+
 	public void action(double delta, InputStatus is) {
-		for (Monster m:monsters.values()) {
-			m.action(delta,is);
+		for (Monster m : monsters.values()) {
+			m.action(delta, is);
 		}
-		
+
 		// TODO: Optimize it:
-		for (Monster m:monsters.values())
-			for (Monster n:monsters.values()) {
-				if (m.id!=n.id && !(m.sourceId==n.id || n.sourceId==m.id) && n.sourceId!=m.sourceId) {
-					Vec2 a=m.position;
-					Vec2 b=n.position;
-					
-					
-					if (a.distance(b)<m.getRadius()+n.getRadius()) {
+		for (Monster m : monsters.values())
+			for (Monster n : monsters.values()) {
+				if (m.id != n.id && !(m.sourceId == n.id || n.sourceId == m.id)
+						&& n.sourceId != m.sourceId) {
+					Vec2 a = m.position;
+					Vec2 b = n.position;
+
+					if (a.distance(b) < m.getRadius() + n.getRadius()) {
 						m.destroy();
 						n.destroy();
 					}
 				}
 			}
-		
-		for (Monster m:listOfdeadMonsters)
+
+		for (Monster m : listOfdeadMonsters)
 			monsters.remove(m.id);
-		
+
 		listOfdeadMonsters.clear();
 	}
+
+	private ArrayList<Vec3> stars = null;
 	
 	public void draw() {
-		//ArrayList<Monster> next=new ArrayList<Monster>();
-		
-		//for (Monster m:list) {
-		//	if (!m.killMe) next.add(m);
-		//}
-		//list=next;
+		// ArrayList<Monster> next=new ArrayList<Monster>();
 
+		// for (Monster m:list) {
+		// if (!m.killMe) next.add(m);
+		// }
+		// list=next;
+
+		// stars here
+		if (stars == null) {
+			stars = new ArrayList<Vec3>();
+			for (int i=0;i<1000;i++) {
+				stars.add(new Vec3(
+						(float)Math.random()* 500.0f-250.0f,
+						(float)Math.random()* 500.0f-250.0f,
+						(float)Math.random()* 500.0f-250.0f
+						));
+			}
+		}
+		glBegin(GL_POINTS);
+		{
+			for (Vec3 v : stars) {
+				glVertex3f(v.x, v.y, v.z);
+			}
+		}
+		glEnd();
+		
 		for (Monster m : listOfnewMonsters)
 			monsters.put(m.id, m);
 		listOfnewMonsters.clear();
-		
-		for (Monster m:monsters.values()) {
+
+		for (Monster m : monsters.values()) {
 			m.draw();
-		}		
+		}
 	}
 
 	public void add(Monster monster) {
 		listOfnewMonsters.add(monster);
 	}
-	
+
 	public void remove(Monster monster) {
 		listOfdeadMonsters.add(monster);
 	}
-	
-	public void setCamera(Vec3 eye,Vec3 lookat,Vec3 up) {
-		cameraLookAt=lookat;
-		cameraEye=eye;
-		cameraUp=up;
+
+	public void setCamera(Vec3 eye, Vec3 lookat, Vec3 up) {
+		cameraLookAt = lookat;
+		cameraEye = eye;
+		cameraUp = up;
 	}
-	
+
 	public void drawCamera() {
-        viewMatrix.setLookAt(cameraEye,cameraLookAt,cameraUp).get(fb);  // y is up
-        glLoadMatrixf(fb);
+		viewMatrix.setLookAt(cameraEye, cameraLookAt, cameraUp).get(fb); // y is
+																			// up
+		glLoadMatrixf(fb);
 	}
-	
+
 	public byte[] toBytes() throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		// bout.write(ByteBuffer.allocate(4).putInt(monsters.size()).array());
@@ -166,5 +195,5 @@ public class World {
 		// list = ret;
 
 	}
-	
+
 }

@@ -119,6 +119,12 @@ public class AudioManager {
 					playOGG("09_Life_on_Mars", true);
 				}
 			}.start();
+		case FRR:
+			new Thread() {
+				public void run() {
+					playOGG("frr", true);
+				}
+			}.start();
 
 			break;
 		default:
