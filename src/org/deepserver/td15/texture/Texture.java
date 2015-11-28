@@ -14,8 +14,10 @@ import static org.lwjgl.opengl.GL11.glTexParameteri;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -155,11 +157,16 @@ public class Texture {
 		}
 
 		// copy the source image into the produced image
-		Graphics g = texImage.getGraphics();
+		Graphics2D g = (Graphics2D)texImage.getGraphics();
 		g.setColor(new Color(0f, 0f, 0f, 0f));
 		g.fillRect(0, 0, texWidth, texHeight);
+		AffineTransform at = new AffineTransform();
+        at.concatenate(AffineTransform.getScaleInstance(1, -1));
+        at.concatenate(AffineTransform.getTranslateInstance(0, -bufferedImage.getHeight()));
+        g.transform(at);
 		g.drawImage(bufferedImage, 0, 0, null);
-
+	
+		
 		// build a byte buffer from the temporary image
 		// that be used by OpenGL to produce a texture.
 		byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer())
