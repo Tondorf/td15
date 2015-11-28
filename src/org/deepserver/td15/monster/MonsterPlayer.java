@@ -22,7 +22,7 @@ public class MonsterPlayer extends MonsterSprite {
 
 	protected final float cameraHeight = 30.0f;
 	protected final float vToHeight = 10f;
-	protected final float maxSpeed = 0.05f;
+	protected final float maxSpeed = 10f;
 
 	protected InputStatus is = new InputStatus();
 
@@ -109,8 +109,8 @@ public class MonsterPlayer extends MonsterSprite {
 				v = 0f;
 		}		
 		
-		if (v>maxSpeed) {
-			v=maxSpeed;
+		if (v>maxSpeed*(float)delta) {
+			v=maxSpeed*(float)delta;
 		}
 		
 		if (v<0) {

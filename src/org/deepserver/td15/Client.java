@@ -353,6 +353,8 @@ public class Client {
 			screen2d.draw();
 
 			glfwSwapBuffers(window);
+			
+			System.err.println(deltaTime);
 
 			deltaTime = glfwGetTime() - lastTime;
 			lastTime += deltaTime;
