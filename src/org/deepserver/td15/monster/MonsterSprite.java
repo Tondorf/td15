@@ -65,7 +65,7 @@ public class MonsterSprite extends Monster {
 		// Maybe load prior to draw() in order to avoid latencies:
 		Texture t = null;
 		try {
-			t = Texture.load("/home/tk/src/tondorf/td15/res/buntmann.png");
+			t = Texture.load("res/buntmann.png");
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}

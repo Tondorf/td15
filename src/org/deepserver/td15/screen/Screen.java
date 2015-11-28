@@ -28,6 +28,10 @@ public abstract class Screen {
 			is.escapeEvent=false;
 			escape();
 		}
+		if (networked) {
+			// push new player position to server
+			// modify world according to received messages
+		}
 		
 		world.action(delta,is);
 	}
