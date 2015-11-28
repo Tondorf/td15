@@ -1,4 +1,4 @@
-package org.game.network;
+package org.game.network.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;

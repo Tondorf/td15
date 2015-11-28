@@ -1,13 +1,15 @@
 package org.deepserver.td15.screen;
 
 import org.deepserver.td15.Client;
+import org.game.network.server.Server;
 
 public class ScreenHostGame extends ScreenStartGame {
 
 	public ScreenHostGame(Client client) {
 		super(client);
 		networked=true;
-		// start server
+	
+		Server gameServer = new Server();
+		gameServer.bindAndStart(9090);
 	}
-
 }
