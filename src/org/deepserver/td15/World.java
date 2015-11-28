@@ -81,7 +81,6 @@ public class World {
 		listOfdeadMonsters.clear();
 	}
 
-	private ArrayList<Vec3> stars = null;
 	
 	public void draw() {
 		// ArrayList<Monster> next=new ArrayList<Monster>();
@@ -91,24 +90,7 @@ public class World {
 		// }
 		// list=next;
 
-		// stars here
-		if (stars == null) {
-			stars = new ArrayList<Vec3>();
-			for (int i=0;i<1000;i++) {
-				stars.add(new Vec3(
-						(float)Math.random()* 500.0f-250.0f,
-						(float)Math.random()* 500.0f-250.0f,
-						(float)Math.random()* 500.0f-250.0f
-						));
-			}
-		}
-		glBegin(GL_POINTS);
-		{
-			for (Vec3 v : stars) {
-				glVertex3f(v.x, v.y, v.z);
-			}
-		}
-		glEnd();
+
 		
 		for (Monster m : listOfnewMonsters)
 			monsters.put(m.id, m);

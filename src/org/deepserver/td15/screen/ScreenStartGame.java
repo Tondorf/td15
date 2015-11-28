@@ -6,6 +6,7 @@ import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterEnemy;
 import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.monster.MonsterRock;
+import org.deepserver.td15.monster.MonsterSpace;
 import org.deepserver.td15.monster.MonsterSprite;
 import org.joml.Vec2;
 
@@ -17,10 +18,12 @@ public class ScreenStartGame extends Screen {
 
 		init();
 
+		MonsterSpace space = new MonsterSpace(world);
+		world.add(space);
+		
 		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), null);
 		world.add(enemy);
 
-		
 		addRockCircle(world, world.rockRadius);
 	}
 
@@ -34,6 +37,9 @@ public class ScreenStartGame extends Screen {
 		player.world = world;
 		player.position = new Vec2(0f, 0f);
 		world.add(player);
+		
+		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), player);
+		world.add(enemy);
 	}
 	
 	private void addRockCircle(World world, float rockRadius) {

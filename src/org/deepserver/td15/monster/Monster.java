@@ -38,7 +38,11 @@ public class Monster {
 	}
 
 	public void draw() {
+	
 	}
+	
+	
+	public boolean canCrash() { return true; }
 	
 	public void copyFrom(Monster m) {
 		this.id = m.id;
