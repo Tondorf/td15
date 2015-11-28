@@ -55,15 +55,14 @@ public class MonsterEnemy extends MonsterSprite {
 		if (turnLeft) {
 			orientation.mul(new Matrix2().rotation(rotationSpeed * (float) delta));
 		}else if(turnRight){
-			
+			orientation.mul(new Matrix2().rotation(-rotationSpeed * (float) delta));
 		}
 
 		if (!reachedMaxSpeed) {
 			v+=accel*(float)delta;
 			if(v > maxSpeed){
-				
+				v = maxSpeed;
 			}
-			orientation.mul(new Matrix2().rotation(-rotationSpeed * (float) delta));
 		} 
 		
 		position.add(temp);
