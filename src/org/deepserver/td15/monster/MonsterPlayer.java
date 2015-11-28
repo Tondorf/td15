@@ -58,7 +58,6 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	@Override
 	public void action(double delta, InputStatus is) {
-		
 		super.action(delta, is);
 		
 		if (this.ENGINE_NOISE) {
@@ -68,7 +67,6 @@ public class MonsterPlayer extends MonsterSprite {
 				lastEngineNoiseTimestamp = now;
 			}
 		}
-
 
 		if (is.firing) {
 			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
