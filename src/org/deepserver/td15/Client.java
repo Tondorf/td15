@@ -114,6 +114,7 @@ public class Client {
 	protected final float maxShadingFactor = 0.7f;
 	protected final float shadingSpeed = 2f;
 	
+	protected boolean windoof = Helper.isWindoof();
 
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
 
@@ -177,29 +178,29 @@ public class Client {
 		glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
 			@Override
 			public void invoke(long window, int key, int scancode, int action,int mods) {
-								
-				if (scancode == 39 ||  scancode == 116) // down
+
+				if ( (windoof && scancode == 336) || scancode == 39 ||  scancode == 116) // down
 					is.backward = (action != 0);
-				if ( scancode == 38 || scancode == 113) // left
+				if ( (windoof && scancode == 331) || scancode == 38 || scancode == 113) // left
 					is.left = (action != 0);
-				if (scancode == 25 || scancode == 111) // up
+				if ( (windoof && scancode == 328) || scancode == 25 || scancode == 111) // up
 					is.forward = (action != 0);
-				if (scancode == 40 || scancode == 114) // right
+				if ( (windoof && scancode == 333) || scancode == 40 || scancode == 114) // right
 					is.right = (action != 0);
-				if (scancode == 65 || scancode == 36) // select=space or enter
-					is.firing= (action!=0);	
+				if ( (windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) // select=space or enter
+					is.firing = (action != 0);
 				
 				// key events:
-				if (scancode==9 && action==1) 
+				if ( (windoof && scancode == 1 || scancode==9) && action==1 )
 					is.escapeEvent=true;
 				
-				if ((scancode == 39 ||  scancode == 116) && action==1) // down
+				if ( (windoof && scancode == 336 || scancode == 39 ||  scancode == 116) && action==1) // down
 					is.downEvent=true;
 				
-				if ((scancode == 25 || scancode == 111) && action==1) // up
+				if ( (windoof && scancode == 328 || scancode == 25 || scancode == 111) && action==1) // up
 					is.upEvent=true;
 				
-				if ((scancode == 65 || scancode == 36) && action==1) // select=space or enter
+				if ( ((windoof && (scancode == 57 || scancode == 28)) || scancode == 65 || scancode == 36) && action==1) // select=space or enter
 					is.selectEvent=true;
 			}
 		});
