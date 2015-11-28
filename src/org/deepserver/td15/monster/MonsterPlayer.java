@@ -9,7 +9,7 @@ public class MonsterPlayer extends Monster {
 	
 	protected final float speed = 20.0f;
 	protected final float rotationSpeed=3.0f;
-	protected final float cameraHeight=30.0f;
+	protected final float cameraHeight=1.0f;
 
 	protected InputStatus is=new InputStatus();
 
