@@ -94,20 +94,20 @@ public class MonsterSprite extends Monster {
 				glColor3f(1.0f, 1.0f, 1.0f);
 
 			if (t != null)
-				glTexCoord2f(0, 0);
+				glTexCoord2f(t.getWidth(), 0);
 			glVertex3f(-size, -size, size);
 			
 			if (t != null)
-				glTexCoord2f(0, t.getHeight());
-			glVertex3f(-size, size, size);
+				glTexCoord2f(0, 0);
+			glVertex3f(size, -size, size);
 			
 			if (t != null)
-				glTexCoord2f(t.getWidth(), t.getHeight());
+				glTexCoord2f(0, -t.getHeight());
 			glVertex3f(size, size, size);
 			
 			if (t != null)
-				glTexCoord2f(t.getWidth(), 0);
-			glVertex3f(size, -size, size);
+				glTexCoord2f(t.getWidth(), -t.getHeight());
+			glVertex3f(-size, size, size);
 		}
 		glEnd();
 

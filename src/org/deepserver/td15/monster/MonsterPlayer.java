@@ -22,7 +22,7 @@ public class MonsterPlayer extends Monster {
 		
 		Vec3 camPos=new Vec3(position);
 
-		camPos.z += cameraHeight;		
+		camPos.z -= cameraHeight;		
 		
 		world.setCamera(camPos, position, new Vec3(-1.0f, -1.0f, 0.0f));
 		world.setCamera(camPos, position, orientation.getUp());
@@ -54,11 +54,11 @@ public class MonsterPlayer extends Monster {
 		Vec3 up=orientation.getUp();
 
 		if (is.left) {
-			orientation.mul(new Matrix3().rotate(-rotationSpeed*(float)delta, 0, 0, 1)); //up.x,up.y,up.z));
+			orientation.mul(new Matrix3().rotate( rotationSpeed*(float)delta, 0, 0, 1)); // in a flat, flat world ... always rotate around z!
 		}
 
 		if (is.right) {
-			orientation.mul(new Matrix3().rotate( rotationSpeed*(float)delta, 0, 0, 1)); //up.x,up.y,up.z));
+			orientation.mul(new Matrix3().rotate(-rotationSpeed*(float)delta, 0, 0, 1));
 		}
 
 		if (is.forward) {
