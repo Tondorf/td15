@@ -15,10 +15,6 @@ public class MonsterPlayer extends MonsterSprite {
 	protected final float cameraHeight = 10.0f;
 	protected final long shotDelay = 1000;
 
-	private final float maxPitch = 5.0f;
-	private Floathing pitchthing = new Floathing(8.0f);
-
-
 	protected InputStatus is = new InputStatus();
 
 	protected float v=0;
