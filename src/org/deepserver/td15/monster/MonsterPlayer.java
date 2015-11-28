@@ -53,10 +53,8 @@ public class MonsterPlayer extends MonsterSprite {
 	
 	@Override
 	public void action(double delta, InputStatus is) {
-		
-		System.err.println(v);
 		super.action(delta, is);
-
+		
 		if (is.firing) {
 			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
 			shot.orientation = new Matrix2(orientation);

@@ -2,6 +2,7 @@ package org.deepserver.td15.screen;
 
 import org.deepserver.td15.Client;
 import org.deepserver.td15.monster.Monster;
+import org.deepserver.td15.monster.MonsterEnemy;
 import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.monster.MonsterSprite;
 import org.joml.Vec2;
@@ -19,6 +20,9 @@ public class ScreenStartGame extends Screen {
 		player.position = new Vec2(0f, 0f);
 		world.add(player);
 
+		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f,1f));
+		world.add(enemy);
+		
 		for (int x = -cnt; x < cnt; x++)
 			for (int y = -cnt; y < cnt; y++) {
 				Monster q = new MonsterSprite(world, new Vec2(
