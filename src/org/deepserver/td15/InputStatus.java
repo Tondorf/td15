@@ -8,6 +8,7 @@ public class InputStatus {
 	public boolean forward=false;
 	public boolean backward=false;
 	public boolean firing=false;
+	public boolean fullBreak=false;
 	
 	public int mouseX=0;
 	public int mouseY=0;

@@ -9,12 +9,13 @@ import org.joml.Vec3;
 
 public class MonsterPlayer extends MonsterSprite {
 
-	protected final float speed = 50.0f;
-	protected final float rotationSpeed = 180.0f;
-	protected final float cameraHeight = 10.0f;
+	protected final float maxSpeed = 50.0f;
+	protected final float speed = 20.0f;
+	protected final float rotationSpeed = 90.0f;
+	protected final float cameraHeight = 30.0f;
 
-	private final float maxPitch = 10.0f;
-	private Floathing pitchthing = new Floathing(1.0f);
+	private final float maxPitch = 5.0f;
+	private Floathing pitchthing = new Floathing(8.0f);
 
 	protected InputStatus is = new InputStatus();
 
@@ -31,15 +32,29 @@ public class MonsterPlayer extends MonsterSprite {
 	}
 
 	protected void setCamera() {
-
 		Vec3 camPos = new Vec3(position);
 
 		camPos.z -= cameraHeight;
 
-		world.setCamera(camPos, position, new Vec3(-1.0f, -1.0f, 0.0f));
-		world.setCamera(camPos, position, orientation.getUp());
+		//world.setCamera(camPos, position, new Vec3(-1.0f, -1.0f, 0.0f));
+		Vec3 tgt = new Vec3(position);
+		float p = pitchthing.get();
+		p *= v.length()/maxSpeed;
+		tgt.add(orientation.getLeft().mul(p));
+		camPos.add(orientation.getLeft().mul(-p/2));
+		world.setCamera(camPos, tgt, orientation.getUp());
 	}
 
+	@Override 
+	public void draw() {
+		org.lwjgl.opengl.GL11.glPushMatrix();
+		super.draw();
+		org.lwjgl.opengl.GL11.glRotatef(13.0f, 0, 0, 1);
+		org.lwjgl.opengl.GL11.glPopMatrix();
+	}
+	
+	
+	
 	@Override
 	public void action(double delta, InputStatus is) {
 		super.action(delta, is);
@@ -78,6 +93,18 @@ public class MonsterPlayer extends MonsterSprite {
 			v.add(new Vec2(orientation.getUp()).mul(-speed
 					* (float) delta));
 		}
+		
+		if (is.fullBreak) {
+			v.mul(0.7f);
+			if (v.length() < 0.5f)
+				v.mul(0f);
+		}		
+		if (v.length() > maxSpeed) {
+			// 8 / 10
+			float f =  maxSpeed / v.length();
+			v.mul(f);
+		}
+			
 		
 		Vec2 temp=new Vec2(v);
 		temp.mul((float)delta);

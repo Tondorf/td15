@@ -193,6 +193,7 @@ public class Client {
 				List<Integer> rights = Arrays.asList(333,40,114);
 				List<Integer> esc = Arrays.asList(1,9);
 				List<Integer> enter = Arrays.asList(57,28,65,36);
+				List<Integer> bkspc = Arrays.asList(22);
 
 				if (ups.contains(scancode)) // up
 					is.forward = (action != 0);
@@ -204,6 +205,8 @@ public class Client {
 					is.right = (action != 0);
 				if (enter.contains(scancode)) // select=space or enter
 					is.firing = (action != 0);
+				if (bkspc.contains(scancode))
+					is.fullBreak = (action != 0);
 
 				// key events:
 				if (esc.contains(scancode) && action==1 ) // esc
