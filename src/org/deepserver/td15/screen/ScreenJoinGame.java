@@ -6,12 +6,14 @@ import org.deepserver.td15.network.client.NetClient;
 
 public class ScreenJoinGame extends ScreenStartGame {
 
+	
+	
 	public ScreenJoinGame(Client client) {
 		super(client);
 		networked=true;
 		
 		netClient = new NetClient();
-		//long clientPlayerID = netClient.bindAndStart(Main.serverIP, 9090);
+		//long id = netClient.bindAndStart(Main.serverIP, 9090);		
 	}
 	
 	@Override

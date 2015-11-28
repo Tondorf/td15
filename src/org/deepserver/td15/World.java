@@ -48,7 +48,7 @@ public class World {
 		} while (pos.length()>=rockRadius);
 		return pos;
 	}
-	public void action(double delta,InputStatus is) {
+	public void action(double delta, InputStatus is) {
 		for (Monster m:monsters.values()) {
 			m.action(delta,is);
 		}
