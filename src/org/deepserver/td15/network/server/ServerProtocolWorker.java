@@ -7,7 +7,7 @@ public class ServerProtocolWorker {
 		this.server = server;
 	}
 
-	public void process(int clientID, byte[] msg) {
+	public synchronized void process(int clientID, byte[] msg) {
 
 		// TODO: currently this is an echo-server
 		if (server.hostScreen != null)
