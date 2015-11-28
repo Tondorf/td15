@@ -2,6 +2,7 @@ package org.deepserver.td15.monster;
 
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
+import org.deepserver.td15.sound.SoundEffect;
 import org.joml.Vec2;
 
 public class MonsterShot extends MonsterSprite {
@@ -27,6 +28,11 @@ public class MonsterShot extends MonsterSprite {
 		temp.mul(speed);
 		
 		position.add(temp);
+	}
+	
+	public void destroy() {
+		super.destroy();
+		world.screen.audio.play(SoundEffect.KILL);
 	}
 
 }
