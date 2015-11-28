@@ -112,7 +112,7 @@ public class World {
 	
 	public byte[] toBytes() throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		//bout.write(ByteBuffer.allocate(4).putInt(monsters.size()).array());
+		// bout.write(ByteBuffer.allocate(4).putInt(monsters.size()).array());
 		// todo: dont do rocks!!
 		for (Monster m : monsters.values()) {
 			if (m instanceof MonsterRock)
@@ -120,32 +120,34 @@ public class World {
 			bout.write(ByteBuffer.allocate(4).putLong(m.id).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.x).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.y).array());
-			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().x).array());
-			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().y).array());
+			bout.write(ByteBuffer.allocate(4)
+					.putFloat(m.orientation.getAhead().x).array());
+			bout.write(ByteBuffer.allocate(4)
+					.putFloat(m.orientation.getAhead().y).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.zLayer).array());
 			bout.write(ByteBuffer.allocate(4).putLong(m.sourceId).array());
 		}
 		return bout.toByteArray();
 	}
-	
+
 	public void fromBytes(byte[] binbuf) {
-		//ByteArrayInputStream bin = new ByteArrayInputStream(binbuf);
-		ArrayList<Monster> ret= new ArrayList<Monster>();
-		
+		// ByteArrayInputStream bin = new ByteArrayInputStream(binbuf);
+		ArrayList<Monster> ret = new ArrayList<Monster>();
+
 		int off = 0;
-		while (off+28 <= binbuf.length) {
+		while (off + 28 <= binbuf.length) {
 			long mid = ByteBuffer.wrap(binbuf, off, 4).getLong();
-			float x = ByteBuffer.wrap(binbuf, off+4, 4).getFloat();
-			float y = ByteBuffer.wrap(binbuf, off+8, 4).getFloat();
-			float ox = ByteBuffer.wrap(binbuf, off+12, 4).getFloat();
-			float oy = ByteBuffer.wrap(binbuf, off+16, 4).getFloat();
-			float z = ByteBuffer.wrap(binbuf, off+20, 4).getFloat();
-			long src = ByteBuffer.wrap(binbuf, off+24, 4).getLong();
+			float x = ByteBuffer.wrap(binbuf, off + 4, 4).getFloat();
+			float y = ByteBuffer.wrap(binbuf, off + 8, 4).getFloat();
+			float ox = ByteBuffer.wrap(binbuf, off + 12, 4).getFloat();
+			float oy = ByteBuffer.wrap(binbuf, off + 16, 4).getFloat();
+			float z = ByteBuffer.wrap(binbuf, off + 20, 4).getFloat();
+			long src = ByteBuffer.wrap(binbuf, off + 24, 4).getLong();
 			off += 28;
 			Monster m = new Monster(null);
 			m.id = mid;
 			m.sourceId = src;
-			m.position = new Vec2(x,y);
+			m.position = new Vec2(x, y);
 			m.orientation.m00 = 1 - ox;
 			m.orientation.m01 = ox;
 			m.orientation.m10 = 1 - oy;
@@ -153,7 +155,7 @@ public class World {
 			m.zLayer = z;
 			ret.add(m);
 		}
-		
+
 		for (Monster m : ret) {
 			Monster localMonster = monsters.get(m.id);
 			if (localMonster == null)
@@ -161,8 +163,8 @@ public class World {
 			localMonster.copyFrom(m);
 		}
 		// nein:!!! parsen und mit lokalem pool abgleichen!
-		//list = ret;
-		
+		// list = ret;
+
 	}
 	
 }
