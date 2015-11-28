@@ -1,9 +1,9 @@
 package org.deepserver.td15.network.server;
 
 public class ServerProtocolWorker {
-	private Server server;
+	private NetServer server;
 	
-	public ServerProtocolWorker(Server server) {
+	public ServerProtocolWorker(NetServer server) {
 		this.server = server;
 	}
 	

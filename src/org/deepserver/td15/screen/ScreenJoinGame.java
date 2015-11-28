@@ -7,7 +7,6 @@ public class ScreenJoinGame extends ScreenStartGame {
 	public ScreenJoinGame(Client client) {
 		super(client);
 		networked=true;
-		// connect to server
+		
 	}
-
 }

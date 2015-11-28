@@ -5,9 +5,9 @@ import org.apache.log4j.Logger;
 public class ClientProtocolWorker {
 	private static Logger logger = Logger.getLogger(ClientProtocolWorker.class);
 	
-	private Client client;
+	private NetClient client;
 	
-	public ClientProtocolWorker(Client client) {
+	public ClientProtocolWorker(NetClient client) {
 		this.client = client;
 	}
 	
