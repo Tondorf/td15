@@ -198,8 +198,8 @@ public class Client {
 				List<Integer> rights = Arrays.asList(333,40,114);
 				List<Integer> esc = Arrays.asList(1,9);
 				List<Integer> enter = Arrays.asList(57,28,65,36);
-				List<Integer> bkspc = Arrays.asList(22);
-
+				List<Integer> bkspc = Arrays.asList(22,14);
+				
 				if (ups.contains(scancode)) // up
 					is.forward = (action != 0);
 				if (downs.contains(scancode)) // down
