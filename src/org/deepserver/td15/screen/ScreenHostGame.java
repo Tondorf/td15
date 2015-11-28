@@ -8,7 +8,12 @@ public class ScreenHostGame extends ScreenStartGame {
 		super(client);
 		networked=true;
 	
-		netServer = new NetServer();
+		netServer = new NetServer(this);
 		netServer.bindAndStart(9090);
+		
+	}
+	
+	public void clientActionReceived(byte[] action) {
 	}
 }
+

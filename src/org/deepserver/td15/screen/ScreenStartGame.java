@@ -9,21 +9,28 @@ import org.deepserver.td15.monster.MonsterSprite;
 import org.joml.Vec2;
 
 public class ScreenStartGame extends Screen {
-	public final int monsterCount=200;
-	
+	public final int monsterCount = 200;
+
 	public ScreenStartGame(Client client) {
 		super(client);
 
-		MonsterPlayer player=new MonsterPlayer(world);
-		player.world = world;
-		player.position = new Vec2(0f, 0f);
-		world.add(player);
+		init();
+
+		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), null);
+		world.add(enemy);
 
 		for (int i = 0; i < monsterCount; i++) {
 			Monster q = new MonsterSprite(world, world.getPosInsideCircle());
 			world.add(q);
 		}
 		addRockCircle(world, world.rockRadius);
+	}
+
+	protected void init() {
+		MonsterPlayer player = new MonsterPlayer(world);
+		player.world = world;
+		player.position = new Vec2(0f, 0f);
+		world.add(player);
 	}
 
 	private void addRockCircle(World world, float rockRadius) {
@@ -45,7 +52,7 @@ public class ScreenStartGame extends Screen {
 	private double deg2rad(double n) {
 		return n * Math.PI / 180d;
 	}
-	
+
 	@Override
 	public void escape() {
 		
