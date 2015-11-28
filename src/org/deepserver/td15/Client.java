@@ -132,7 +132,6 @@ public class Client {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			windowWidth = screenSize.width;
 			windowHeight = screenSize.height;
-			
 		}
 	}
 

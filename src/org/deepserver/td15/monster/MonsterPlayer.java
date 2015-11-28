@@ -37,8 +37,7 @@ public class MonsterPlayer extends Monster {
 		super.action(delta, is);
 
 		if (is.firing) {
-			// MonsterShot shot = new MonsterShot(world,true);
-			// shot.position = new Vec3(position);
+			MonsterShot shot = new MonsterShot(world, position);
 			//
 			// Vec3 o=new Vec3(orientation.getLeft());
 			// o.mul(gunOffsetX);
