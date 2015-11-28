@@ -7,7 +7,11 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class Server {
+	private static Logger logger = Logger.getLogger(Server.class);
+	
 	private static final String CHARSET_NAME = "UTF-8";
 	private static final int MAX_CLIENTS = 1000;
 	
@@ -20,7 +24,7 @@ public class Server {
 	
 	public Server() {
 		if (!Charset.isSupported(CHARSET_NAME)) {
-			System.err.println("Charset is not supported - fall back to default");
+			logger.error("Charset is not supported - fall back to default");
 			this.charset = Charset.defaultCharset();
 		} else {
 			this.charset = Charset.forName(CHARSET_NAME);
@@ -31,6 +35,7 @@ public class Server {
 	}
 
 	public void bindAndStart(int port) {
+		logger.info("Bind server to port " + port);
 		this.charset = getCharset();
 		
 		try {
@@ -44,6 +49,7 @@ public class Server {
 	}
 	
 	public void stop() {
+		logger.info("Server is going down...");
 		final Thread mainThread = Thread.currentThread();
 		
 		try {
@@ -90,6 +96,8 @@ public class Server {
 		Client client = new Client(clientID, clientSocket, protocolWorker, charset);
 		client.getReader().start();
 		clients.put(clientID, client);
+		
+		logger.info("Succesfully added new client #" + clientID);
 	}
 	
 	public synchronized int generateClientID() {
@@ -98,6 +106,8 @@ public class Server {
 	}
 	
 	public synchronized void killClientHandler(int clientID) {
+		logger.info("Killing client #" + clientID);
+		
 		Client client = clients.get(clientID);
 		client.kill();
 		
