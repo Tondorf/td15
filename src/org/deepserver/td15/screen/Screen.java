@@ -23,6 +23,8 @@ public abstract class Screen {
 	public AudioManager audio;
 	
     protected FloatBuffer fb = BufferUtils.createFloatBuffer(16); 
+    
+    protected long clientID = -1L;
 
 	public Screen(Client client) {
 		this.client=client;
@@ -50,6 +52,7 @@ public abstract class Screen {
 		}
 		
 		if (networked && netClient != null) {
+			
 			// TODO: serialize InputStatus and send it
 			// netClient.sendServer(is.zip);
 		}
