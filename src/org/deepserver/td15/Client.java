@@ -354,7 +354,7 @@ public class Client {
 
 			glfwSwapBuffers(window);
 			
-			System.err.println(deltaTime);
+			//System.err.println(deltaTime);
 
 			deltaTime = glfwGetTime() - lastTime;
 			lastTime += deltaTime;
