@@ -141,6 +141,13 @@ public class AudioManager {
 				}
 			}.start();
 			break;
+		case PAIN:
+			new Thread() {
+				public void run() {
+					playOGG("pain", true);
+				}
+			}.start();
+			break;
 		default:
 			break;
 		}
