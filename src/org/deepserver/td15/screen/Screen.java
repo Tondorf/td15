@@ -62,7 +62,7 @@ public abstract class Screen {
 		
 		if (networked && netServer != null) {
 			try {
-				netClient.sendServer(world.toBytes());
+				netServer.sendClients(world.toBytes());
 			} catch (IOException e) {
 				logger.error("Server could not send world (error: " + e.getMessage() + ")");
 			}
