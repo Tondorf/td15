@@ -144,7 +144,7 @@ public class AudioManager {
 		case PAIN:
 			new Thread() {
 				public void run() {
-					playOGG("pain", true);
+					playOGG("pain", false);
 				}
 			}.start();
 			break;

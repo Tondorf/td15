@@ -136,9 +136,9 @@ public class MonsterPlayer extends MonsterSprite {
 	public void destroy() {
 		position=world.getPosInsideCircle();
 		
-		world.screen.audio.play(SoundEffect.KILL);
-		v=0;
+		world.screen.audio.play(SoundEffect.PAIN);
 		
+		v=0;
 	}
 	
 	
