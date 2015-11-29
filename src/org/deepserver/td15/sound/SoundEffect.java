@@ -11,7 +11,8 @@ public enum SoundEffect {
 	MUSIC,
 	FRR,
 	BREMSE,
-	CONFIRM;
+	CONFIRM, 
+	PAIN;
 
 	HashMap<SoundEffect,Integer> lengths = new HashMap();
 
