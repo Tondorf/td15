@@ -6,17 +6,24 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
+import org.deepserver.td15.screen.Screen;
 
 public class NetClient {
 	private static Logger logger = Logger.getLogger(NetClient.class);
 
 	private Socket serverSocket;
 	private ServerConnection serverConnection;
+	
+	private Screen screen;
+	
+	public NetClient(Screen screen) {
+		this.screen = screen;
+	}
 
 	public void bindAndStart(String hostname, int port) {
 		try {
 			serverSocket = new Socket(hostname, port);
-			ClientProtocolWorker protocolWorker = new ClientProtocolWorker(this);
+			ClientProtocolWorker protocolWorker = new ClientProtocolWorker(this, screen);
 			serverConnection = new ServerConnection(serverSocket, protocolWorker);
 		} catch (UnknownHostException e) {
 			logger.error(e);

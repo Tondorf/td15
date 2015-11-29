@@ -1,16 +1,21 @@
 package org.deepserver.td15.screen;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
 
+import org.apache.log4j.Logger;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
+import org.deepserver.td15.monster.Monster;
+import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.network.client.NetClient;
 import org.deepserver.td15.network.server.NetServer;
 import org.deepserver.td15.sound.AudioManager;
 import org.lwjgl.BufferUtils;
 
 public abstract class Screen {
+	private static Logger logger = Logger.getLogger(Screen.class);
 	
 	public boolean shade3d=true;
 	
@@ -32,16 +37,9 @@ public abstract class Screen {
 		this.audio = AudioManager.getInstance();
 	}
 	
-	public void actionFromClient(int clientID, InputStatus is) {
-		if (netServer != null) {
-			// TODO: update world
-		}
-	}
-	
-	public void updateFromServer(/* unzipped world */) {
-		if (netClient != null) {
-			// TODO: update world
-		}
+	public void newWorldFromServer(byte[] compressedWorld) {
+		logger.info("client received new world");
+		// TODO: update world
 	}
 	
 	public void action(double delta, InputStatus is) {
@@ -52,16 +50,22 @@ public abstract class Screen {
 		}
 		
 		if (networked && netClient != null) {
-			
-			// TODO: serialize InputStatus and send it
-			// netClient.sendServer(is.zip);
+			MonsterPlayer m = (MonsterPlayer) world.monsters.get(clientID);
+			try {
+				netClient.sendServer(m.toBytes());
+			} catch (IOException e) {
+				logger.error("Client could not send his monster (error: " + e.getMessage() + ")");
+			}
 		}
 				
 		world.action(delta,is);
 		
 		if (networked && netServer != null) {
-			// TODO: serialize me the world
-			// netServer.sendClients(world.zip);
+			try {
+				netClient.sendServer(world.toBytes());
+			} catch (IOException e) {
+				logger.error("Server could not send world (error: " + e.getMessage() + ")");
+			}
 		}
 	}
 	

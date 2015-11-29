@@ -19,6 +19,9 @@ public class ScreenHostGame extends ScreenStartGame {
 	}
 	
 	public void clientActionReceived(int clientID, byte[] action) {
+		logger.info("received message from client #" + clientID);
+		
+		// TODO: update world
 	}
 	
 	public void clientAuthenticate(int clientID, String username) {
