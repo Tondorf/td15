@@ -14,7 +14,7 @@ import org.joml.Vec3;
 public class MonsterPlayer extends MonsterSprite {
 
 
-	protected final float accel = 0.6f;
+	protected final float accel = 6f;
 	protected final float rotationSpeed = 1.0f;
 	protected final long shotDelay = 200;
 
@@ -73,18 +73,18 @@ public class MonsterPlayer extends MonsterSprite {
 			}
 		}
 
-//		if (is.firing) {
-//			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
-//			shot.sourceId=id;
-//			shot.orientation = new Matrix2(orientation);
-//			shot.position.add(orientation.getAhead().mul(this.getRadius()+shot.getRadius()));
-//			long now = System.currentTimeMillis();
-//			if((lastShotTimestamp+shotDelay) < now) {
-//				world.add(shot);
-//				world.screen.audio.play(SoundEffect.SHOT);
-//				lastShotTimestamp = now;
-//			}
-//		}
+		if (is.firing) {
+			MonsterShot shot = new MonsterShot(world, new Vec2(position),v);
+			shot.sourceId=id;
+			shot.orientation = new Matrix2(orientation);
+			shot.position.add(orientation.getAhead().mul(this.getRadius()+shot.getRadius()));
+			long now = System.currentTimeMillis();
+			if((lastShotTimestamp+shotDelay) < now) {
+				world.add(shot);
+				world.screen.audio.play(SoundEffect.SHOT);
+				lastShotTimestamp = now;
+			}
+		}
 
 		if (is.left) {
 			orientation.mul(new Matrix2().rotation(rotationSpeed * (float) delta)); // in a flat, flat world ... always rotate around
@@ -95,30 +95,30 @@ public class MonsterPlayer extends MonsterSprite {
 			orientation.mul(new Matrix2().rotation(-rotationSpeed * (float) delta));
 		} 
 
-//		if (is.forward) {
+		if (is.forward) {
 			v+=accel*(float)delta;
-//			vollgebremst = false;
-//		}
-//
-//		if (is.backward) {
-//			v-=accel*(float)delta;
-//		}
-//
-//		if (is.fullBreak) {
-//			v *= 0.9f;
-//			if (v < 0.05f) {
-//				v = 0f;
-//			} else {
-//				if (!vollgebremst) {
-//					world.screen.audio.play(SoundEffect.BREMSE);
-//					vollgebremst = true;
-//				}
-//			}
-//		}		
-//		
-//		if (v>maxSpeed) {
-//			v=maxSpeed;
-//		}
+			vollgebremst = false;
+		}
+
+		if (is.backward) {
+			v-=accel*(float)delta;
+		}
+
+		if (is.fullBreak) {
+			v *= 0.9f;
+			if (v < 0.05f) {
+				v = 0f;
+			} else {
+				if (!vollgebremst) {
+					world.screen.audio.play(SoundEffect.BREMSE);
+					vollgebremst = true;
+				}
+			}
+		}		
+		
+		if (v>maxSpeed) {
+			v=maxSpeed;
+		}
 		
 		if (v<0) {
 			v=0;
