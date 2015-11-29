@@ -9,7 +9,9 @@ public enum SoundEffect {
 	FLY,
 	ENGINE,
 	MUSIC,
-	FRR;
+	FRR,
+	BREMSE,
+	CONFIRM;
 
 	HashMap<SoundEffect,Integer> lengths = new HashMap();
 

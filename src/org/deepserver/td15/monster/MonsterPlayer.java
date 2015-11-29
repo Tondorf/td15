@@ -59,6 +59,8 @@ public class MonsterPlayer extends MonsterSprite {
 		org.lwjgl.opengl.GL11.glPopMatrix();
 	}
 		
+	
+	private boolean vollgebremst = false;
 	@Override
 	public void action(double delta, InputStatus is) {
 		super.action(delta, is);
@@ -95,6 +97,7 @@ public class MonsterPlayer extends MonsterSprite {
 
 		if (is.forward) {
 			v+=accel*(float)delta;
+			vollgebremst = false;
 		}
 
 		if (is.backward) {
@@ -102,9 +105,15 @@ public class MonsterPlayer extends MonsterSprite {
 		}
 
 		if (is.fullBreak) {
-			v *= 0.7f;
-			if (v < 0.05f)
+			v *= 0.9f;
+			if (v < 0.05f) {
 				v = 0f;
+			} else {
+				if (!vollgebremst) {
+					world.screen.audio.play(SoundEffect.BREMSE);
+					vollgebremst = true;
+				}
+			}
 		}		
 		
 		if (v>maxSpeed) {
