@@ -3,9 +3,7 @@ package org.deepserver.td15.monster;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
 import org.joml.Matrix2;
-import org.joml.Matrix3;
 import org.joml.Vec2;
-import org.joml.Vec3;
 
 public class Monster {
 	protected final float typicalRadius = 0.5f;

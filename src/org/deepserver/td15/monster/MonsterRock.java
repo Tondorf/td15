@@ -2,7 +2,6 @@ package org.deepserver.td15.monster;
 
 import org.apache.log4j.Logger;
 import org.deepserver.td15.World;
-import org.deepserver.td15.sound.AudioManager;
 import org.joml.Vec2;
 
 public class MonsterRock extends MonsterSprite {

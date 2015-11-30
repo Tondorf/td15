@@ -6,8 +6,6 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.security.auth.callback.Callback;
-
 import org.apache.log4j.Logger;
 import org.deepserver.td15.screen.ScreenHostGame;
 

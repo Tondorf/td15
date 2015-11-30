@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.deepserver.td15.Client;
 import org.deepserver.td15.InputStatus;
 import org.deepserver.td15.World;
-import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterPlayer;
 import org.deepserver.td15.network.client.NetClient;
 import org.deepserver.td15.network.server.NetServer;

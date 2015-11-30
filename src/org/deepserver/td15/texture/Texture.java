@@ -148,12 +148,12 @@ public class Texture {
 			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
 					texWidth, texHeight, 4, null);
 			texImage = new BufferedImage(glAlphaColorModel, raster, false,
-					new Hashtable());
+					new Hashtable<>());
 		} else {
 			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
 					texWidth, texHeight, 3, null);
 			texImage = new BufferedImage(glColorModel, raster, false,
-					new Hashtable());
+					new Hashtable<>());
 		}
 
 		// copy the source image into the produced image

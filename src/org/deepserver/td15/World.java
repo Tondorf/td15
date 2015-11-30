@@ -1,25 +1,16 @@
 package org.deepserver.td15;
 
-import static org.lwjgl.opengl.GL11.GL_POINTS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11.glLoadMatrixf;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
-import java.util.List;
-
 import org.deepserver.td15.monster.Monster;
 import org.deepserver.td15.monster.MonsterRock;
 import org.deepserver.td15.screen.Screen;
-import org.joml.Matrix2;
 import org.joml.Matrix4;
 import org.joml.Vec2;
 import org.joml.Vec3;
