@@ -77,7 +77,6 @@ public class World {
 		listOfdeadMonsters.clear();
 	}
 
-	
 	public void draw() {
 		// ArrayList<Monster> next=new ArrayList<Monster>();
 
@@ -86,8 +85,6 @@ public class World {
 		// }
 		// list=next;
 
-
-		
 		for (Monster m : listOfnewMonsters)
 			monsters.put(m.id, m);
 		listOfnewMonsters.clear();
@@ -113,7 +110,7 @@ public class World {
 
 	public void drawCamera() {
 		viewMatrix.setLookAt(cameraEye, cameraLookAt, cameraUp).get(fb); // y is
-																			// up
+		// up
 		glLoadMatrixf(fb);
 	}
 
@@ -127,10 +124,8 @@ public class World {
 			bout.write(ByteBuffer.allocate(4).putLong(m.id).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.x).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.position.y).array());
-			bout.write(ByteBuffer.allocate(4)
-					.putFloat(m.orientation.getAhead().x).array());
-			bout.write(ByteBuffer.allocate(4)
-					.putFloat(m.orientation.getAhead().y).array());
+			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().x).array());
+			bout.write(ByteBuffer.allocate(4).putFloat(m.orientation.getAhead().y).array());
 			bout.write(ByteBuffer.allocate(4).putFloat(m.zLayer).array());
 			bout.write(ByteBuffer.allocate(4).putLong(m.sourceId).array());
 		}

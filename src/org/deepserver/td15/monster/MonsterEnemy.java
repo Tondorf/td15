@@ -42,17 +42,18 @@ public class MonsterEnemy extends MonsterSprite {
 			Vec2 playerAhead = orientation.getAhead();
 
 			// Thats my idea. Not proofed yet
-			double angle = Math.acos((toTargetVector.x * playerAhead.x) + (toTargetVector.y * playerAhead.y));
-			
-			if(angle > 0){
+			double angle = Math.acos((toTargetVector.x * playerAhead.x)
+					+ (toTargetVector.y * playerAhead.y));
+
+			if (angle > 0) {
 				turnRight = false;
 				turnLeft = true;
-			}else{
+			} else {
 				turnRight = true;
 				turnLeft = false;
 			}
-			
-			if(Math.abs(angle)<1){ //Tolerance for very low angles
+
+			if (Math.abs(angle) < 1) { // Tolerance for very low angles
 				turnRight = true;
 				turnLeft = true;
 			}

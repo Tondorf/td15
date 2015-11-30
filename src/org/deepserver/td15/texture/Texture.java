@@ -49,14 +49,12 @@ public class Texture {
 	private float hRatio = 0;
 
 	private static ColorModel glAlphaColorModel = new ComponentColorModel(
-			ColorSpace.getInstance(ColorSpace.CS_sRGB),
-			new int[] { 8, 8, 8, 8 }, true, false,
+			ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8, 8 }, true, false,
 			ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 
 	private static ColorModel glColorModel = new ComponentColorModel(
-			ColorSpace.getInstance(ColorSpace.CS_sRGB),
-			new int[] { 8, 8, 8, 0 }, false, false, ComponentColorModel.OPAQUE,
-			DataBuffer.TYPE_BYTE);
+			ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8, 0 }, false, false,
+			ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
 
 	private Texture() {
 	}
@@ -79,8 +77,8 @@ public class Texture {
 			img = new ImageIcon(ref).getImage();
 		}
 
-		BufferedImage bufferedImage = new BufferedImage(img.getWidth(null),
-				img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null),
+				BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bufferedImage.getGraphics();
 		g.drawImage(img, 0, 0, null);
 		g.dispose();
@@ -93,18 +91,16 @@ public class Texture {
 		glGenTextures(textureIDBuffer);
 		texId = textureIDBuffer.get(0);
 
-		int srcPixelFormat = (bufferedImage.getColorModel().hasAlpha()) ? GL_RGBA
-				: GL_RGB;
+		int srcPixelFormat = (bufferedImage.getColorModel().hasAlpha()) ? GL_RGBA : GL_RGB;
 
 		glBindTexture(GL_TEXTURE_2D, texId);
 		ByteBuffer textureBuffer = convertImageData(bufferedImage); // ,texture);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-				get2Fold(bufferedImage.getWidth()),
-				get2Fold(bufferedImage.getHeight()), 0, srcPixelFormat,
-				GL_UNSIGNED_BYTE, textureBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, get2Fold(bufferedImage.getWidth()),
+				get2Fold(bufferedImage.getHeight()), 0, srcPixelFormat, GL_UNSIGNED_BYTE,
+				textureBuffer);
 	}
 
 	public static Texture load(String ref) throws IOException {
@@ -121,8 +117,8 @@ public class Texture {
 	}
 
 	private ByteBuffer convertImageData(BufferedImage bufferedImage) { // ,Texture
-																		// texture)
-																		// {
+		// texture)
+		// {
 		ByteBuffer imageBuffer;
 		WritableRaster raster;
 		BufferedImage texImage;
@@ -145,32 +141,28 @@ public class Texture {
 		// create a raster that can be used by OpenGL as a source
 		// for a texture
 		if (bufferedImage.getColorModel().hasAlpha()) {
-			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-					texWidth, texHeight, 4, null);
-			texImage = new BufferedImage(glAlphaColorModel, raster, false,
-					new Hashtable<>());
+			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texWidth, texHeight, 4,
+					null);
+			texImage = new BufferedImage(glAlphaColorModel, raster, false, new Hashtable<>());
 		} else {
-			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-					texWidth, texHeight, 3, null);
-			texImage = new BufferedImage(glColorModel, raster, false,
-					new Hashtable<>());
+			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texWidth, texHeight, 3,
+					null);
+			texImage = new BufferedImage(glColorModel, raster, false, new Hashtable<>());
 		}
 
 		// copy the source image into the produced image
-		Graphics2D g = (Graphics2D)texImage.getGraphics();
+		Graphics2D g = (Graphics2D) texImage.getGraphics();
 		g.setColor(new Color(0f, 0f, 0f, 0f));
 		g.fillRect(0, 0, texWidth, texHeight);
 		AffineTransform at = new AffineTransform();
-        at.concatenate(AffineTransform.getScaleInstance(1, -1));
-        at.concatenate(AffineTransform.getTranslateInstance(0, -bufferedImage.getHeight()));
-        g.transform(at);
+		at.concatenate(AffineTransform.getScaleInstance(1, -1));
+		at.concatenate(AffineTransform.getTranslateInstance(0, -bufferedImage.getHeight()));
+		g.transform(at);
 		g.drawImage(bufferedImage, 0, 0, null);
-	
-		
+
 		// build a byte buffer from the temporary image
 		// that be used by OpenGL to produce a texture.
-		byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer())
-				.getData();
+		byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer()).getData();
 
 		imageBuffer = ByteBuffer.allocateDirect(data.length);
 		imageBuffer.order(ByteOrder.nativeOrder());
@@ -209,7 +201,7 @@ public class Texture {
 		}
 		return wRatio;
 	}
-	
+
 	public float getHeight() {
 		if (hRatio == 0) {
 			int texHeight = 2;

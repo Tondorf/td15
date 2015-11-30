@@ -22,13 +22,13 @@ public class Monster {
 	public float zLayer = 0;
 
 	public Monster(World world) {
-		position=new Vec2();
-		orientation=new Matrix2();
+		position = new Vec2();
+		orientation = new Matrix2();
 		if (world != null) {
 			// world is only given when created in local mode or on the server:
-			this.world=world;
-			id=nextId++;
-			sourceId=id;
+			this.world = world;
+			id = nextId++;
+			sourceId = id;
 		}
 	}
 
@@ -36,12 +36,13 @@ public class Monster {
 	}
 
 	public void draw() {
-	
+
 	}
-	
-	
-	public boolean canCrash() { return true; }
-	
+
+	public boolean canCrash() {
+		return true;
+	}
+
 	public void copyFrom(Monster m) {
 		this.id = m.id;
 		this.sourceId = m.sourceId;
@@ -49,7 +50,7 @@ public class Monster {
 		this.orientation = m.orientation;
 		this.zLayer = m.zLayer;
 	}
-	
+
 	public float getRadius() {
 		return typicalRadius;
 	}

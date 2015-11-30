@@ -18,8 +18,7 @@ public class MonsterTextLine extends Monster {
 
 	ArrayList<MonsterPixel> myMonsters = new ArrayList<MonsterPixel>();
 
-	public MonsterTextLine(World world, String text, int slot,
-			PixelFont pixelFont) {
+	public MonsterTextLine(World world, String text, int slot, PixelFont pixelFont) {
 		super(world);
 		this.text = text;
 		this.slot = slot;
@@ -40,10 +39,9 @@ public class MonsterTextLine extends Monster {
 			for (char c : text.toCharArray()) {
 				ArrayList<Vec2> list = pixelFont.getPixels(c);
 				for (Vec2 v : list) {
-					Vec2 w = new Vec2(v.x + x, v.y + slot
-							* pixelFont.getHeight());
-					MonsterPixel m = new MonsterPixel(world,
-							w.mul(MonsterPixel.initialSize * factor));
+					Vec2 w = new Vec2(v.x + x, v.y + slot * pixelFont.getHeight());
+					MonsterPixel m = new MonsterPixel(world, w.mul(MonsterPixel.initialSize
+							* factor));
 					myMonsters.add(m);
 				}
 				x += pixelFont.getWidth(c) + pixelFont.characterSpacing;

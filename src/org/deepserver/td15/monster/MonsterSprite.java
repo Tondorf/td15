@@ -43,7 +43,7 @@ public class MonsterSprite extends Monster {
 		position.x = v.x;
 		position.y = v.y;
 	}
-	
+
 	public String getTextureName() {
 		return "stein.png";
 	}
@@ -53,10 +53,10 @@ public class MonsterSprite extends Monster {
 		super.draw();
 
 		Matrix4 q = new Matrix4(orientation);
-		
+
 		q.get(fb);
 		fb.rewind();
-		
+
 		glPushMatrix();
 		// first rotate, then translate (reverse order on stack)
 		glTranslatef(position.x, position.y, zLayer);
@@ -64,24 +64,24 @@ public class MonsterSprite extends Monster {
 
 		// Maybe load prior to draw() in order to avoid latencies:
 		Texture t = null;
-		String fn="res/"+getTextureName();
+		String fn = "res/" + getTextureName();
 		try {
 			t = Texture.load(fn);
 		} catch (IOException ex) {
-			System.err.println("Could not load "+fn);
+			System.err.println("Could not load " + fn);
 			System.err.println(ex.getMessage());
 		}
 		if (t != null) {
-//			glEnable(GL_TEXTURE_2D);
+			// glEnable(GL_TEXTURE_2D);
 			glDisable(GL_DEPTH_TEST);
-//			
+			//
 			glBindTexture(GL_TEXTURE_2D, t.getTextureID());
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		}
-	
+
 		glBegin(GL_QUADS);
 		{
 
@@ -90,23 +90,23 @@ public class MonsterSprite extends Monster {
 			if (t != null)
 				glTexCoord2f(t.getWidth(), 0);
 			glVertex3f(-size, -size, 0);
-			
+
 			if (t != null)
 				glTexCoord2f(0, 0);
 			glVertex3f(size, -size, 0);
-			
+
 			if (t != null)
 				glTexCoord2f(0, t.getHeight());
 			glVertex3f(size, size, 0);
-			
+
 			if (t != null)
 				glTexCoord2f(t.getWidth(), t.getHeight());
 			glVertex3f(-size, size, 0);
 		}
 		glEnd();
 
-		if (t!=null) {
-//			glDisable(GL_TEXTURE_2D);
+		if (t != null) {
+			// glDisable(GL_TEXTURE_2D);
 			glEnable(GL_DEPTH_TEST);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}

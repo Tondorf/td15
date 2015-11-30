@@ -34,10 +34,8 @@ import java.nio.FloatBuffer;
  * to transform it. The matrix is column-major to match OpenGL's interpretation,
  * and it looks like this:
  * <p>
- * m00 m10 m20</br>
- * m01 m11 m21</br>
- * m02 m12 m22</br>
- * 
+ * m00 m10 m20</br> m01 m11 m21</br> m02 m12 m22</br>
+ *
  * @author Richard Greenlees
  * @author Kai Burjack
  */
@@ -79,7 +77,7 @@ public class Matrix2 implements Serializable, Externalizable {
 	/**
 	 * Multiplies this matrix by the supplied matrix. This matrix will be the
 	 * left-sided one.
-	 * 
+	 *
 	 * @param right
 	 * @return this
 	 */
@@ -99,8 +97,9 @@ public class Matrix2 implements Serializable, Externalizable {
 			dest.m10 = left.m00 * right.m10 + left.m10 * right.m11;
 			dest.m11 = left.m01 * right.m10 + left.m11 * right.m11;
 		} else {
-			dest.set(left.m00 * right.m00 + left.m10 * right.m01, left.m01 * right.m00 + left.m11 * right.m01,
-					left.m00 * right.m10 + left.m10 * right.m11, left.m01 * right.m10 + left.m11 * right.m11);
+			dest.set(left.m00 * right.m00 + left.m10 * right.m01, left.m01 * right.m00 + left.m11
+					* right.m01, left.m00 * right.m10 + left.m10 * right.m11, left.m01 * right.m10
+					+ left.m11 * right.m11);
 		}
 	}
 
@@ -108,9 +107,7 @@ public class Matrix2 implements Serializable, Externalizable {
 	 * Sets the values within this matrix to the supplied float values. The
 	 * result looks like this:
 	 * <p>
-	 * m00, m10, m20</br>
-	 * m01, m11, m21</br>
-	 * m02, m12, m22</br>
+	 * m00, m10, m20</br> m01, m11, m21</br> m02, m12, m22</br>
 	 */
 	public Matrix2 set(float m00, float m01, float m10, float m11) {
 		this.m00 = m00;
@@ -124,12 +121,10 @@ public class Matrix2 implements Serializable, Externalizable {
 	 * Sets the values in this matrix based on the supplied float array. The
 	 * result looks like this:
 	 * <p>
-	 * 0, 3, 6</br>
-	 * 1, 4, 7</br>
-	 * 2, 5, 8</br>
-	 * 
+	 * 0, 3, 6</br> 1, 4, 7</br> 2, 5, 8</br>
+	 *
 	 * Only uses the first 9 values, all others are ignored
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix2 set(float m[]) {
@@ -197,7 +192,8 @@ public class Matrix2 implements Serializable, Externalizable {
 	}
 
 	public String toString() {
-		return "Matrix3 { " + this.m00 + ", " + this.m10 + ",\n" + "           " + this.m01 + ", " + this.m11 + "}\n";
+		return "Matrix3 { " + this.m00 + ", " + this.m10 + ",\n" + "           " + this.m01 + ", "
+				+ this.m11 + "}\n";
 
 	}
 
@@ -207,7 +203,7 @@ public class Matrix2 implements Serializable, Externalizable {
 	 * <p>
 	 * This is the reverse method of {@link #set(Matrix2)} and allows to obtain
 	 * intermediate calculation results when chaining multiple transformations.
-	 * 
+	 *
 	 * @param dest
 	 *            the destination matrix
 	 * @return this
@@ -261,7 +257,7 @@ public class Matrix2 implements Serializable, Externalizable {
 	 * scaling matrix, then the new matrix will be <code>M * S</code>. So when
 	 * transforming a vector <code>v</code> with the new matrix by using
 	 * <code>M * S * v</code> , the scaling will be applied first!
-	 * 
+	 *
 	 * @param x
 	 *            the factor of the x component
 	 * @param y
@@ -289,9 +285,9 @@ public class Matrix2 implements Serializable, Externalizable {
 	 * scaling matrix, then the new matrix will be <code>M * S</code>. So when
 	 * transforming a vector <code>v</code> with the new matrix by using
 	 * <code>M * S * v</code> , the scaling will be applied first!
-	 * 
+	 *
 	 * @see #scale(float, float, float)
-	 * 
+	 *
 	 * @param xyz
 	 *            the factor for all components
 	 * @return this
@@ -302,7 +298,7 @@ public class Matrix2 implements Serializable, Externalizable {
 
 	/**
 	 * Set the given matrix <code>dest</code> to be a simple scale matrix.
-	 * 
+	 *
 	 * @param scale
 	 *            the scale applied to each dimension
 	 */
@@ -314,7 +310,7 @@ public class Matrix2 implements Serializable, Externalizable {
 
 	/**
 	 * Set this matrix to be a simple scale matrix.
-	 * 
+	 *
 	 * @param x
 	 *            the scale in x
 	 * @param y
@@ -333,11 +329,11 @@ public class Matrix2 implements Serializable, Externalizable {
 	/**
 	 * Set this matrix to a rotation matrix which rotates the given radians
 	 * about the given axis.
-	 * 
+	 *
 	 * From <a href=
-	 * "http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">
-	 * Wikipedia</a>
-	 * 
+	 * "http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle"
+	 * > Wikipedia</a>
+	 *
 	 * @return this
 	 */
 	public Matrix2 rotation(float angle) {
@@ -361,10 +357,10 @@ public class Matrix2 implements Serializable, Externalizable {
 	/**
 	 * Set the destination matrix to a rotation matrix which rotates the given
 	 * radians about a given axis.
-	 * 
+	 *
 	 * From <a href=
-	 * "http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle">
-	 * Wikipedia</a>
+	 * "http://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle"
+	 * > Wikipedia</a>
 	 */
 	public static void rotation(float angle, Matrix2 dest) {
 		float cos = (float) Math.cos(angle);

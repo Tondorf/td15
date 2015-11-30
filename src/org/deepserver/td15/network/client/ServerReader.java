@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 public class ServerReader extends Thread {
 	private static Logger logger = Logger.getLogger(ServerReader.class);
-	
+
 	private DataInputStream in;
 	private ClientProtocolWorker protocolWorker;
 

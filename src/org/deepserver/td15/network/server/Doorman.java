@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
  */
 public class Doorman extends Thread {
 	private static Logger logger = Logger.getLogger(Doorman.class);
-	
+
 	private NetServer server;
-	
+
 	public Doorman(NetServer server) {
 		this.server = server;
 	}
@@ -25,7 +25,7 @@ public class Doorman extends Thread {
 			try {
 				Socket clientSocket = server.getServerSocket().accept();
 				server.registerNewClient(clientSocket);
-				
+
 				logger.info("Accepted new client");
 			} catch (IOException e) {
 				logger.error(e);

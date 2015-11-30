@@ -4,16 +4,8 @@ import java.util.HashMap;
 
 public enum SoundEffect {
 
-	SHOT,
-	KILL,
-	FLY,
-	ENGINE,
-	MUSIC,
-	FRR,
-	BREMSE,
-	CONFIRM, 
-	PAIN;
+	SHOT, KILL, FLY, ENGINE, MUSIC, FRR, BREMSE, CONFIRM, PAIN;
 
-	HashMap<SoundEffect,Integer> lengths = new HashMap<>();
+	HashMap<SoundEffect, Integer> lengths = new HashMap<>();
 
 }

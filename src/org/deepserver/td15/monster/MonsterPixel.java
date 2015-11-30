@@ -76,8 +76,8 @@ public class MonsterPixel extends Monster {
 	}
 
 	@Override
-	public void action(double delta,InputStatus is) {
-		super.action(delta,is);
+	public void action(double delta, InputStatus is) {
+		super.action(delta, is);
 
 		if (direction != 0) {
 			if (time > duration) {
@@ -89,8 +89,7 @@ public class MonsterPixel extends Monster {
 				direction = 0;
 			} else {
 				if (direction == 1)
-					size = (float) (initialSize + time / duration
-							* (highligtedSize - initialSize));
+					size = (float) (initialSize + time / duration * (highligtedSize - initialSize));
 				else
 					size = (float) (highligtedSize - time / duration
 							* (highligtedSize - initialSize));
@@ -111,7 +110,7 @@ public class MonsterPixel extends Monster {
 		time = 0;
 		direction = -1;
 	}
-	
+
 	@Override
 	public void destroy() {
 	}

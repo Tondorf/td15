@@ -32,8 +32,7 @@ public class AudioManager {
 	private static Logger log = Logger.getLogger(AudioManager.class);
 
 	/**
-	 * I am a Singleton.
-	 * God, i loooooove design patterns <3
+	 * I am a Singleton. God, i loooooove design patterns <3
 	 */
 	private static AudioManager inst;
 
@@ -56,7 +55,6 @@ public class AudioManager {
 	protected ALDevice device;
 	protected ALCCapabilities caps;
 	protected ALContext context;
-
 
 	public static void main(String[] args) throws InterruptedException {
 		AudioManager am = new AudioManager();
@@ -155,7 +153,7 @@ public class AudioManager {
 
 	private void playOGG(String soundname, boolean stereo) {
 		STBVorbisInfo info = STBVorbisInfo.malloc();
-		ByteBuffer pcm = readVorbis("res/"+soundname+".ogg", 32 * 1024, info);
+		ByteBuffer pcm = readVorbis("res/" + soundname + ".ogg", 32 * 1024, info);
 
 		// generate buffers and sources
 		int buffer = alGenBuffers();
@@ -164,7 +162,8 @@ public class AudioManager {
 		checkALError();
 
 		// copy to buffer
-		alBufferData(buffer, stereo ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm, info.sample_rate());
+		alBufferData(buffer, stereo ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, pcm,
+				info.sample_rate());
 		checkALError();
 
 		// free vorbis info
@@ -182,7 +181,8 @@ public class AudioManager {
 		int frequency = alGetBufferi(buffer, AL_FREQUENCY);
 		int channels = alGetBufferi(buffer, AL_CHANNELS);
 		int bitsPerSample = alGetBufferi(buffer, AL_BITS);
-		double length = (1d * bufferSize) / (frequency * channels * (bitsPerSample / (stereo?16:8)));
+		double length = (1d * bufferSize)
+				/ (frequency * channels * (bitsPerSample / (stereo ? 16 : 8)));
 		int millis = (int) (length * 1000);
 		log.debug("AL_BUFFER: " + buffer);
 		log.debug("AL_SOURCE: " + source);
@@ -237,7 +237,8 @@ public class AudioManager {
 		return pcm;
 	}
 
-	private static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
+	private static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize)
+			throws IOException {
 		ByteBuffer buffer;
 		File file = new File(resource);
 
@@ -254,7 +255,8 @@ public class AudioManager {
 		} else {
 			buffer = BufferUtils.createByteBuffer(bufferSize);
 
-			InputStream source = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+			InputStream source = Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream(resource);
 			if (source == null)
 				throw new FileNotFoundException(resource);
 

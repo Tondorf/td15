@@ -12,12 +12,12 @@ import org.joml.Vec2;
 
 public class ScreenStartGame extends Screen {
 	public final int monsterCount = 200;
-	
+
 	public ScreenStartGame(Client client) {
 		super(client);
 
 		init();
-		
+
 		addRockCircle(world, world.rockRadius);
 	}
 
@@ -28,16 +28,16 @@ public class ScreenStartGame extends Screen {
 		}
 		MonsterSpace space = new MonsterSpace(world);
 		world.add(space);
-		
+
 		MonsterPlayer player = new MonsterPlayer(world);
 		player.world = world;
 		player.position = new Vec2(0f, 0f);
 		world.add(player);
-		
+
 		MonsterEnemy enemy = new MonsterEnemy(world, new Vec2(1f, 1f), player);
 		world.add(enemy);
 	}
-	
+
 	private void addRockCircle(World world, float rockRadius) {
 		double theta = 0; // angle that will be increased each loop
 		int X = 0; // x coordinate of circle center
@@ -60,7 +60,7 @@ public class ScreenStartGame extends Screen {
 
 	@Override
 	public void escape() {
-		
+
 		client.changeScreen2d(new ScreenStartup(client));
 		client.changeScreen3d(new ScreenStartupBackground(client));
 

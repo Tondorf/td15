@@ -26,20 +26,20 @@ import org.lwjgl.opengl.GL11;
 
 public class Client {
 
-	public final int mouseZerosToSkip=10;
-	
-	public float mouseSensitivity=8;
-	
+	public final int mouseZerosToSkip = 10;
+
+	public float mouseSensitivity = 8;
+
 	protected int windowWidth;
 	protected int windowHeight;
-	
+
 	protected GLFWErrorCallback errorCallback;
 	protected GLFWKeyCallback keyCallback;
 	protected GLFWCursorPosCallback mouseCallback;
 	protected GLFWMouseButtonCallback buttonCallback;
-	
-	protected InputStatus is=new InputStatus();
-	protected InputStatus empty=new InputStatus();
+
+	protected InputStatus is = new InputStatus();
+	protected InputStatus empty = new InputStatus();
 
 	protected double lastTime = 0;
 	protected double deltaTime = 0;
@@ -53,22 +53,22 @@ public class Client {
 	protected DoubleBuffer bx = BufferUtils.createDoubleBuffer(1);
 	protected DoubleBuffer by = BufferUtils.createDoubleBuffer(1);
 
-	protected double lastMouseX=0;
-	protected double lastMouseY=0;
-	protected boolean lastMouseIsValid=false;
-	
-	protected int lastRelativeX=0;
-	protected int lastRelativeY=0;
-	protected int zeroCounter=0;
-	
+	protected double lastMouseX = 0;
+	protected double lastMouseY = 0;
+	protected boolean lastMouseIsValid = false;
+
+	protected int lastRelativeX = 0;
+	protected int lastRelativeY = 0;
+	protected int zeroCounter = 0;
+
 	protected Screen screen3d;
 	protected Screen screen2d;
 
 	protected boolean keyFocus2d = true;
 
-	//protected float shadingFactor = 0.0f;
+	// protected float shadingFactor = 0.0f;
 	protected final float maxShadingFactor = 0.7f;
-	//protected final float shadingSpeed = 2f;
+	// protected final float shadingSpeed = 2f;
 	protected Floathing shadething = new Floathing(2.0f);
 
 	protected ArrayList<Screen> screenStack = new ArrayList<Screen>();
@@ -102,7 +102,7 @@ public class Client {
 			keyCallback.release();
 		}
 	}
-	
+
 	protected void init() {
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
@@ -116,32 +116,32 @@ public class Client {
 		// xxx select the default or highest resolution on start. Make this work
 		// on Mo's notebook!
 
-		window = glfwCreateWindow(windowWidth, windowHeight, "Hello World!",
-				Main.isWindowed ? NULL : glfwGetPrimaryMonitor(), NULL);
-		
+		window = glfwCreateWindow(windowWidth, windowHeight, "Hello World!", Main.isWindowed ? NULL
+				: glfwGetPrimaryMonitor(), NULL);
+
 		if (window == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
-		
-		if (Main.isClient  && Main.isWindowed) {
-			if (Main.isLeft) 
+
+		if (Main.isClient && Main.isWindowed) {
+			if (Main.isLeft)
 				glfwSetWindowPos(window, 50, 100);
 			else
-				glfwSetWindowPos(window, (1920/2)+50, 100);
+				glfwSetWindowPos(window, (1920 / 2) + 50, 100);
 		}
-		
+
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
 			@Override
-			public void invoke(long window, int key, int scancode, int action,int mods) {
-				List<Integer> ups = Arrays.asList(328,25,111);
-				List<Integer> downs = Arrays.asList(336,39,116);
-				List<Integer> lefts = Arrays.asList(331,38,113);
-				List<Integer> rights = Arrays.asList(333,40,114);
-				List<Integer> esc = Arrays.asList(1,9);
-				List<Integer> enter = Arrays.asList(57,28,65,36);
-				List<Integer> bkspc = Arrays.asList(22,14);
-				
+			public void invoke(long window, int key, int scancode, int action, int mods) {
+				List<Integer> ups = Arrays.asList(328, 25, 111);
+				List<Integer> downs = Arrays.asList(336, 39, 116);
+				List<Integer> lefts = Arrays.asList(331, 38, 113);
+				List<Integer> rights = Arrays.asList(333, 40, 114);
+				List<Integer> esc = Arrays.asList(1, 9);
+				List<Integer> enter = Arrays.asList(57, 28, 65, 36);
+				List<Integer> bkspc = Arrays.asList(22, 14);
+
 				if (ups.contains(scancode)) // up
 					is.forward = (action != 0);
 				if (downs.contains(scancode)) // down
@@ -156,14 +156,15 @@ public class Client {
 					is.fullBreak = (action != 0);
 
 				// key events:
-				if (esc.contains(scancode) && action==1 ) // esc
-					is.escapeEvent=true;
-				if (ups.contains(scancode) && action==1) // up
-					is.upEvent=true;
-				if (downs.contains(scancode) && action==1) // down
-					is.downEvent=true;
-				if (enter.contains(scancode) && action==1) // select=space or enter
-					is.selectEvent=true;
+				if (esc.contains(scancode) && action == 1) // esc
+					is.escapeEvent = true;
+				if (ups.contains(scancode) && action == 1) // up
+					is.upEvent = true;
+				if (downs.contains(scancode) && action == 1) // down
+					is.downEvent = true;
+				if (enter.contains(scancode) && action == 1) // select=space or
+					// enter
+					is.selectEvent = true;
 			}
 		});
 
@@ -173,59 +174,59 @@ public class Client {
 
 		GL.createCapabilities();
 		glEnable(GL_DEPTH_TEST);
-		
+
 		// nope: becomes *really* ugly when entering menu screen again ...
-		//glEnable(GL_TEXTURE_2D);
-		
+		// glEnable(GL_TEXTURE_2D);
+
 		glViewport(0, 0, windowWidth, windowHeight);
 
 		glMatrixMode(GL_PROJECTION);
-		projMatrix.setPerspective(45.0f, (float) windowWidth / windowHeight,
-				0.01f, 1000.0f).get(fb);
+		projMatrix.setPerspective(45.0f, (float) windowWidth / windowHeight, 0.01f, 1000.0f)
+				.get(fb);
 		glLoadMatrixf(fb);
 
 		glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	}
-	
+
 	protected void pollEvents(InputStatus is) {
-		is.leftButton =glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1)!=0;
-		is.rightButton=glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2)!=0;
-		
+		is.leftButton = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) != 0;
+		is.rightButton = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) != 0;
+
 		DoubleBuffer bx = BufferUtils.createDoubleBuffer(1);
 		DoubleBuffer by = BufferUtils.createDoubleBuffer(1);
-		
+
 		glfwGetCursorPos(window, bx, by);
-		
-		double mx=bx.get();
-		double my=by.get();
-		
+
+		double mx = bx.get();
+		double my = by.get();
+
 		if (lastMouseIsValid) {
-			int rx=(int)(mx-lastMouseX);
-			int ry=(int)(my-lastMouseY);
-			
-			if (rx==0 && ry==0) {
+			int rx = (int) (mx - lastMouseX);
+			int ry = (int) (my - lastMouseY);
+
+			if (rx == 0 && ry == 0) {
 				zeroCounter++;
-				if (zeroCounter>mouseZerosToSkip) {
-					is.mouseX=is.mouseY=0;
+				if (zeroCounter > mouseZerosToSkip) {
+					is.mouseX = is.mouseY = 0;
 				}
 			} else {
-				zeroCounter=0;
-				is.mouseX=rx;
-				is.mouseY=ry;
+				zeroCounter = 0;
+				is.mouseX = rx;
+				is.mouseY = ry;
 			}
 		}
 
-		lastMouseIsValid=true;
-		lastMouseX=mx;
-		lastMouseY=my;
+		lastMouseIsValid = true;
+		lastMouseX = mx;
+		lastMouseY = my;
 	}
-	
+
 	public void clearEvents() {
-		is.escapeEvent=false;
-		is.selectEvent=false;
+		is.escapeEvent = false;
+		is.selectEvent = false;
 	}
 
 	protected void clientLoop() {
@@ -236,11 +237,13 @@ public class Client {
 			glfwPollEvents();
 
 			pollEvents(is);
-			
+
 			if (keyFocus2d) {
-				screen2d.action(deltaTime,is);	  screen3d.action(deltaTime,empty);
+				screen2d.action(deltaTime, is);
+				screen3d.action(deltaTime, empty);
 			} else {
-				screen2d.action(deltaTime,empty); screen3d.action(deltaTime,is);				
+				screen2d.action(deltaTime, empty);
+				screen3d.action(deltaTime, is);
 			}
 
 			// ---------------------------- draw 3d world ---------------------
@@ -248,55 +251,54 @@ public class Client {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glMatrixMode(GL_MODELVIEW);
-			
-			
 
 			screen3d.drawCamera();
-			
+
 			glEnable(GL_TEXTURE_2D);
-//			glDisable(GL_DEPTH_TEST);
-					
+			// glDisable(GL_DEPTH_TEST);
+
 			screen3d.draw();
 
 			glDisable(GL_TEXTURE_2D);
-//			glEnable(GL_DEPTH_TEST);
-			
-			
-			
-//			// ---------------------------- draw shading rectangle when fading ---
-//			glClear(GL_DEPTH_BUFFER_BIT);
-//
-//			shadething.update(deltaTime, screen2d.shade3d?maxShadingFactor:0.0f);
-//			
-//			// draw translucent plane between 2d and 3d screen
-//			float shadingFactor = shadething.get();
-//			if (shadingFactor != 0.0f) {
-//				Matrix4 viewMatrix = new Matrix4();
-//				viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
-//						new Vec3(0f, 0f, 0f), new Vec3(0f, 1f, 0f)).get(fb); 
-//				glLoadMatrixf(fb);
-//				
-//				float size = 3;
-//
-//				glBegin(GL_QUADS);
-//				glColor4f(0.0f, 0.0f, 0.0f, shadingFactor);
-//				glVertex3f(size, -size, size);
-//				glVertex3f(size, size, size);
-//				glVertex3f(-size, size, size);
-//				glVertex3f(-size, -size, size);
-//				glEnd();
-//
-//			}
+			// glEnable(GL_DEPTH_TEST);
 
-			// -------------------------- draw 2d menu ----------------------------
+			// // ---------------------------- draw shading rectangle when
+			// fading ---
+			// glClear(GL_DEPTH_BUFFER_BIT);
+			//
+			// shadething.update(deltaTime,
+			// screen2d.shade3d?maxShadingFactor:0.0f);
+			//
+			// // draw translucent plane between 2d and 3d screen
+			// float shadingFactor = shadething.get();
+			// if (shadingFactor != 0.0f) {
+			// Matrix4 viewMatrix = new Matrix4();
+			// viewMatrix.setLookAt(new Vec3(0f, 0f, 5f),
+			// new Vec3(0f, 0f, 0f), new Vec3(0f, 1f, 0f)).get(fb);
+			// glLoadMatrixf(fb);
+			//
+			// float size = 3;
+			//
+			// glBegin(GL_QUADS);
+			// glColor4f(0.0f, 0.0f, 0.0f, shadingFactor);
+			// glVertex3f(size, -size, size);
+			// glVertex3f(size, size, size);
+			// glVertex3f(-size, size, size);
+			// glVertex3f(-size, -size, size);
+			// glEnd();
+			//
+			// }
+
+			// -------------------------- draw 2d menu
+			// ----------------------------
 			glClear(GL_DEPTH_BUFFER_BIT);
 
 			screen2d.drawCamera();
 			screen2d.draw();
 
 			glfwSwapBuffers(window);
-			
-			//System.err.println(deltaTime);
+
+			// System.err.println(deltaTime);
 
 			deltaTime = glfwGetTime() - lastTime;
 			lastTime += deltaTime;

@@ -15,39 +15,39 @@ import org.lwjgl.BufferUtils;
 
 public abstract class Screen {
 	private static Logger logger = Logger.getLogger(Screen.class);
-	
-	public boolean shade3d=true;
-	
-	public boolean networked=false;
+
+	public boolean shade3d = true;
+
+	public boolean networked = false;
 	protected NetServer netServer = null;
 	protected NetClient netClient = null;
 
 	public Client client;
 	protected World world;
 	public AudioManager audio;
-	
-    protected FloatBuffer fb = BufferUtils.createFloatBuffer(16); 
-    
-    protected long clientID = -1L;
+
+	protected FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+
+	protected long clientID = -1L;
 
 	public Screen(Client client) {
-		this.client=client;
+		this.client = client;
 		world = new World(this);
 		this.audio = AudioManager.getInstance();
 	}
-	
+
 	public void newWorldFromServer(byte[] compressedWorld) {
 		logger.info("client received new world");
 		// TODO: update world
 	}
-	
+
 	public void action(double delta, InputStatus is) {
-		if (is.escapeEvent) { 
-			is.escapeEvent=false;
+		if (is.escapeEvent) {
+			is.escapeEvent = false;
 
 			escape();
 		}
-		
+
 		if (networked && netClient != null) {
 			MonsterPlayer m = (MonsterPlayer) world.monsters.get(clientID);
 			try {
@@ -56,9 +56,9 @@ public abstract class Screen {
 				logger.error("Client could not send his monster (error: " + e.getMessage() + ")");
 			}
 		}
-				
-		world.action(delta,is);
-		
+
+		world.action(delta, is);
+
 		if (networked && netServer != null) {
 			try {
 				netServer.sendClients(world.toBytes());
@@ -67,16 +67,16 @@ public abstract class Screen {
 			}
 		}
 	}
-	
+
 	public void draw() {
 		world.draw();
 	}
-	
+
 	public void drawCamera() {
 		world.drawCamera();
 	}
-	
+
 	public void escape() {
-		
+
 	}
 }

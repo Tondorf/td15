@@ -13,9 +13,9 @@ public class NetClient {
 
 	private Socket serverSocket;
 	private ServerConnection serverConnection;
-	
+
 	private Screen screen;
-	
+
 	public NetClient(Screen screen) {
 		this.screen = screen;
 	}
@@ -52,7 +52,7 @@ public class NetClient {
 
 			// now start ServerReader
 			serverConnection.getReader().start();
-			
+
 			// first byte is the most significant byte
 			long id = 0L;
 			for (int i = 0; i < msg.length; i++) {

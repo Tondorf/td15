@@ -24,7 +24,7 @@ public class MonsterShot extends MonsterSprite {
 		super.action(delta, is);
 
 		Vec2 temp = new Vec2(orientation.getAhead());
-		temp.mul(speed*(float)delta);
+		temp.mul(speed * (float) delta);
 
 		position.add(temp);
 	}

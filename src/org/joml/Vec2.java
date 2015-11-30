@@ -35,157 +35,158 @@ import java.io.Serializable;
  */
 public class Vec2 implements Serializable, Externalizable {
 
-    public float x;
-    public float y;
+	public float x;
+	public float y;
 
-    public Vec2() {
-    }
+	public Vec2() {
+	}
 
-    public Vec2(float newX, float newY) {
-        x = newX;
-        y = newY;
-    }
+	public Vec2(float newX, float newY) {
+		x = newX;
+		y = newY;
+	}
 
-    public Vec2(Vec2 clone) {
-        x = clone.x;
-        y = clone.y;
-    }
+	public Vec2(Vec2 clone) {
+		x = clone.x;
+		y = clone.y;
+	}
 
-    public Vec2(Vec3 clone){
-    	x = clone.x;
-    	y = clone.y;
-    }
-    
-    /** Sets the X and Y attributes using the supplied float values */
-    public void set(float newX, float newY) {
-        x = newX;
-        y = newY;
-    }
+	public Vec2(Vec3 clone) {
+		x = clone.x;
+		y = clone.y;
+	}
 
-    /** Sets this Vector2 to be a clone of v */
-    public void set(Vec2 v) {
-        x = v.x;
-        y = v.y;
-    }
+	/** Sets the X and Y attributes using the supplied float values */
+	public void set(float newX, float newY) {
+		x = newX;
+		y = newY;
+	}
 
-    /** Stores the perpendicular of v in dest. Does not modify v */
-    public static void perpendicular(Vec2 v, Vec2 dest) {
-        dest.x = v.y;
-        dest.y = v.x * -1;
-    }
+	/** Sets this Vector2 to be a clone of v */
+	public void set(Vec2 v) {
+		x = v.x;
+		y = v.y;
+	}
 
-    /** Sets this Vector2 to be its perpendicular */
-    public void perpendicular() {
-        set(y, x * -1);
-    }
+	/** Stores the perpendicular of v in dest. Does not modify v */
+	public static void perpendicular(Vec2 v, Vec2 dest) {
+		dest.x = v.y;
+		dest.y = v.x * -1;
+	}
 
-    /** Subtracts b from a and stores the result in dest. Does not modify a or b */
-    public static void sub(Vec2 a, Vec2 b, Vec2 dest) {
-        dest.x = a.x - b.x;
-        dest.y = a.y - b.y;
-    }
+	/** Sets this Vector2 to be its perpendicular */
+	public void perpendicular() {
+		set(y, x * -1);
+	}
 
-    /** Subtracts v from this Vector2 */
-    public void sub(Vec2 v) {
-        x -= v.x;
-        y -= v.y;
-    }
+	/** Subtracts b from a and stores the result in dest. Does not modify a or b */
+	public static void sub(Vec2 a, Vec2 b, Vec2 dest) {
+		dest.x = a.x - b.x;
+		dest.y = a.y - b.y;
+	}
 
-    /** Returns the dot product of a and b */
-    public static float dot(Vec2 a, Vec2 b) {
-        return ((a.x * b.x) + (a.y * b.y));
-    }
+	/** Subtracts v from this Vector2 */
+	public void sub(Vec2 v) {
+		x -= v.x;
+		y -= v.y;
+	}
 
-    /** Returns the dot product of this vector and v */
-    public float dot(Vec2 v) {
-        return ((x * v.x) + (y * v.y));
-    }
+	/** Returns the dot product of a and b */
+	public static float dot(Vec2 a, Vec2 b) {
+		return ((a.x * b.x) + (a.y * b.y));
+	}
 
-    /** Returns the length of a */
-    public static float length(Vec2 a) {
-        return (float) Math.sqrt((a.x * a.x) + (a.y * a.y));
-    }
+	/** Returns the dot product of this vector and v */
+	public float dot(Vec2 v) {
+		return ((x * v.x) + (y * v.y));
+	}
 
-    /** Returns the length of this Vector2 */
-    public float length() {
-        return (float) Math.sqrt((x * x) + (y * y));
-    }
+	/** Returns the length of a */
+	public static float length(Vec2 a) {
+		return (float) Math.sqrt((a.x * a.x) + (a.y * a.y));
+	}
 
-    /** Returns the distance between the start and end vectors */
-    public static float distance(Vec2 start, Vec2 end) {
-        return (float) Math.sqrt((end.x - start.x) * (end.x - start.x)
-                + (end.y - start.y) * (end.y - start.y));
-    }
+	/** Returns the length of this Vector2 */
+	public float length() {
+		return (float) Math.sqrt((x * x) + (y * y));
+	}
 
-    /** Returns the distance between this Vector and v */
-    public float distance(Vec2 v) {
-        return (float) Math.sqrt((v.x - x) * (v.x - x)
-                + (v.y - y) * (v.y - y));
-    }
+	/** Returns the distance between the start and end vectors */
+	public static float distance(Vec2 start, Vec2 end) {
+		return (float) Math.sqrt((end.x - start.x) * (end.x - start.x) + (end.y - start.y)
+				* (end.y - start.y));
+	}
 
-    /** Stores a normalized copy of the supplied Vector2 in dest. Does not modify a */
-    public static void normalize(Vec2 a, Vec2 dest) {
-        float length = (float) Math.sqrt((a.x * a.x) + (a.y * a.y));
-        dest.x = a.x / length;
-        dest.y = a.y / length;
-    }
-    
-    /** Normalizes this Vector2 */
-    public void normalize() {
-        float length = (float) Math.sqrt((x * x) + (y * y));
-        x /= length;
-        y /= length;
-    }
-    
-    /** Adds v to this Vector2 */
-    public void add(Vec2 v) {
-        x += v.x;
-        y += v.y;
-    }
-    
-    /** Adds b to a and stores the results in dest */
-    public static void add(Vec2 a, Vec2 b, Vec2 dest) {
-        dest.x = a.x + b.x;
-        dest.y = a.y + b.y;
-    }
+	/** Returns the distance between this Vector and v */
+	public float distance(Vec2 v) {
+		return (float) Math.sqrt((v.x - x) * (v.x - x) + (v.y - y) * (v.y - y));
+	}
 
-    /**
-     * Set all components to zero.
-     */
-    public void zero() {
-        this.x = 0.0f;
-        this.y = 0.0f;
-    }
+	/**
+	 * Stores a normalized copy of the supplied Vector2 in dest. Does not modify
+	 * a
+	 */
+	public static void normalize(Vec2 a, Vec2 dest) {
+		float length = (float) Math.sqrt((a.x * a.x) + (a.y * a.y));
+		dest.x = a.x / length;
+		dest.y = a.y / length;
+	}
 
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeFloat(x);
-        out.writeFloat(y);
-    }
+	/** Normalizes this Vector2 */
+	public void normalize() {
+		float length = (float) Math.sqrt((x * x) + (y * y));
+		x /= length;
+		y /= length;
+	}
 
-    public void readExternal(ObjectInput in) throws IOException,
-            ClassNotFoundException {
-        x = in.readFloat();
-        y = in.readFloat();
-    }
+	/** Adds v to this Vector2 */
+	public void add(Vec2 v) {
+		x += v.x;
+		y += v.y;
+	}
 
-    /**
-     * Negate this vector.
-     * 
-     * @return this
-     */
-    public Vec2 negate() {
-        x = -x;
-        y = -y;
-        return this;
-    }
+	/** Adds b to a and stores the results in dest */
+	public static void add(Vec2 a, Vec2 b, Vec2 dest) {
+		dest.x = a.x + b.x;
+		dest.y = a.y + b.y;
+	}
 
-    public Vec2 mul(float f) {
-    	x*=f;
-    	y*=f;
-    	return this;
-    }
-    
-    public String toString(){
-    	return "x: "+x+", y:"+y;
-    }
+	/**
+	 * Set all components to zero.
+	 */
+	public void zero() {
+		this.x = 0.0f;
+		this.y = 0.0f;
+	}
+
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeFloat(x);
+		out.writeFloat(y);
+	}
+
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		x = in.readFloat();
+		y = in.readFloat();
+	}
+
+	/**
+	 * Negate this vector.
+	 *
+	 * @return this
+	 */
+	public Vec2 negate() {
+		x = -x;
+		y = -y;
+		return this;
+	}
+
+	public Vec2 mul(float f) {
+		x *= f;
+		y *= f;
+		return this;
+	}
+
+	public String toString() {
+		return "x: " + x + ", y:" + y;
+	}
 }

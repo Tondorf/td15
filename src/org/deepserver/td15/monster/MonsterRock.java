@@ -8,7 +8,7 @@ public class MonsterRock extends MonsterSprite {
 
 	private static Logger log = Logger.getLogger(MonsterRock.class);
 
-	protected final float typicalRadius=0.1f;
+	protected final float typicalRadius = 0.1f;
 
 	public MonsterRock(World world, Vec2 v) {
 		super(world, v);
